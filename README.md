@@ -1,4 +1,4 @@
-# appcues-flutter-sdk
+# appcues-flutter-plugin
 This project contains an Appcues Flutter plugin package.  See the [official Flutter documentation](https://docs.flutter.dev/development/packages-and-plugins/developing-packages#plugin) for more information about plugin packages.  This plugin wraps the platform specific APIs for the Appcues iOS and Android SDKs in a way that can be easily integrated and used in a Flutter application.
 
 ## Getting Started
