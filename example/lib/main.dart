@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   Future<bool> _initializeAppcues() async {
-    await AppcuesFlutterSdk.initialize('103523', 'd7aa03d2-330d-4a02-ab26-139b98ab261d');
+    await AppcuesFlutterSdk.initialize('ACCOUNT_ID', 'APP_ID');
     await AppcuesFlutterSdk.identify('flutter-user-00000');
     return true;
   }

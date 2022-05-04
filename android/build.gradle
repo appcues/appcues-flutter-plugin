@@ -18,7 +18,14 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
+        maven {
+            // for Appcues Android SDK package via GitHub Package Registry
+            url = uri("https://maven.pkg.github.com/appcues/appcues-android-sdk")
+            credentials {
+                username = System.getenv("GPR_USERNAME")
+                password = System.getenv("GPR_TOKEN")
+            }
+        }
     }
 }
 
@@ -47,7 +54,5 @@ android {
 }
 
 dependencies {
-    implementation('com.appcues:appcues:0.1.0') {
-        changing = true
-    }
+    implementation 'com.appcues:appcues:0.1.0-alpha+404'
 }
