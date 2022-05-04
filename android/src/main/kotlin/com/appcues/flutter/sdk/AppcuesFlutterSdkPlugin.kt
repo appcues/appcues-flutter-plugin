@@ -56,7 +56,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val accountId = call.argument<String>("accountId")
                 val applicationId = call.argument<String>("applicationId")
                 if (accountId != null && applicationId != null) {
-                    appcues = Appcues.Builder(context, accountId, applicationId).build()
+                    appcues = Appcues(context, accountId, applicationId)
                     result.success(null)
                 } else {
                     result.badArgs("accountId, applicationId")
