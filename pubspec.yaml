@@ -1,4 +1,4 @@
-name: appcues_flutter_sdk
+name: appcues_flutter
 description: A new flutter plugin project.
 version: 0.0.1
 homepage:
@@ -28,10 +28,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.appcues.flutter.sdk
-        pluginClass: AppcuesFlutterSdkPlugin
+        package: com.appcues.flutter
+        pluginClass: AppcuesFlutterPlugin
       ios:
-        pluginClass: AppcuesFlutterSdkPlugin
+        pluginClass: AppcuesFlutterPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

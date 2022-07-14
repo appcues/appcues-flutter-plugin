@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:appcues_flutter_sdk/appcues_flutter_sdk.dart';
+import 'package:appcues_flutter/appcues_flutter.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('appcues_flutter_sdk');
+  const MethodChannel channel = MethodChannel('appcues_flutter');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await AppcuesFlutterSdk.platformVersion, '42');
+    expect(await AppcuesFlutter.version(), '42');
   });
 }

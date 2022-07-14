@@ -1,9 +1,10 @@
-package com.appcues.flutter.sdk
+package com.appcues.flutter
 
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import com.appcues.Appcues
+import com.appcues.LoggingLevel
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -16,21 +17,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/** AppcuesFlutterSdkPlugin */
-class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+/** AppcuesFlutterPlugin */
+class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private var activity: Activity? = null
 
     // this implies the consumer must call "initialize" first, or they will get an error below
-    private lateinit var appcues: Appcues
+    private lateinit var implementation: Appcues
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter_sdk")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter")
         channel.setMethodCallHandler(this)
     }
 
@@ -56,7 +57,34 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val accountId = call.argument<String>("accountId")
                 val applicationId = call.argument<String>("applicationId")
                 if (accountId != null && applicationId != null) {
-                    appcues = Appcues(context, accountId, applicationId)
+                    implementation = Appcues(context, accountId, applicationId) {
+                        call.argument<HashMap<String, Any?>>("options")?.let {
+                            val logging = it["logging"] as? Boolean
+                            if (logging != null) {
+                                this.loggingLevel = if (logging) LoggingLevel.INFO else LoggingLevel.NONE
+                            }
+
+                            val apiHost = it["apiHost"] as? String
+                            if (apiHost != null) {
+                                this.apiBasePath = apiHost
+                            }
+
+                            val sessionTimeout = it["sessionTimeout"] as? Double
+                            if (sessionTimeout != null) {
+                                this.sessionTimeout = sessionTimeout.toInt()
+                            }
+
+                            val activityStorageMaxSize = it["activityStorageMaxSize"] as? Double
+                            if (activityStorageMaxSize != null) {
+                                this.activityStorageMaxSize = activityStorageMaxSize.toInt()
+                            }
+
+                            val activityStorageMaxAge = it["activityStorageMaxAge"] as? Double
+                            if (activityStorageMaxAge != null) {
+                                this.activityStorageMaxAge = activityStorageMaxAge.toInt()
+                            }
+                        }
+                    }
                     result.success(null)
                 } else {
                     result.badArgs("accountId, applicationId")
@@ -66,7 +94,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val userId = call.argument<String>("userId")
                 if (userId != null) {
                     val properties = call.argument<HashMap<String, Any>>("properties");
-                    appcues.identify(userId, properties)
+                    implementation.identify(userId, properties)
                     result.success(null)
                 } else {
                     result.badArgs("userId")
@@ -76,7 +104,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val groupId = call.argument<String>("groupId")
                 if (groupId != null) {
                     val properties = call.argument<HashMap<String, Any>>("properties");
-                    appcues.group(groupId, properties)
+                    implementation.group(groupId, properties)
                     result.success(null)
                 } else {
                     result.badArgs("groupId")
@@ -86,7 +114,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val eventName = call.argument<String>("name")
                 if (eventName != null) {
                     val properties = call.argument<HashMap<String, Any>>("properties");
-                    appcues.track(eventName, properties)
+                    implementation.track(eventName, properties)
                     result.success(null)
                 } else {
                     result.badArgs("name")
@@ -96,7 +124,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val title = call.argument<String>("title")
                 if (title != null) {
                     val properties = call.argument<HashMap<String, Any>>("properties");
-                    appcues.screen(title, properties)
+                    implementation.screen(title, properties)
                     result.success(null)
                 } else {
                     result.badArgs("title")
@@ -104,19 +132,19 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             }
             "anonymous" -> {
                 val properties = call.argument<HashMap<String, Any>>("properties");
-                appcues.anonymous(properties)
+                implementation.anonymous(properties)
                 result.success(null)
             }
             "reset" -> {
-                appcues.reset()
+                implementation.reset()
                 result.success(null)
             }
             "version" -> {
-                result.success(appcues.version)
+                result.success(implementation.version)
             }
             "debug" -> {
                 activity?.let {
-                    appcues.debug(it)
+                    implementation.debug(it)
                 }
                 result.success(null)
             }
@@ -124,7 +152,7 @@ class AppcuesFlutterSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val experienceId = call.argument<String>("experienceId")
                 if (experienceId != null) {
                     mainScope.launch {
-                        result.success(appcues.show(experienceId))
+                        result.success(implementation.show(experienceId))
                     }
 
                 } else {
