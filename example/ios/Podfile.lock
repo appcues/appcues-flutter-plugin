@@ -1,16 +1,17 @@
 PODS:
-  - Appcues (0.1.0)
+  - Appcues (1.0.0-beta.3)
   - appcues_flutter_sdk (0.0.1):
     - Appcues
     - Flutter
   - Flutter (1.0.0)
 
 DEPENDENCIES:
+  - Appcues (= 1.0.0-beta.3)
   - appcues_flutter_sdk (from `.symlinks/plugins/appcues_flutter_sdk/ios`)
   - Flutter (from `Flutter`)
 
 SPEC REPOS:
-  "ssh://git@github.com/appcues/cocoapods-specs":
+  trunk:
     - Appcues
 
 EXTERNAL SOURCES:
@@ -20,10 +21,10 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  Appcues: 591ef905ae1ee828289de1f3a4963a1e9a5d7c48
+  Appcues: e00f922a9e2ef99ffc55a2bc534c97c55d131d4d
   appcues_flutter_sdk: 290105d5e8ad8daffebd39eca2bbc862c48cd270
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
 
-PODFILE CHECKSUM: f893b838de42d7c53db5e47c2416b47d05edc65f
+PODFILE CHECKSUM: d0f87b867e8dcd9977c0f5a392126c4d13264321
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
