@@ -2,10 +2,13 @@ import Flutter
 import UIKit
 import AppcuesKit
 
-public class SwiftAppcuesFlutterSdkPlugin: NSObject, FlutterPlugin {
+public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
+
+    private var implementation: Appcues?
+
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "appcues_flutter_sdk", binaryMessenger: registrar.messenger())
-        let instance = SwiftAppcuesFlutterSdkPlugin()
+        let channel = FlutterMethodChannel(name: "appcues_flutter", binaryMessenger: registrar.messenger())
+        let instance = SwiftAppcuesFlutterPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
@@ -13,8 +16,33 @@ public class SwiftAppcuesFlutterSdkPlugin: NSObject, FlutterPlugin {
 
         // init is a special case, which creates the Appcues instance, must be done first
         if call.method == "initialize" {
-            if let accountId = call["accountId"], let applicationId = call["applicationId"] {
-                Appcues.shared = Appcues(config: Appcues.Config(accountID: accountId, applicationID: applicationId))
+            if let accountID = call["accountId"], let applicationID = call["applicationId"] {
+                let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
+
+                if let arguments = call.arguments as? [String: Any],
+                   let options = arguments["options"] as? [String: Any?] {
+
+                    if let logging = options["logging"] as? Bool {
+                        config.logging(logging)
+                    }
+
+                    if let apiHost = options["apiHost"] as? String, let url = URL(string: apiHost) {
+                        config.apiHost(url)
+                    }
+
+                    if let sessionTimeout = options["sessionTimeout"] as? UInt {
+                        config.sessionTimeout(sessionTimeout)
+                    }
+
+                    if let activityStorageMaxSize = options["activityStorageMaxSize"] as? UInt {
+                        config.activityStorageMaxSize(activityStorageMaxSize)
+                    }
+
+                    if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
+                        config.activityStorageMaxAge(activityStorageMaxAge)
+                    }
+                }
+                implementation = Appcues(config: config)
                 result(nil)
             } else {
                 result(missingArgs(names: "accountId, applicationId"))
@@ -22,7 +50,7 @@ public class SwiftAppcuesFlutterSdkPlugin: NSObject, FlutterPlugin {
             return
         }
 
-        guard let appcues = Appcues.shared else {
+        guard let implementation = implementation else {
             result(FlutterError(code: "notInitialized",
                                 message: "the initialize function must be called before any other Appcues SDK calls",
                                 details: nil))
@@ -32,46 +60,46 @@ public class SwiftAppcuesFlutterSdkPlugin: NSObject, FlutterPlugin {
         switch call.method {
         case "identify":
             if let userId = call["userId"] {
-                appcues.identify(userID: userId, properties: call.properties)
+                implementation.identify(userID: userId, properties: call.properties)
                 result(nil)
             } else {
                 result(missingArgs(names: "userId"))
             }
         case "group":
             if let groupId = call["groupId"] {
-                appcues.group(groupID: groupId, properties: call.properties)
+                implementation.group(groupID: groupId, properties: call.properties)
                 result(nil)
             } else {
                 result(missingArgs(names: "groupId"))
             }
         case "track":
             if let name = call["name"] {
-                appcues.track(name: name, properties: call.properties)
+                implementation.track(name: name, properties: call.properties)
                 result(nil)
             } else {
                 result(missingArgs(names: "name"))
             }
         case "screen":
             if let title = call["title"] {
-                appcues.screen(title: title, properties: call.properties)
+                implementation.screen(title: title, properties: call.properties)
                 result(nil)
             } else {
                 result(missingArgs(names: "title"))
             }
         case "anonymous":
-            appcues.anonymous(properties: call.properties)
+            implementation.anonymous(properties: call.properties)
             result(nil)
         case "reset":
-            appcues.reset()
+            implementation.reset()
             result(nil)
         case "version":
-            result(appcues.version())
+            result(implementation.version())
         case "debug":
-            appcues.debug()
+            implementation.debug()
             result(nil)
         case "show":
             if let experienceId = call["experienceId"] {
-                appcues.show(experienceID: experienceId) { success, _ in
+                implementation.show(experienceID: experienceId) { success, _ in
                     result(success)
                 }
             } else {
@@ -106,8 +134,4 @@ private extension FlutterMethodCall {
             getParam(index)
         }
     }
-}
-
-private extension Appcues {
-    static var shared: Appcues?
 }

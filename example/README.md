@@ -1,6 +1,6 @@
-# appcues_flutter_sdk_example
+# appcues_flutter_example
 
-Demonstrates how to use the appcues_flutter_sdk plugin.
+Demonstrates how to use the appcues_flutter plugin.
 
 ## Getting Started
 

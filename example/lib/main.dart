@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:appcues_flutter_sdk/appcues_flutter_sdk.dart';
+import 'package:appcues_flutter/appcues_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +18,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   Future<bool> _initializeAppcues() async {
-    await AppcuesFlutterSdk.initialize('ACCOUNT_ID', 'APP_ID');
-    await AppcuesFlutterSdk.identify('flutter-user-00000');
+    AppcuesFlutterOptions options = AppcuesFlutterOptions();
+    options.logging = true;
+    await AppcuesFlutter.initialize('ACCOUNT_ID', 'APP_ID', options);
+    await AppcuesFlutter.identify('flutter-user-00000');
     return true;
   }
 
@@ -67,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      sdkVersion = await AppcuesFlutterSdk.version();
+      sdkVersion = await AppcuesFlutter.version();
     } on PlatformException {
       sdkVersion = 'Failed to get sdk version.';
     }
@@ -83,15 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _triggerButtonEvent() async {
-    await AppcuesFlutterSdk.track('flutter-event', {'from-flutter': true, 'prop1': 'value', 'prop2': 42});
+    await AppcuesFlutter.track('flutter-event', {'from-flutter': true, 'prop1': 'value', 'prop2': 42});
   }
 
   void _showExperience() async {
-    await AppcuesFlutterSdk.show('398313f7-824b-4058-82ae-75ce7a5911e4');
+    await AppcuesFlutter.show('398313f7-824b-4058-82ae-75ce7a5911e4');
   }
 
   void _debug() async {
-    await AppcuesFlutterSdk.debug();
+    await AppcuesFlutter.debug();
   }
 
   @override
