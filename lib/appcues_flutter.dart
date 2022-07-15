@@ -63,4 +63,8 @@ class AppcuesFlutter {
   static Future<bool> show(String experienceId) async {
     return await _channel.invokeMethod('show', {'experienceId': experienceId});
   }
+
+  static Future<bool> didHandleURL(Uri url) async {
+    return await _channel.invokeMethod('didHandleURL', {'url': url.toString()});
+  }
 }

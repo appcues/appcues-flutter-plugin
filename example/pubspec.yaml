@@ -31,6 +31,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  # Adds support for detecting URIs from custom app scheme deeplinks
+  uni_links: ^0.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
