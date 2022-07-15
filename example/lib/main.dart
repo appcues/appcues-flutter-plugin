@@ -3,6 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:uni_links/uni_links.dart';
+
+bool _initialURILinkHandled = false;
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +19,45 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  // handle for listening for incoming deeplinks
+  StreamSubscription? _linkStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _handleInitialDeeplink();
+    _listenForDeeplinks();
+  }
+
+  @override
+  void dispose() {
+    _linkStreamSubscription?.cancel();
+    super.dispose();
+  }
+
+  // Detect if app was launched from a deeplink
+  Future<void> _handleInitialDeeplink() async {
+    // guard against processing initial link more than once
+    if (!_initialURILinkHandled) {
+      _initialURILinkHandled = true;
+
+      final initialURI = await getInitialUri();
+      if (mounted && initialURI != null) {
+        // Pass along to Appcues to potentially handle
+        AppcuesFlutter.didHandleURL(initialURI);
+      }
+    }
+  }
+
+  // Detect if a new deeplink was sent to the app
+  void _listenForDeeplinks() {
+    _linkStreamSubscription = uriLinkStream.listen((Uri? uri) {
+      if (!mounted || uri == null) return;
+      // Pass along to Appcues to potentially handle
+      AppcuesFlutter.didHandleURL(uri);
+    });
+  }
 
   Future<bool> _initializeAppcues() async {
     AppcuesFlutterOptions options = AppcuesFlutterOptions();

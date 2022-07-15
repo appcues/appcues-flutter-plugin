@@ -2,6 +2,8 @@ package com.appcues.flutter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.NonNull
 import com.appcues.Appcues
 import com.appcues.LoggingLevel
@@ -157,6 +159,22 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
                 } else {
                     result.badArgs("experienceId")
+                }
+            }
+            "didHandleURL" -> {
+                val url = call.argument<String>("url")
+                if (url != null) {
+                    val activity = this.activity
+                    if (activity != null) {
+                        val uri = Uri.parse(url)
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = uri
+                        result.success(implementation.onNewIntent(activity, intent))
+                    } else {
+                        result.error("no-activity", "unable to handle the URL, no current running Activity found", null)
+                    }
+                } else {
+                    result.badArgs("url")
                 }
             }
             else -> result.notImplemented()

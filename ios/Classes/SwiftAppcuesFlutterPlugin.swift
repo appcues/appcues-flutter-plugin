@@ -105,6 +105,12 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             } else {
                 result(missingArgs(names: "experienceId"))
             }
+        case "didHandleURL":
+            if let urlString = call["url"], let url = URL(string: urlString) {
+                result(implementation.didHandleURL(url))
+            } else {
+                result(missingArgs(names: "url"))
+            }
         default:
             result(FlutterMethodNotImplemented)
         }
