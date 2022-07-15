@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
           home: const MyHomePage(title: 'Appcues Flutter Demo'),
         );
       } else {
-        return const CircularProgressIndicator();
+        return Container(color: Colors.white);
       }
     },
   );
