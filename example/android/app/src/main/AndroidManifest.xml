@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.appcues.samples.flutter">
    <application
-        android:label="Appcues Flutter SDK Example"
+        android:label="Appcues Flutter Example"
         android:name="${applicationName}"
         android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
