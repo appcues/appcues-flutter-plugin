@@ -35,15 +35,6 @@ executors:
     working_directory: ~/project
 
 # -------------------------
-#        REFERENCES
-# -------------------------
-references:
-  is_main: &is_main
-    matches:
-      pattern: '^main$'
-      value: << pipeline.git.branch >>
-
-# -------------------------
 #          COMMANDS
 # -------------------------
 commands:
