@@ -27,12 +27,13 @@ platform :android do
       }
     )
 
-    # upload_to_play_store(
-    #   track: 'internal', 
-    #   skip_upload_apk: true, 
-    #   json_key_data: ENV["PLAY_STORE_API_KEY"],
-    #   rollout: '1'
-    # )
+    upload_to_play_store(
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
+      track: 'internal', 
+      skip_upload_apk: true, 
+      json_key_data: ENV["PLAY_STORE_API_KEY"],
+      rollout: '1'
+    )
   end
 
 end

@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   Future<bool> _initializeAppcues() async {
     AppcuesFlutterOptions options = AppcuesFlutterOptions();
     options.logging = true;
-    await AppcuesFlutter.initialize('ACCOUNT_ID', 'APP_ID', options);
+    await AppcuesFlutter.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
     await AppcuesFlutter.identify('flutter-user-00000');
     return true;
   }
