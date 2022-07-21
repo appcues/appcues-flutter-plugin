@@ -1,30 +1,101 @@
-# appcues-flutter-plugin
-This project contains an Appcues Flutter plugin package.  See the [official Flutter documentation](https://docs.flutter.dev/development/packages-and-plugins/developing-packages#plugin) for more information about plugin packages.  This plugin wraps the platform specific APIs for the Appcues iOS and Android SDKs in a way that can be easily integrated and used in a Flutter application.
+# Appcues Flutter Plugin
 
-## Getting Started
-Download and install the Flutter SDK https://docs.flutter.dev/get-started/install/macos#get-sdk. Update PATH as noted in official documentation.
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-flutter-plugin/blob/main/LICENSE)
 
-### Prerequisites
-The Appcues Flutter plugin package references the underlying Android SDK from Maven (initially mavenLocal during dev), and the underlying iOS SDK from Cocoapods (initially [private podspec](https://github.com/appcues/cocoapods-specs) during dev).  You must have access to these libraries to be able to successfully build and run the plugin and the example application.
+>NOTE: This is a pre-release project for testing as a part of our mobile beta program. If you are interested in learning more about our mobile product and testing it before it is officially released, please [visit our site](https://www.appcues.com/mobile) and request early access.
+>
+>If you have been contacted to be a part of our mobile beta program, we encourage you to try out this library and  provide feedback via Github issues and pull requests. Please note this library will not operate if you are not part of the mobile beta program.
 
-### Run the Example Application
-The `example` directory has an example Flutter application that uses the Appcues plugin package.  The example can be run using either the Android Studio IDE, or via Terminal.
 
-**To run in Android Studio**
+Plugin package to bridge the native Appcues SDKs in a Flutter application.
 
-Open the root `appcues-flutter-sdk` directory in Android Studio and run the Flutter application through the integrated tools in the IDE
+- [Appcues Flutter Plugin](#appcues-flutter-plugin)
+  - [🚀 Getting Started](#-getting-started)
+    - [Installation](#installation)
+    - [One Time Setup](#one-time-setup)
+      - [Initializing the SDK](#initializing-the-sdk)
+      - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
+    - [Identifying Users](#identifying-users)
+    - [Tracking Screens and Events](#tracking-screens-and-events)
+  - [🛠 Customization](#-customization)
+  - [📝 Documentation](#-documentation)
+  - [🎬 Examples](#-examples)
+  - [👷 Contributing](#-contributing)
+  - [📄 License](#-license)
 
-More information: https://docs.flutter.dev/get-started/test-drive?tab=androidstudio
+## 🚀 Getting Started
 
-**To run via Terminal**
+### Installation
 
-Launch and Android emulator or iOS simulator as the desired target to run the application.
+1. Open the `pubspec.yaml` file located inside the app folder, and add `appcues_flutter:` under dependencies.
+2. Install the dependency, using `flutter pub get` from the terminal.
+3. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
+    ```rb
+    # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
+    pod 'Appcues', '1.0.0-beta.4'
+    ```
 
-```shell
-> cd example
-> flutter run
+### One Time Setup
+
+#### Initializing the SDK
+
+An instance of the Appcues SDK should be initialized when your app launches.
+
+```dart
+import 'package:appcues_flutter/appcues_flutter.dart';
+
+AppcuesFlutter.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 ```
 
-If multiple available devices are open, the command line tool will prompt to select which device to build and deploy the example.
+Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account).
 
-More information: https://docs.flutter.dev/get-started/test-drive?tab=terminal
+#### Supporting Debugging and Experience Previewing
+
+Supporting debugging and experience previewing is not required for the Appcues Flutter Plugin to function, but it is necessary for the optimal Appcues builder experience. Refer to the [URL Scheme Configuration Guide](https://github.com/appcues/appcues-flutter-plugin/blob/main/docs/URLSchemeConfiguring.md) for details on how to configure.
+
+### Identifying Users
+
+In order to target content to the right users at the right time, you need to identify users and send Appcues data about them. A user is identified with a unique ID.
+
+```dart
+// Identify a user
+AppcuesFlutter.identify('my-user-id')
+// Identify a user with property
+AppcuesFlutter.identify('my-user-id', {'Company': 'Appcues'})
+```
+
+### Tracking Screens and Events
+
+Events are the “actions” your users take in your application, which can be anything from clicking a certain button to viewing a specific screen. Once you’ve installed and initialized the Appcues Flutter Plugin, you can start tracking screens and events using the following methods:
+
+```dart
+// Track event
+AppcuesFlutter.track('Sent Message')
+// Track event with property
+AppcuesFlutter.track('Deleted Contact', {'ID': 123 })
+
+// Track screen
+AppcuesFlutter.screen('Contact List')
+// Track screen with property
+AppcuesFlutter.screen('Contact Details', {'Contact Reference': 'abc'})
+```
+
+## 🛠 Customization
+
+Customizing and extending the Appcues SDK can be done at the native Kotlin/Swift level. Refer to the [Android SDK Extending Guide](https://github.com/appcues/appcues-android-sdk/blob/main/docs/Extending.md) and [iOS SDK Extending Guide](https://github.com/appcues/appcues-ios-sdk/blob/main/Sources/AppcuesKit/AppcuesKit.docc/Extending.md) for details.
+
+## 📝 Documentation
+
+Full documentation is available at https://docs.appcues.com/
+
+## 🎬 Examples
+
+The `example` directory in this repository contains full example iOS/Android app to providing references for correct installation and usage of the Appcues API.
+
+## 👷 Contributing
+
+See the [contributing guide](https://github.com/appcues/appcues-flutter-plugin/blob/main/CONTRIBUTING.md) to learn how to get set up for development and how to contribute to the project.
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](https://github.com/appcues/appcues-flutter-plugin/blob/main/LICENSE) for more information.

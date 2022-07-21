@@ -1,16 +1,59 @@
-# appcues_flutter_example
+# Appcues Flutter Example App
 
-Demonstrates how to use the appcues_flutter plugin.
+This is a simple Flutter application for iOS and Android that integrates with Appcues Flutter Plugin.
 
-## Getting Started
+## 🚀 Setup
 
-This project is a starting point for a Flutter application.
+Refer to https://docs.flutter.dev/get-started/install for general Flutter setup.
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+# Install dependencies for the plugin. Only necessary because this is referenced locally by the example app.
+flutter pub get
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# Install dependencies for the example app.
+cd ./example
+flutter pub get
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This example app requires you to fill in an Appcues Account ID and an Appcues Application ID in `lib/src/app.dart`. You can enter your own values found in [Appcues Studio](https://studio.appcues.com), or use the following test values:
+```
+APPCUES_ACCOUNT_ID=103523
+APPCUES_APPLICATION_ID=d7aa03d2-330d-4a02-ab26-139b98ab261d
+```
+
+```sh
+# Run the app on an open iOS simulator or Android emulator
+flutter run
+```
+
+## ✨ Functionality
+
+The example app demonstrates the core functionality of the Appcues Flutter plugin across 4 screens.
+
+### Sign In Screen
+
+This screen is identified as `Sign In` for screen targeting.
+
+Provide a User ID for use with `AppcuesFlutter.identify()` or select an anonymous ID using `AppcuesFlutter.anonymous()`.
+
+### Events Screen
+
+This screen is identified as `Trigger Events` for screen targeting.
+
+Two buttons demonstrate `AppcuesFlutter.track()` calls.
+
+The AppBar also includes a button to launch the in-app debugger with `AppcuesFlutter.debug()`.
+
+### Profile Screen
+
+This screen is identified as `Update Profile` for screen targeting.
+
+TextFields are included to update the profile attributes for the current user using `AppcuesFlutter.identify()`.
+
+The AppBar also includes a button to sign out and navigate back to the Sign In Screen along with calling `AppcuesFlutter.reset()`.
+
+### Group Screen
+
+This screen is identified as `Update Group` for screen targeting.
+
+A TextField is included to set the group for the current user using `AppcuesFlutter.group()`.
