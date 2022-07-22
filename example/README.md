@@ -34,26 +34,26 @@ The example app demonstrates the core functionality of the Appcues Flutter plugi
 
 This screen is identified as `Sign In` for screen targeting.
 
-Provide a User ID for use with `AppcuesFlutter.identify()` or select an anonymous ID using `AppcuesFlutter.anonymous()`.
+Provide a User ID for use with `Appcues.identify()` or select an anonymous ID using `Appcues.anonymous()`.
 
 ### Events Screen
 
 This screen is identified as `Trigger Events` for screen targeting.
 
-Two buttons demonstrate `AppcuesFlutter.track()` calls.
+Two buttons demonstrate `Appcues.track()` calls.
 
-The AppBar also includes a button to launch the in-app debugger with `AppcuesFlutter.debug()`.
+The AppBar also includes a button to launch the in-app debugger with `Appcues.debug()`.
 
 ### Profile Screen
 
 This screen is identified as `Update Profile` for screen targeting.
 
-TextFields are included to update the profile attributes for the current user using `AppcuesFlutter.identify()`.
+TextFields are included to update the profile attributes for the current user using `Appcues.identify()`.
 
-The AppBar also includes a button to sign out and navigate back to the Sign In Screen along with calling `AppcuesFlutter.reset()`.
+The AppBar also includes a button to sign out and navigate back to the Sign In Screen along with calling `Appcues.reset()`.
 
 ### Group Screen
 
 This screen is identified as `Update Group` for screen targeting.
 
-A TextField is included to set the group for the current user using `AppcuesFlutter.group()`.
+A TextField is included to set the group for the current user using `Appcues.group()`.

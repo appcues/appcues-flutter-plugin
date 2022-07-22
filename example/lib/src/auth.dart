@@ -1,4 +1,4 @@
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 import 'package:flutter/widgets.dart';
 
 /// A mock authentication service

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('appcues_flutter');
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await AppcuesFlutter.version(), '42');
+    expect(await Appcues.version(), '42');
   });
 }

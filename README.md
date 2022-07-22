@@ -42,9 +42,9 @@ Plugin package to bridge the native Appcues SDKs in a Flutter application.
 An instance of the Appcues SDK should be initialized when your app launches.
 
 ```dart
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 
-AppcuesFlutter.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
+Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 ```
 
 Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account).
@@ -59,9 +59,9 @@ In order to target content to the right users at the right time, you need to ide
 
 ```dart
 // Identify a user
-AppcuesFlutter.identify('my-user-id')
+Appcues.identify('my-user-id')
 // Identify a user with property
-AppcuesFlutter.identify('my-user-id', {'Company': 'Appcues'})
+Appcues.identify('my-user-id', {'Company': 'Appcues'})
 ```
 
 ### Tracking Screens and Events
@@ -70,19 +70,15 @@ Events are the “actions” your users take in your application, which can be a
 
 ```dart
 // Track event
-AppcuesFlutter.track('Sent Message')
+Appcues.track('Sent Message')
 // Track event with property
-AppcuesFlutter.track('Deleted Contact', {'ID': 123 })
+Appcues.track('Deleted Contact', {'ID': 123 })
 
 // Track screen
-AppcuesFlutter.screen('Contact List')
+Appcues.screen('Contact List')
 // Track screen with property
-AppcuesFlutter.screen('Contact Details', {'Contact Reference': 'abc'})
+Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
 ```
-
-## 🛠 Customization
-
-Customizing and extending the Appcues SDK can be done at the native Kotlin/Swift level. Refer to the [Android SDK Extending Guide](https://github.com/appcues/appcues-android-sdk/blob/main/docs/Extending.md) and [iOS SDK Extending Guide](https://github.com/appcues/appcues-ios-sdk/blob/main/Sources/AppcuesKit/AppcuesKit.docc/Extending.md) for details.
 
 ## 📝 Documentation
 
