@@ -13,7 +13,7 @@ class AppcuesFlutterOptions {
   int? activityStorageMaxAge;
 }
 
-class AppcuesFlutter {
+class Appcues {
   static const MethodChannel _channel = MethodChannel('appcues_flutter');
 
   static Future<void> initialize(String accountId, String applicationId, [AppcuesFlutterOptions? options]) async {

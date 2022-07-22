@@ -1,4 +1,4 @@
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 import 'package:flutter/material.dart';
 
 class GroupScreen extends StatefulWidget {
@@ -44,7 +44,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   minimumSize: const Size.fromHeight(44),
                 ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                 onPressed: () async {
-                  AppcuesFlutter.group(_groupController.value.text);
+                  Appcues.group(_groupController.value.text);
                 },
                 child: const Text('Save'),
               ),

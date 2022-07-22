@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 import 'package:appcues_flutter_example/src/routing/route_definition.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
@@ -92,7 +92,7 @@ class _ExampleState extends State<Example> {
   Future<void> _initializeAppcues() async {
     AppcuesFlutterOptions options = AppcuesFlutterOptions();
     options.logging = true;
-    await AppcuesFlutter.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+    await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
   }
 
   // Detect if app was launched from a deeplink
@@ -104,7 +104,7 @@ class _ExampleState extends State<Example> {
       final initialURI = await getInitialUri();
       if (mounted && initialURI != null) {
         // Pass along to Appcues to potentially handle
-        bool handled = await AppcuesFlutter.didHandleURL(initialURI);
+        bool handled = await Appcues.didHandleURL(initialURI);
         if (handled) return;
 
         // Otherwise, process the link as a normal app route
@@ -119,7 +119,7 @@ class _ExampleState extends State<Example> {
     _linkStreamSubscription = uriLinkStream.listen((Uri? uri) async {
       if (!mounted || uri == null) return;
       // Pass along to Appcues to potentially handle
-      bool handled = await AppcuesFlutter.didHandleURL(uri);
+      bool handled = await Appcues.didHandleURL(uri);
       if (handled) return;
 
       // Otherwise, process the link as a normal app route
@@ -130,18 +130,18 @@ class _ExampleState extends State<Example> {
 
   void _handleAuthStateChanged() {
     if (!_auth.signedIn) {
-      AppcuesFlutter.reset();
+      Appcues.reset();
     }
     else if (_auth.isAnonymous) {
-      AppcuesFlutter.anonymous();
+      Appcues.anonymous();
     }
     else {
-      AppcuesFlutter.identify(_auth.username);
+      Appcues.identify(_auth.username);
     }
   }
 
   void _handleRouteStateChanged() {
-    AppcuesFlutter.screen(_routerDelegate.currentConfiguration.title);
+    Appcues.screen(_routerDelegate.currentConfiguration.title);
   }
 
   @override

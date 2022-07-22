@@ -1,4 +1,4 @@
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 import 'package:flutter/material.dart';
 
 import '../auth.dart';
@@ -71,13 +71,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                 onPressed: () async {
                   if (authState.isAnonymous) {
-                   AppcuesFlutter.anonymous({
+                   Appcues.anonymous({
                      "givenName": _givenNameController.value.text,
                      "familyName": _familyNameController.value.text,
                    });
                   }
                   else {
-                    AppcuesFlutter.identify(authState.username, {
+                    Appcues.identify(authState.username, {
                       "givenName": _givenNameController.value.text,
                       "familyName": _familyNameController.value.text,
                     });

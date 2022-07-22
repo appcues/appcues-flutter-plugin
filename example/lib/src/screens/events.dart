@@ -1,4 +1,4 @@
-import 'package:appcues_flutter/appcues_flutter.dart';
+import 'package:appcues_flutter/appcues.dart';
 import 'package:flutter/material.dart';
 
 class EventsScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class EventsScreen extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            AppcuesFlutter.debug();
+            Appcues.debug();
           },
           child: const Text('Debug', style: TextStyle(color: Colors.white)),
         ),
@@ -37,7 +37,7 @@ class EventsScreen extends StatelessWidget {
                 minimumSize: const Size.fromHeight(44),
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () async {
-                AppcuesFlutter.track("event1");
+                Appcues.track("event1");
               },
               child: const Text('Trigger Event 1'),
             ),
@@ -53,7 +53,7 @@ class EventsScreen extends StatelessWidget {
                 minimumSize: const Size.fromHeight(44),
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () async {
-                AppcuesFlutter.track("event2");
+                Appcues.track("event2");
               },
               child: const Text('Trigger Event 2'),
             ),

@@ -62,7 +62,7 @@ Android - in AndroidManifest.xml for the main Activity:
 
 ## Handle the Custom URL Scheme
 
-URLs need to be received and handled somewhere in your Flutter application. For example, if using [uni_links](https://pub.dev/packages/uni_links), you may have a listener  on `uriLinkStream`. When a new `Uri` is encountered, pass it along to the `AppcuesFlutter.didHandleURL` function. If the Appcues SDK recognized and processed the link, the return value is `true`.
+URLs need to be received and handled somewhere in your Flutter application. For example, if using [uni_links](https://pub.dev/packages/uni_links), you may have a listener  on `uriLinkStream`. When a new `Uri` is encountered, pass it along to the `Appcues.didHandleURL` function. If the Appcues SDK recognized and processed the link, the return value is `true`.
 
 If the link is not an Appcues custom scheme link, pass the link on to any other normal link handling code in your application. In this example, a Router widget is being used. The new link `.path` value is then sent to our `RouteInformationParser` implementation. The parsed route can then be used to update the `RouteState` in the application.
 
@@ -72,7 +72,7 @@ void _listenForDeeplinks() {
     _linkStreamSubscription = uriLinkStream.listen((Uri? uri) async {
         if (!mounted || uri == null) return;
         // Pass along to Appcues to potentially handle
-        bool handled = await AppcuesFlutter.didHandleURL(uri);
+        bool handled = await Appcues.didHandleURL(uri);
         if (handled) return;
 
         // Otherwise, process the link as a normal app route
