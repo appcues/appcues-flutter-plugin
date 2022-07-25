@@ -27,7 +27,7 @@ Plugin package to bridge the native Appcues SDKs in a Flutter application.
 
 ### Installation
 
-1. Open the `pubspec.yaml` file located inside the app folder, and add `appcues_flutter:` under dependencies.
+1. Open the `pubspec.yaml` file located inside the app folder, and add `appcues_flutter:` under `dependencies`.
 2. Install the dependency, using `flutter pub get` from the terminal.
 3. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
     ```rb
