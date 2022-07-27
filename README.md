@@ -25,11 +25,29 @@ Plugin package to bridge the native Appcues SDKs in a Flutter application.
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+Android: your application's `build.gradle` must have a `compileSdkVersion` of 32+ and `minSdkVersion` of 21+
+```
+android {
+    compileSdkVersion 32    
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+}
+```
+
+iOS: your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content.  In the application's `Podfile`, include at least this minimum version.
+```
+platform :ios, '11.0'
+```
+
 ### Installation
 
 1. Open the `pubspec.yaml` file located inside the app folder, and add `appcues_flutter:` under `dependencies`.
 2. Install the dependency, using `flutter pub get` from the terminal.
-3. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
+3. **[⚠️ BETA ONLY]** Add the pod to your ios project's Podfile
     ```rb
     # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
     pod 'Appcues', '1.0.0-beta.4'
