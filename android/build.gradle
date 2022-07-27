@@ -1,5 +1,5 @@
 group 'com.appcues.flutter.sdk'
-version '1.0-SNAPSHOT'
+version '1.0-0-beta01'
 
 buildscript {
     ext.kotlin_version = '1.6.20'
@@ -46,5 +46,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.appcues:appcues:1.0.0-beta05'
+    implementation 'com.appcues:appcues:1.0.0-beta06'
 }
