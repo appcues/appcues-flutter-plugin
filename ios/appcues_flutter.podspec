@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 A plugin package for sending user properties and events to the Appcues API and retrieving and rendering Appcues content based on those properties and events.
                        DESC
-  s.homepage         = 'https://github.com/Appdynamics/flutter-plugin'
+  s.homepage         = 'https://github.com/appcues/appcues-flutter-plugin'
   s.license          = { :type => 'MIT', :file => '../LICENSE' }
   s.author           = { 'Appcues' => 'mobile@appcues.com' }
   s.source           = { :path => '.' }
