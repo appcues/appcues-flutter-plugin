@@ -1,7 +1,7 @@
-import 'package:appcues_flutter_example/src/routing/route_definition.dart';
 import 'package:flutter/widgets.dart';
 
 import '../routing.dart';
+import 'route_definition.dart';
 
 /// Parses the URI path into a [RouteDefinition].
 class TemplateRouteParser extends RouteInformationParser<RouteDefinition> {

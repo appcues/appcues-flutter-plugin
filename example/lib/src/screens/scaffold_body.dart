@@ -1,6 +1,6 @@
-import 'package:appcues_flutter_example/src/auth.dart';
 import 'package:flutter/material.dart';
 
+import '../auth.dart';
 import '../routing.dart';
 import '../routing/route_definition.dart';
 import '../widgets/fade_transition_page.dart';

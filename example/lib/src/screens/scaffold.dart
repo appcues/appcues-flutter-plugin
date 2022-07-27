@@ -1,8 +1,8 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
-import 'package:appcues_flutter_example/src/routing/route_definition.dart';
 import 'package:flutter/material.dart';
 
 import '../routing.dart';
+import '../routing/route_definition.dart';
 import 'scaffold_body.dart';
 
 class ExampleScaffold extends StatelessWidget {
