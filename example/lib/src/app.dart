@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:appcues_flutter/appcues.dart';
-import 'package:appcues_flutter_example/src/routing/route_definition.dart';
+import 'package:appcues_flutter/appcues_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 
 import 'auth.dart';
 import 'routing.dart';
 import 'screens/navigator.dart';
+import 'routing/route_definition.dart';
+
 
 class Example extends StatefulWidget {
   const Example({super.key});

@@ -1,4 +1,4 @@
-import 'package:appcues_flutter/appcues.dart';
+import 'package:appcues_flutter/appcues_flutter.dart';
 import 'package:flutter/material.dart';
 
 class EventsScreen extends StatelessWidget {

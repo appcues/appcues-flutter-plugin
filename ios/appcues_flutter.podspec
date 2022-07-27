@@ -1,17 +1,13 @@
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint appcues_flutter.podspec` to validate before publishing.
-#
 Pod::Spec.new do |s|
   s.name             = 'appcues_flutter'
   s.version          = '1.0.0-beta.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'Plugin package to bridge the native Appcues iOS SDK in a Flutter application.'
   s.description      = <<-DESC
-A new flutter plugin project.
+A plugin package for sending user properties and events to the Appcues API and retrieving and rendering Appcues content based on those properties and events.
                        DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.homepage         = 'https://github.com/Appdynamics/flutter-plugin'
+  s.license          = { :type => 'MIT', :file => '../LICENSE' }
+  s.author           = { 'Appcues' => 'mobile@appcues.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
