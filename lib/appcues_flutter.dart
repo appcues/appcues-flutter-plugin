@@ -5,7 +5,7 @@ import 'dart:ffi';
 import 'package:flutter/services.dart';
 
 
-class AppcuesFlutterOptions {
+class AppcuesOptions {
   bool? logging;
   String? apiHost;
   int? sessionTimeout;
@@ -16,7 +16,7 @@ class AppcuesFlutterOptions {
 class Appcues {
   static const MethodChannel _channel = MethodChannel('appcues_flutter');
 
-  static Future<void> initialize(String accountId, String applicationId, [AppcuesFlutterOptions? options]) async {
+  static Future<void> initialize(String accountId, String applicationId, [AppcuesOptions? options]) async {
     // convert options to a Map to send to platform code
     Map<String, Object?> nativeOptions = <String, Object?>{
       "logging": options?.logging,
