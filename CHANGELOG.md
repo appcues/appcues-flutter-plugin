@@ -1,3 +1,6 @@
+## 1.0.0
+
+
 ## 1.0.0-beta.2
 * 👌 Fix copy paste bug in podspec (71ac8b2)
 * 👌 Add a note about updating iOS min version in xcodeproj (81cc99f)

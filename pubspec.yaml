@@ -1,6 +1,6 @@
 name: appcues_flutter
 description: Plugin package to bridge the native Appcues SDKs in a Flutter application.
-version: 1.0.0-beta.2
+version: 1.0.0
 homepage: https://www.appcues.com
 environment:
   sdk: ">=2.16.2 <3.0.0"
