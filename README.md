@@ -5,7 +5,9 @@
 [![Pub Points](https://img.shields.io/pub/points/appcues_flutter)](https://pub.dev/packages/appcues_flutter/score)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-flutter-plugin/blob/main/LICENSE)
 
-Plugin package to bridge the native Appcues SDKs in a Flutter application.
+Appcues Flutter Plugin allows you to integrate Appcues experiences into your Flutter apps for iOS and Android devices.
+
+This Plugin package is a bridge between the native Appcues SDKs in a Flutter application which sends user properties and events to the Appcues API and retrieves and renders Appcues content based on those properties and events.
 
 - [Appcues Flutter Plugin](#appcues-flutter-plugin)
   - [🚀 Getting Started](#-getting-started)
