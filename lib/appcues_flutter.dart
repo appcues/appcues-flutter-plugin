@@ -29,9 +29,8 @@ class AppcuesOptions {
   /// the local device and retried later, in the case of the device network
   /// connection being unavailable.
   ///
-  /// Only requests that are more recent than
-  /// the max age will be retried. There is no max age limiation is this
-  /// value is left unset.
+  /// Only requests that are more recent than the max age will be retried. 
+  /// There is no max age limitation if this value is left unset.
   int? activityStorageMaxAge;
 }
 
