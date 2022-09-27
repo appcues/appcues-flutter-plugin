@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.NonNull
+import com.appcues.AnalyticType
+import com.appcues.AnalyticsListener
 import com.appcues.Appcues
 import com.appcues.LoggingLevel
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -22,7 +25,8 @@ import kotlinx.coroutines.launch
 /** AppcuesFlutterPlugin */
 class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
-    private lateinit var channel: MethodChannel
+    private lateinit var methodChannel: MethodChannel
+    private lateinit var analyticsChannel: EventChannel
     private lateinit var context: Context
     private var activity: Activity? = null
 
@@ -33,8 +37,9 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter")
-        channel.setMethodCallHandler(this)
+        methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter")
+        methodChannel.setMethodCallHandler(this)
+        analyticsChannel = EventChannel(flutterPluginBinding.binaryMessenger, "appcues_analytics")
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -87,6 +92,32 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             }
                         }
                     }
+                    analyticsChannel.setStreamHandler(object: EventChannel.StreamHandler {
+                        override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                            implementation.analyticsListener = object: AnalyticsListener {
+                                override fun trackedAnalytic(
+                                    type: AnalyticType,
+                                    value: String?,
+                                    properties: Map<String, Any>?,
+                                    isInternal: Boolean
+                                ) {
+                                    events?.success(
+                                        hashMapOf(
+                                            "analytic" to type.name,
+                                            "value" to (value ?: ""),
+                                            "properties" to (properties ?: mapOf()),
+                                            "isInternal" to isInternal,
+                                        )
+                                    )
+                                }
+                            }
+                        }
+
+                        override fun onCancel(arguments: Any?) {
+                            implementation.analyticsListener = null
+                        }
+
+                    })
                     result.success(null)
                 } else {
                     result.badArgs("accountId, applicationId")
@@ -154,9 +185,13 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val experienceId = call.argument<String>("experienceId")
                 if (experienceId != null) {
                     mainScope.launch {
-                        result.success(implementation.show(experienceId))
+                        val success = implementation.show(experienceId)
+                        if (success) {
+                            result.success(null)
+                        } else {
+                            result.error("show-experience-failure", "unable to show experience $experienceId", null)
+                        }
                     }
-
                 } else {
                     result.badArgs("experienceId")
                 }
@@ -182,10 +217,10 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+        methodChannel.setMethodCallHandler(null)
     }
 
     private fun Result.badArgs(names: String) {
-        error("badArgs", "missing one or more required args", names)
+        error("bad-args", "missing one or more required args", names)
     }
 }
