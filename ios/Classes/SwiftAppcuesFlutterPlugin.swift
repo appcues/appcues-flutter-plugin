@@ -107,7 +107,10 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
                     if success {
                         result(nil)
                     } else {
-                        result(FlutterError(code: "show-experience-failure", message: "unable to show experience \(experienceID)", details: nil))
+                        result(FlutterError(
+                            code: "show-experience-failure",
+                            message: "unable to show experience \(experienceID)",
+                            details: error?.localizedDescription))
                     }
                 }
             } else {
