@@ -1,6 +1,6 @@
 PODS:
-  - Appcues (1.0.0-beta.4)
-  - appcues_flutter (1.0.0-beta.1):
+  - Appcues (1.0.0)
+  - appcues_flutter (1.0.0):
     - Appcues
     - Flutter
   - Flutter (1.0.0)
@@ -8,7 +8,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - Appcues (= 1.0.0-beta.4)
   - appcues_flutter (from `.symlinks/plugins/appcues_flutter/ios`)
   - Flutter (from `Flutter`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
@@ -26,11 +25,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/uni_links/ios"
 
 SPEC CHECKSUMS:
-  Appcues: b9656ff8a85985f3a3feaa5728c71f7ce7f164b5
-  appcues_flutter: be48c084dbc1ac468baf44ad7360a80b4e516bd7
+  Appcues: 39d82344747e19ef6dc71b818460e8caf7f21477
+  appcues_flutter: 5aab7cf16d8ab1653c58f818443cedd95ea7012d
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
 
-PODFILE CHECKSUM: 368ff034149e5cae14fbcef4cc9e1945b4dd96b8
+PODFILE CHECKSUM: ad9642c61db90c633d272b9059a6d65ea9123323
 
 COCOAPODS: 1.11.3

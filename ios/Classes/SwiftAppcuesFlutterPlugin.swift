@@ -5,11 +5,14 @@ import AppcuesKit
 public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
     private var implementation: Appcues?
+    private var analyticsChannel: FlutterEventChannel?
+    private var eventSink: FlutterEventSink?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "appcues_flutter", binaryMessenger: registrar.messenger())
+        let methodChannel = FlutterMethodChannel(name: "appcues_flutter", binaryMessenger: registrar.messenger())
         let instance = SwiftAppcuesFlutterPlugin()
-        registrar.addMethodCallDelegate(instance, channel: channel)
+        instance.analyticsChannel = FlutterEventChannel(name: "appcues_analytics", binaryMessenger: registrar.messenger())
+        registrar.addMethodCallDelegate(instance, channel: methodChannel)
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -43,6 +46,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
                     }
                 }
                 implementation = Appcues(config: config)
+                analyticsChannel?.setStreamHandler(self)
                 result(nil)
             } else {
                 result(missingArgs(names: "accountId, applicationId"))
@@ -94,9 +98,13 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             implementation.debug()
             result(nil)
         case "show":
-            if let experienceId = call["experienceId"] {
-                implementation.show(experienceID: experienceId) { success, _ in
-                    result(success)
+            if let experienceID = call["experienceId"] {
+                implementation.show(experienceID: experienceID) { success, error in
+                    if success {
+                        result(nil)
+                    } else {
+                        result(FlutterError(code: "show-experience-failure", message: "unable to show experience \(experienceID)", details: nil))
+                    }
                 }
             } else {
                 result(missingArgs(names: "experienceId"))
@@ -113,7 +121,82 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func missingArgs(names: String) -> FlutterError {
-        return FlutterError(code: "badArgs", message: "missing one or more required args", details: names)
+        return FlutterError(code: "bad-args", message: "missing one or more required args", details: names)
+    }
+}
+
+extension SwiftAppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
+    public func didTrack(analytic: AppcuesKit.AppcuesAnalytic, value: String?, properties: [String : Any]?, isInternal: Bool) {
+        let analyticName: String
+        switch analytic {
+        case .event:
+            analyticName = "EVENT"
+        case .screen:
+            analyticName = "SCREEN"
+        case .identify:
+            analyticName = "IDENTIFY"
+        case .group:
+            analyticName = "GROUP"
+        }
+
+        eventSink?([
+            "analytic": analyticName,
+            "value": value ?? "",
+            "properties": formatProperties(properties),
+            "isInternal": isInternal
+        ])
+    }
+
+    /// Map any supported property types that `sendEvent` doesn't handle by default.
+    private func formatProperties( _ properties: [String: Any]?) -> [String: Any] {
+        guard var properties = properties else { return [:] }
+
+        properties.forEach { key, value in
+            switch value {
+            case let date as Date:
+                properties[key] = Int64((date.timeIntervalSince1970 * 1000).rounded())
+            case let dict as [String: Any]:
+                properties[key] = formatProperties(dict)
+            case let arr as [Any]:
+                properties[key] = formatProperties(arr)
+            default:
+                break
+            }
+        }
+
+        return properties
+    }
+
+    private func formatProperties( _ properties: [Any]?) -> [Any] {
+        guard var properties = properties else { return [] }
+
+        properties.enumerated().forEach { index, value in
+            switch value {
+            case let date as Date:
+                properties[index] = Int64((date.timeIntervalSince1970 * 1000).rounded())
+            case let dict as [String: Any]:
+                properties[index] = formatProperties(dict)
+            case let arr as [Any]:
+                properties[index] = formatProperties(arr)
+            default:
+                break
+            }
+        }
+
+        return properties
+    }
+}
+
+extension SwiftAppcuesFlutterPlugin: FlutterStreamHandler {
+    public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        eventSink = events
+        implementation?.analyticsDelegate = self
+        return nil
+    }
+
+    public func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        implementation?.analyticsDelegate = nil
+        return nil
     }
 }
 
