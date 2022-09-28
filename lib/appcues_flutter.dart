@@ -13,7 +13,7 @@ class AppcuesOptions {
   /// The timeout value, in seconds, used to determine if a new session is
   /// started upon the application returning to the foreground.
   ///
-  /// The default value is 1800 secondes (30 minutes).
+  /// The default value is 1800 seconds (30 minutes).
   int? sessionTimeout;
 
   /// The number of analytics requests that can be stored on the local device
@@ -28,7 +28,7 @@ class AppcuesOptions {
   /// the local device and retried later, in the case of the device network
   /// connection being unavailable.
   ///
-  /// Only requests that are more recent than the max age will be retried. 
+  /// Only requests that are more recent than the max age will be retried.
   /// There is no max age limitation if this value is left unset.
   int? activityStorageMaxAge;
 }
@@ -95,9 +95,7 @@ class Appcues {
             event["analytic"],
             event["value"],
             event["isInternal"],
-            Map<String, Object>.from(event["properties"])
-        )
-    );
+            Map<String, Object>.from(event["properties"])));
   }
 
   /// Identify a user in the application.
@@ -147,7 +145,8 @@ class Appcues {
   /// This will cause the plugin to begin tracking activity and checking for
   /// qualified content.
   static Future<void> anonymous([Map<String, Object>? properties]) async {
-    return await _methodChannel.invokeMethod('anonymous', {'properties': properties});
+    return await _methodChannel
+        .invokeMethod('anonymous', {'properties': properties});
   }
 
   /// Clear out the current user in this session.
@@ -173,7 +172,8 @@ class Appcues {
   /// If the experience was not able to be shown, and error is raised.
   /// This function ignores any targeting that is set on the experience.
   static Future<void> show(String experienceId) async {
-    return await _methodChannel.invokeMethod('show', {'experienceId': experienceId});
+    return await _methodChannel
+        .invokeMethod('show', {'experienceId': experienceId});
   }
 
   /// Verifies if an incoming [url] value is intended for the Appcues SDK.
@@ -183,6 +183,7 @@ class Appcues {
   /// your application.  If the [url] is an Appcues URL, this function may
   /// launch an experience or otherwise alter the UI state.
   static Future<bool> didHandleURL(Uri url) async {
-    return await _methodChannel.invokeMethod('didHandleURL', {'url': url.toString()});
+    return await _methodChannel
+        .invokeMethod('didHandleURL', {'url': url.toString()});
   }
 }
