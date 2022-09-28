@@ -74,8 +74,9 @@ class Appcues {
   ///
   /// To specify that the current user belongs to a certain group, pass
   /// the [groupId] and optionally specify any additional custom group
-  /// [properties] to update.
-  static Future<void> group(String groupId,
+  /// [properties] to update. A null value for [groupId] clears any previous
+  /// group.
+  static Future<void> group(String? groupId,
       [Map<String, Object>? properties]) async {
     return await _channel
         .invokeMethod('group', {'groupId': groupId, 'properties': properties});

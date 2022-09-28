@@ -66,12 +66,8 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
                 result(missingArgs(names: "userId"))
             }
         case "group":
-            if let groupId = call["groupId"] {
-                implementation.group(groupID: groupId, properties: call.properties)
-                result(nil)
-            } else {
-                result(missingArgs(names: "groupId"))
-            }
+            implementation.group(groupID: call["groupId"], properties: call.properties)
+            result(nil)
         case "track":
             if let name = call["name"] {
                 implementation.track(name: name, properties: call.properties)

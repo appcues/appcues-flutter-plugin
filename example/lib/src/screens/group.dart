@@ -44,7 +44,12 @@ class _GroupScreenState extends State<GroupScreen> {
                   minimumSize: const Size.fromHeight(44),
                 ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                 onPressed: () async {
-                  Appcues.group(_groupController.value.text);
+                  var text = _groupController.value.text;
+                  if (text.isNotEmpty) {
+                    Appcues.group(text);
+                  } else {
+                    Appcues.group(null);
+                  }
                 },
                 child: const Text('Save'),
               ),

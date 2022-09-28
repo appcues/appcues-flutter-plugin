@@ -104,13 +104,9 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "group" -> {
                 val groupId = call.argument<String>("groupId")
-                if (groupId != null) {
-                    val properties = call.argument<HashMap<String, Any>>("properties");
-                    implementation.group(groupId, properties)
-                    result.success(null)
-                } else {
-                    result.badArgs("groupId")
-                }
+                val properties = call.argument<HashMap<String, Any>>("properties");
+                implementation.group(groupId, properties)
+                result.success(null)
             }
             "track" -> {
                 val eventName = call.argument<String>("name")
