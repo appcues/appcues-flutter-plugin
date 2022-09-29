@@ -74,13 +74,13 @@ case "$response" in
 esac
 
 # generate the changelog for the git release update
-releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬⬆️📸✅💡📝]/d')
+releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬⬆️📸✅💡📝🔖]/d')
 releaseTempFile=$(mktemp)
 echo "$releaseChangelog" >> $releaseTempFile
 
 # generate the updated CHANGELOG.md for the repo (Flutter requirement)
 changelog="## $newVersion\n"
-changelog+=$(git log --pretty=format:"* %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬⬆️📸✅💡📝]/d')
+changelog+=$(git log --pretty=format:"* %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔖]/d')
 changelog+="\n"
 changelogTempFile=$(mktemp)
 echo "$changelog" >> $changelogTempFile
@@ -97,7 +97,7 @@ yq -i e '.version = "'${newVersion}'"' example/pubspec.yaml
 sed -i '' -e "s/$version/$newVersion/g" ios/appcues_flutter.podspec
 
 # android/build.gradle - version
-sed -i '' -e "s/$version/$newVersion/g" android/build.gradle
+sed -i '' -e "s/version '$version'/version '$newVersion'/g" android/build.gradle
 
 # commit the version change.
 git commit -am "🔖 Update version to $newVersion"
