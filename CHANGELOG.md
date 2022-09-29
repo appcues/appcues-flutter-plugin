@@ -1,3 +1,9 @@
+## 1.0.2
+* 🔧 Update podspec version replacement in release script (80a203a)
+* 🔧 Update formatting of podspec (6ebd371)
+* 🔧 Fix android build.gradle version replacement in the release script (119213f)
+* 🔧 Correct Android dependency version (cbaf07f)
+
 ## 1.0.1
 * 👌 Code formatting clean up (e9ba90c)
 * 👌 Improve error message (2a9dbe7)

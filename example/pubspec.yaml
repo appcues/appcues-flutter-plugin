@@ -1,7 +1,7 @@
 name: appcues_flutter_example
 description: Demonstrates how to use the appcues_flutter plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.1
+version: 1.0.2
 environment:
   sdk: ">=2.17.0-0 <3.0.0"
 dependencies:
@@ -31,7 +31,6 @@ flutter:
 # https://flutter.dev/assets-and-images/#resolution-aware.
 # For details regarding adding assets from package dependencies, see
 # https://flutter.dev/assets-and-images/#from-packages
-
 # To add custom fonts to your application, add a fonts section here,
 # in this "flutter" section. Each entry in this list should have a
 # "family" key with the font family name, and a "fonts" key with a
