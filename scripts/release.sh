@@ -94,7 +94,7 @@ yq -i e '.version = "'${newVersion}'"' pubspec.yaml
 yq -i e '.version = "'${newVersion}'"' example/pubspec.yaml
 
 # ios/appcues_flutter.podspec - version
-sed -i '' -e "s/$version/$newVersion/g" ios/appcues_flutter.podspec
+sed -i '' -e "s/s.version = '$version'/s.version = '$newVersion'/g" ios/appcues_flutter.podspec
 
 # android/build.gradle - version
 sed -i '' -e "s/version '$version'/version '$newVersion'/g" android/build.gradle
