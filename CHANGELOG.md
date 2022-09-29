@@ -1,3 +1,9 @@
+## 1.0.1
+* 👌 Code formatting clean up (e9ba90c)
+* 👌 Improve error message (2a9dbe7)
+* ✨ Add support for analytics observation with an EventChannel and Stream (202b76d)
+* 🐛 Fix support for optional groupID, allow null to reset (412a0c0)
+
 ## 1.0.0
 
 
