@@ -91,6 +91,9 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                                 this.activityStorageMaxAge = activityStorageMaxAge.toInt()
                             }
                         }
+                        call.argument<HashMap<String, Any>>("additionalAutoProperties")?.let {
+                            this.additionalAutoProperties = it
+                        }
                     }
                     analyticsChannel.setStreamHandler(object: EventChannel.StreamHandler {
                         override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {

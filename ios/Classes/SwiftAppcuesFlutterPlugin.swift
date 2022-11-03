@@ -22,29 +22,35 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             if let accountID = call["accountId"], let applicationID = call["applicationId"] {
                 let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
 
-                if let arguments = call.arguments as? [String: Any],
-                   let options = arguments["options"] as? [String: Any?] {
+                if let arguments = call.arguments as? [String: Any] {
 
-                    if let logging = options["logging"] as? Bool {
-                        config.logging(logging)
+                    if let options = arguments["options"] as? [String: Any?] {
+                        if let logging = options["logging"] as? Bool {
+                            config.logging(logging)
+                        }
+
+                        if let apiHost = options["apiHost"] as? String, let url = URL(string: apiHost) {
+                            config.apiHost(url)
+                        }
+
+                        if let sessionTimeout = options["sessionTimeout"] as? UInt {
+                            config.sessionTimeout(sessionTimeout)
+                        }
+
+                        if let activityStorageMaxSize = options["activityStorageMaxSize"] as? UInt {
+                            config.activityStorageMaxSize(activityStorageMaxSize)
+                        }
+
+                        if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
+                            config.activityStorageMaxAge(activityStorageMaxAge)
+                        }
                     }
 
-                    if let apiHost = options["apiHost"] as? String, let url = URL(string: apiHost) {
-                        config.apiHost(url)
-                    }
-
-                    if let sessionTimeout = options["sessionTimeout"] as? UInt {
-                        config.sessionTimeout(sessionTimeout)
-                    }
-
-                    if let activityStorageMaxSize = options["activityStorageMaxSize"] as? UInt {
-                        config.activityStorageMaxSize(activityStorageMaxSize)
-                    }
-
-                    if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
-                        config.activityStorageMaxAge(activityStorageMaxAge)
+                    if let additionalAutoProperties = arguments["additionalAutoProperties"] as? [String: Any?] {
+                        config.additionalAutoProperties(additionalAutoProperties.compactMapValues { $0 })
                     }
                 }
+
                 implementation = Appcues(config: config)
                 analyticsChannel?.setStreamHandler(self)
                 result(nil)
@@ -145,48 +151,9 @@ extension SwiftAppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
         eventSink?([
             "analytic": analyticName,
             "value": value ?? "",
-            "properties": formatProperties(properties),
+            "properties": properties ?? [:],
             "isInternal": isInternal
         ])
-    }
-
-    /// Map any supported property types that `sendEvent` doesn't handle by default.
-    private func formatProperties( _ properties: [String: Any]?) -> [String: Any] {
-        guard var properties = properties else { return [:] }
-
-        properties.forEach { key, value in
-            switch value {
-            case let date as Date:
-                properties[key] = Int64((date.timeIntervalSince1970 * 1000).rounded())
-            case let dict as [String: Any]:
-                properties[key] = formatProperties(dict)
-            case let arr as [Any]:
-                properties[key] = formatProperties(arr)
-            default:
-                break
-            }
-        }
-
-        return properties
-    }
-
-    private func formatProperties( _ properties: [Any]?) -> [Any] {
-        guard var properties = properties else { return [] }
-
-        properties.enumerated().forEach { index, value in
-            switch value {
-            case let date as Date:
-                properties[index] = Int64((date.timeIntervalSince1970 * 1000).rounded())
-            case let dict as [String: Any]:
-                properties[index] = formatProperties(dict)
-            case let arr as [Any]:
-                properties[index] = formatProperties(arr)
-            default:
-                break
-            }
-        }
-
-        return properties
     }
 }
 

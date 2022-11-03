@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/services.dart';
 
 /// A set of options that can be configured when initializing the Appcues
@@ -82,7 +83,11 @@ class Appcues {
     await _methodChannel.invokeMethod('initialize', {
       'accountId': accountId,
       'applicationId': applicationId,
-      'options': nativeOptions
+      'options': nativeOptions,
+      'additionalAutoProperties': <String, Object> {
+        '_applicationFramework': 'flutter',
+        '_dartVersion': Platform.version
+      }
     });
   }
 
