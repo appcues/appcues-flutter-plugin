@@ -1,3 +1,6 @@
+## 1.1.0
+* ⬆️ Updates for SDK 1.1 (14d466e)
+
 ## 1.0.2
 * 🔧 Update podspec version replacement in release script (80a203a)
 * 🔧 Update formatting of podspec (6ebd371)
