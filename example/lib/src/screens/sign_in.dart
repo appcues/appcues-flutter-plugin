@@ -58,7 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     minimumSize: const Size.fromHeight(44),
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   onPressed: () async {
-                    widget.onSignIn(Credentials(_usernameController.value.text));
+                    widget
+                        .onSignIn(Credentials(_usernameController.value.text));
                   },
                   child: const Text('Sign In'),
                 ),

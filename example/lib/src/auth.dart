@@ -45,7 +45,6 @@ class ExampleAuthScope extends InheritedNotifier<ExampleAuth> {
     super.key,
   });
 
-  static ExampleAuth of(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<ExampleAuthScope>()!
-      .notifier!;
+  static ExampleAuth of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<ExampleAuthScope>()!.notifier!;
 }
