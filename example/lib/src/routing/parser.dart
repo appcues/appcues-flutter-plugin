@@ -10,13 +10,17 @@ class TemplateRouteParser extends RouteInformationParser<RouteDefinition> {
 
   RouteState? routeState;
 
-  TemplateRouteParser(this.initialRoute, {
+  TemplateRouteParser(
+    this.initialRoute, {
+
     /// The list of allowed routes
     required List<RouteDefinition> routeDefinitions,
-  })  :_routeDefinitions = [
+  })  : _routeDefinitions = [
           ...routeDefinitions,
         ],
-        assert(routeDefinitions.indexWhere((element) => element.path == initialRoute.path) != -1);
+        assert(routeDefinitions
+                .indexWhere((element) => element.path == initialRoute.path) !=
+            -1);
 
   @override
   Future<RouteDefinition> parseRouteInformation(

@@ -84,7 +84,7 @@ class Appcues {
       'accountId': accountId,
       'applicationId': applicationId,
       'options': nativeOptions,
-      'additionalAutoProperties': <String, Object> {
+      'additionalAutoProperties': <String, Object>{
         '_applicationFramework': 'flutter',
         '_dartVersion': Platform.version
       }

@@ -9,7 +9,6 @@ import 'routing.dart';
 import 'screens/navigator.dart';
 import 'routing/route_definition.dart';
 
-
 class Example extends StatefulWidget {
   const Example({super.key});
 
@@ -32,7 +31,8 @@ class _ExampleState extends State<Example> {
   @override
   void initState() {
     /// Configure the parser with all of the app's allowed routes.
-    _routeParser = TemplateRouteParser(RouteDefinition.signin,
+    _routeParser = TemplateRouteParser(
+      RouteDefinition.signin,
       routeDefinitions: [
         RouteDefinition.signin,
         RouteDefinition.events,
@@ -69,31 +69,32 @@ class _ExampleState extends State<Example> {
 
   @override
   Widget build(BuildContext context) => RouteStateScope(
-    notifier: _routeState,
-    child: ExampleAuthScope(
-      notifier: _auth,
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerDelegate: _routerDelegate,
-        routeInformationParser: _routeParser,
-        // Revert back to pre-Flutter-2.5 transition behavior:
-        // https://github.com/flutter/flutter/issues/82053
-        theme: ThemeData(
-          pageTransitionsTheme: const PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            },
+        notifier: _routeState,
+        child: ExampleAuthScope(
+          notifier: _auth,
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerDelegate: _routerDelegate,
+            routeInformationParser: _routeParser,
+            // Revert back to pre-Flutter-2.5 transition behavior:
+            // https://github.com/flutter/flutter/issues/82053
+            theme: ThemeData(
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                },
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 
   Future<void> _initializeAppcues() async {
     AppcuesOptions options = AppcuesOptions();
     options.logging = true;
-    await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+    await Appcues.initialize(
+        'APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
   }
 
   // Detect if app was launched from a deeplink
@@ -109,7 +110,8 @@ class _ExampleState extends State<Example> {
         if (handled) return;
 
         // Otherwise, process the link as a normal app route
-        var route = await _routeParser.parseRouteInformation(RouteInformation(location: initialURI.path));
+        var route = await _routeParser
+            .parseRouteInformation(RouteInformation(location: initialURI.path));
         _routeState.route = route;
       }
     }
@@ -124,7 +126,8 @@ class _ExampleState extends State<Example> {
       if (handled) return;
 
       // Otherwise, process the link as a normal app route
-      var route = await _routeParser.parseRouteInformation(RouteInformation(location: uri.path));
+      var route = await _routeParser
+          .parseRouteInformation(RouteInformation(location: uri.path));
       _routeState.route = route;
     });
   }
@@ -132,11 +135,9 @@ class _ExampleState extends State<Example> {
   void _handleAuthStateChanged() {
     if (!_auth.signedIn) {
       Appcues.reset();
-    }
-    else if (_auth.isAnonymous) {
+    } else if (_auth.isAnonymous) {
       Appcues.anonymous();
-    }
-    else {
+    } else {
       Appcues.identify(_auth.username);
     }
   }
