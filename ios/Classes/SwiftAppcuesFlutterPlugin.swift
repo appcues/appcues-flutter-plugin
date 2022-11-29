@@ -21,6 +21,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
         if call.method == "initialize" {
             if let accountID = call["accountId"], let applicationID = call["applicationId"] {
                 let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
+                var enableUniversalLinks = false
 
                 if let arguments = call.arguments as? [String: Any] {
 
@@ -44,12 +45,16 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
                         if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
                             config.activityStorageMaxAge(activityStorageMaxAge)
                         }
+
+                        enableUniversalLinks = options["enableUniversalLinks"] as? Bool ?? false
                     }
 
                     if let additionalAutoProperties = arguments["additionalAutoProperties"] as? [String: Any?] {
                         config.additionalAutoProperties(additionalAutoProperties.compactMapValues { $0 })
                     }
                 }
+
+                config.enableUniversalLinks(enableUniversalLinks)
 
                 implementation = Appcues(config: config)
                 analyticsChannel?.setStreamHandler(self)
