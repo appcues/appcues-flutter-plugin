@@ -32,6 +32,17 @@ class AppcuesOptions {
   /// Only requests that are more recent than the max age will be retried.
   /// There is no max age limitation if this value is left unset.
   int? activityStorageMaxAge;
+
+  /// Applies to iOS only. When enabled, the iOS SDK will pass potential
+  /// universal links back to the host application AppDelegate function
+  /// `application(_:continue:restorationHandler:)`. The host
+  /// application is responsible for returning true if the link was handled
+  /// as a deep link into a screen in the app, or false if not. By default,
+  /// universal link support is disabled for Flutter applications, since the
+  /// default FlutterAppDelegate template always returns a true value from
+  /// `application(_:continue:restorationHandler:)`and blocks subsequent link
+  /// handling.
+  bool? enableUniversalLinks;
 }
 
 /// Captures the details about analytics events that have been reported.
@@ -79,6 +90,7 @@ class Appcues {
       "sessionTimeout": options?.sessionTimeout,
       "activityStorageMaxSize": options?.activityStorageMaxSize,
       "activityStorageMaxAge": options?.activityStorageMaxAge,
+      "enableUniversalLinks": options?.enableUniversalLinks,
     };
     await _methodChannel.invokeMethod('initialize', {
       'accountId': accountId,
