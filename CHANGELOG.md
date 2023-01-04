@@ -1,3 +1,6 @@
+## 1.2.0
+* ⬆️ Update native SDK dependencies for 1.2 (e70c2bf)
+
 ## 1.1.1
 * 🐛 Disable iOS Universal Link support by default, provide config option to enable (c2725a5)
 * 🚨 Apply flutter formatting (8ac641d)
