@@ -46,8 +46,14 @@ platform :ios, '11.0'
 
 ### Installation
 
-1. Open the `pubspec.yaml` file located inside the app folder, and add `appcues_flutter:` under `dependencies`.
-2. Install the dependency, using `flutter pub get` from the terminal.
+Add `appcues_flutter` as a dependency in your pubspec.yaml file.
+
+```yaml
+dependencies:
+  appcues_flutter: <latest_version>
+```
+
+Then, install the dependency by running `flutter pub get` from the terminal.
 
 ### One Time Setup
 
@@ -73,9 +79,9 @@ In order to target content to the right users at the right time, you need to ide
 
 ```dart
 // Identify a user
-Appcues.identify('my-user-id')
+Appcues.identify('my-user-id');
 // Identify a user with property
-Appcues.identify('my-user-id', {'Company': 'Appcues'})
+Appcues.identify('my-user-id', {'Company': 'Appcues'});
 ```
 
 ### Tracking Screens and Events
@@ -84,14 +90,14 @@ Events are the “actions” your users take in your application, which can be a
 
 ```dart
 // Track event
-Appcues.track('Sent Message')
+Appcues.track('Sent Message');
 // Track event with property
-Appcues.track('Deleted Contact', {'ID': 123 })
+Appcues.track('Deleted Contact', {'ID': 123 });
 
 // Track screen
-Appcues.screen('Contact List')
+Appcues.screen('Contact List');
 // Track screen with property
-Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
+Appcues.screen('Contact Details', {'Contact Reference': 'abc'});
 ```
 
 ## 📝 Documentation
