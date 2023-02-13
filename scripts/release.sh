@@ -74,7 +74,7 @@ case "$response" in
 esac
 
 # generate the changelog for the git release update
-releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬⬆️📸✅💡📝🔖]/d')
+releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬📸✅💡📝🔖]/d')
 releaseTempFile=$(mktemp)
 echo "$releaseChangelog" >> $releaseTempFile
 
