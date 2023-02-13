@@ -1,3 +1,9 @@
+## 1.3.0
+* 🔧 Remove ⬆️ from commit filter on release notes (e8ecbbd)
+* ⬆️ Update native SDK dependencies for 1.3 (db29cbe)
+* Bump activesupport from 6.1.6.1 to 6.1.7.2 in /example/ios (9e5b8b6)
+* 📝 Improve example snippets in README (6458b60)
+
 ## 1.2.0
 * ⬆️ Update native SDK dependencies for 1.2 (e70c2bf)
 
