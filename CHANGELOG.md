@@ -1,3 +1,7 @@
+## 1.4.0
+* ⬆️ Update native dependencies for 1.4 (108fdee)
+* 🔧 Add repo-specific whitesource/mend settings disable "Renovate" (automatic deps updates) (7bea52c)
+
 ## 1.3.0
 * 🔧 Remove ⬆️ from commit filter on release notes (e8ecbbd)
 * ⬆️ Update native SDK dependencies for 1.3 (db29cbe)
