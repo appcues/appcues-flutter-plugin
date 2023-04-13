@@ -23,7 +23,8 @@ orbs:
 executors:
   ios_compatible:
     macos:
-      xcode: 14.0.0
+      xcode: 14.3.0
+    resource_class: macos.x86.medium.gen2
     shell: /bin/bash --login -o pipefail
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
