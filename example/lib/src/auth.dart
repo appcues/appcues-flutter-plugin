@@ -10,7 +10,7 @@ class ExampleAuth extends ChangeNotifier {
 
   // In this example app, just using the convention that an empty string username
   // represents an anonymous user.  In a real app, there would be some structure
-  // around how an anonymous user is idenfified and tracked.
+  // around how an anonymous user is identified and tracked.
   //
   // The Appcues SDK will generate an anonymous ID internally for this case
   // when anonymous() is called.
