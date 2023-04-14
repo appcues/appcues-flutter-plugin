@@ -163,8 +163,7 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
             }
             "anonymous" -> {
-                val properties = call.argument<HashMap<String, Any>>("properties");
-                implementation.anonymous(properties)
+                implementation.anonymous()
                 result.success(null)
             }
             "reset" -> {

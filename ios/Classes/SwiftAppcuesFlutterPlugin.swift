@@ -98,7 +98,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
                 result(missingArgs(names: "title"))
             }
         case "anonymous":
-            implementation.anonymous(properties: call.properties)
+            implementation.anonymous()
             result(nil)
         case "reset":
             implementation.reset()
