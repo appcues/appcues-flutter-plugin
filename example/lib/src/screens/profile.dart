@@ -67,12 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   minimumSize: const Size.fromHeight(44),
                 ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                 onPressed: () async {
-                  if (authState.isAnonymous) {
-                    Appcues.anonymous({
-                      "givenName": _givenNameController.value.text,
-                      "familyName": _familyNameController.value.text,
-                    });
-                  } else {
+                  if (!authState.isAnonymous) {
                     Appcues.identify(authState.username, {
                       "givenName": _givenNameController.value.text,
                       "familyName": _familyNameController.value.text,

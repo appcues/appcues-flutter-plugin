@@ -162,9 +162,8 @@ class Appcues {
   ///
   /// This will cause the plugin to begin tracking activity and checking for
   /// qualified content.
-  static Future<void> anonymous([Map<String, Object>? properties]) async {
-    return await _methodChannel
-        .invokeMethod('anonymous', {'properties': properties});
+  static Future<void> anonymous() async {
+    return await _methodChannel.invokeMethod('anonymous');
   }
 
   /// Clear out the current user in this session.
