@@ -46,5 +46,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.appcues:appcues:1.4.0'
+    implementation 'com.appcues:appcues:2.0.0'
 }
