@@ -23,7 +23,7 @@ orbs:
 executors:
   ios_compatible:
     macos:
-      xcode: 14.3.0
+      xcode: 14.2.0
     resource_class: macos.x86.medium.gen2
     shell: /bin/bash --login -o pipefail
     environment:
@@ -43,7 +43,7 @@ commands:
     description: 'Install flutter dependencies'    
     steps:            
       - flutter/install_sdk_and_pub:
-          flutter_version: 3.0.5
+          flutter_version: 3.7.11
           cache-version: v2
       - flutter/install_pub:
           app-dir: example
