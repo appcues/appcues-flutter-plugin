@@ -1,3 +1,14 @@
+## 2.0.0
+* 📝 Fix CircleCI shield in README (aec81f3)
+* 🔧 Update release script to include version bump in release notes (275ce50)
+* 💡 Fix a typo in comment (ccc0ea8)
+* 💥 Remove properties parameter from anonymous function (a6d581b)
+* ⬆️ Update native SDK dependencies to 2.0 (5e92c7f)
+* 🔧 Update to Xcode 14.3 and Cocoapods 1.12.1 (1bffad5)
+* 🔧 Update flutter orb to 2.0.1 (99d3929)
+* 🔧 Use Xcode 14.2 to avoid cocoapod issue with 14.3 Also update Flutter to latest 3.7.11 (233d987)
+* 🔧 Update CircleCI to use Xcode 14.3 (9529527)
+
 ## 1.4.0
 * ⬆️ Update native dependencies for 1.4 (108fdee)
 * 🔧 Add repo-specific whitesource/mend settings disable "Renovate" (automatic deps updates) (7bea52c)
