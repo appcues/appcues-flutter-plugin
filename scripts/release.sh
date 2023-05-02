@@ -73,11 +73,6 @@ case "$response" in
 		;;
 esac
 
-# generate the changelog for the git release update
-releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬📸✅💡📝🔖]/d')
-releaseTempFile=$(mktemp)
-echo "$releaseChangelog" >> $releaseTempFile
-
 # generate the updated CHANGELOG.md for the repo (Flutter requirement)
 changelog="## $newVersion\n"
 changelog+=$(git log --pretty=format:"* %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔖]/d')
@@ -102,6 +97,11 @@ sed -i '' -e "s/version '$version'/version '$newVersion'/g" android/build.gradle
 # commit the version change.
 git commit -am "🔖 Update version to $newVersion"
 git push
+
+# generate the changelog for the git release update
+releaseChangelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬📸✅💡📝🔖]/d')
+releaseTempFile=$(mktemp)
+echo "$releaseChangelog" >> $releaseTempFile
 
 # gh release will make both the tag and the release itself.
 gh release create $newVersion -F $releaseTempFile -t $newVersion
