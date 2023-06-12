@@ -35,24 +35,26 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // Foreground color
-                  onPrimary: Theme.of(context).colorScheme.onPrimary,
-                  // Background color
-                  primary: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size.fromHeight(44),
-                ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                onPressed: () async {
-                  var text = _groupController.value.text;
-                  if (text.isNotEmpty) {
-                    Appcues.group(text);
-                  } else {
-                    Appcues.group(null);
-                  }
-                },
-                child: const Text('Save'),
-              ),
+              child: Semantics(
+                  tagForChildren: const AppcuesView("btnSaveGroup"),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // Foreground color
+                      onPrimary: Theme.of(context).colorScheme.onPrimary,
+                      // Background color
+                      primary: Theme.of(context).colorScheme.primary,
+                      minimumSize: const Size.fromHeight(44),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    onPressed: () async {
+                      var text = _groupController.value.text;
+                      if (text.isNotEmpty) {
+                        Appcues.group(text);
+                      } else {
+                        Appcues.group(null);
+                      }
+                    },
+                    child: const Text('Save'),
+                  )),
             ),
           ],
         ),

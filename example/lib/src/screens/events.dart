@@ -27,35 +27,39 @@ class EventsScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // Foreground color
-                  onPrimary: Theme.of(context).colorScheme.onPrimary,
-                  // Background color
-                  primary: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size.fromHeight(44),
-                ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                onPressed: () async {
-                  Appcues.track("event1");
-                },
-                child: const Text('Trigger Event 1'),
-              ),
+              child: Semantics(
+                  tagForChildren: const AppcuesView("btnEvent1"),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // Foreground color
+                      onPrimary: Theme.of(context).colorScheme.onPrimary,
+                      // Background color
+                      primary: Theme.of(context).colorScheme.primary,
+                      minimumSize: const Size.fromHeight(44),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    onPressed: () async {
+                      Appcues.track("event1");
+                    },
+                    child: const Text('Trigger Event 1'),
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // Foreground color
-                  onPrimary: Theme.of(context).colorScheme.onPrimary,
-                  // Background color
-                  primary: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size.fromHeight(44),
-                ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                onPressed: () async {
-                  Appcues.track("event2");
-                },
-                child: const Text('Trigger Event 2'),
-              ),
+              child: Semantics(
+                  tagForChildren: const AppcuesView("btnEvent2"),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // Foreground color
+                      onPrimary: Theme.of(context).colorScheme.onPrimary,
+                      // Background color
+                      primary: Theme.of(context).colorScheme.primary,
+                      minimumSize: const Size.fromHeight(44),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    onPressed: () async {
+                      Appcues.track("event2");
+                    },
+                    child: const Text('Trigger Event 2'),
+                  )),
             ),
           ],
         ),

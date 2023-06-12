@@ -13,6 +13,7 @@ import com.appcues.LoggingLevel
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.embedding.engine.renderer.FlutterRenderer
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -28,10 +29,19 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var methodChannel: MethodChannel
     private lateinit var analyticsChannel: EventChannel
     private lateinit var context: Context
-    private var activity: Activity? = null
+
+    private lateinit var _renderer: FlutterRenderer
+    internal val renderer: FlutterRenderer
+        get() = _renderer
+
+    private var _activity: Activity? = null
+    internal val activity: Activity?
+        get() = _activity
 
     // this implies the consumer must call "initialize" first, or they will get an error below
     private lateinit var implementation: Appcues
+
+    private val elementTargeting = FlutterElementTargetingStrategy(this)
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
@@ -40,22 +50,23 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter")
         methodChannel.setMethodCallHandler(this)
         analyticsChannel = EventChannel(flutterPluginBinding.binaryMessenger, "appcues_analytics")
+        _renderer = flutterPluginBinding.flutterEngine.renderer
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        this.activity = binding.activity
+        this._activity = binding.activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        this.activity = null
+        this._activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        this.activity = binding.activity
+        this._activity = binding.activity
     }
 
     override fun onDetachedFromActivity() {
-        this.activity = null
+        this._activity = null
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -121,6 +132,7 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         }
 
                     })
+                    Appcues.elementTargeting = elementTargeting
                     result.success(null)
                 } else {
                     result.badArgs("accountId, applicationId")
@@ -209,6 +221,12 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 } else {
                     result.badArgs("url")
                 }
+            }
+            "targetElement" -> {
+                elementTargeting.targetElement(call)
+            }
+            "resetTargetElements" -> {
+                elementTargeting.resetTargetElements()
             }
             else -> result.notImplemented()
         }
