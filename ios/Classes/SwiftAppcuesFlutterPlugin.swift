@@ -13,6 +13,10 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
         let instance = SwiftAppcuesFlutterPlugin()
         instance.analyticsChannel = FlutterEventChannel(name: "appcues_analytics", binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
+
+        if #available(iOS 13.0, *) {
+            Appcues.elementTargeting = FlutterElementTargeting()
+        }
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -129,6 +133,19 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             } else {
                 result(missingArgs(names: "url"))
             }
+        case "targetElement":
+            guard #available(iOS 13.0, *),
+                  let flutterElementTargeting = Appcues.elementTargeting as? FlutterElementTargeting,
+                  let properties = call.parameters else {
+                return
+            }
+            flutterElementTargeting.targetElement(properties: properties)
+        case "resetTargetElements":
+            guard #available(iOS 13.0, *),
+                  let flutterElementTargeting = Appcues.elementTargeting as? FlutterElementTargeting else {
+                return
+            }
+            flutterElementTargeting.resetTargetElements();
         default:
             result(FlutterMethodNotImplemented)
         }

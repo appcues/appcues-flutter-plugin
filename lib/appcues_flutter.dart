@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 /// A set of options that can be configured when initializing the Appcues
 /// plugin.
@@ -70,6 +73,16 @@ class AppcuesAnalytic {
       this.analytic, this.value, this.isInternal, this.properties);
 }
 
+/// A SemanticsTag that can be used to identify elements for targeting
+/// Appcues content.
+class AppcuesView extends SemanticsTag {
+  /// The identifier used to locate a view element for targeting content.
+  final String identifier;
+
+  /// Initialize the AppcuesView with the given [identifier].
+  const AppcuesView(this.identifier) : super(identifier);
+}
+
 /// The main entry point of the Appcues plugin.
 class Appcues {
   static const MethodChannel _methodChannel = MethodChannel('appcues_flutter');
@@ -101,6 +114,10 @@ class Appcues {
         '_dartVersion': Platform.version
       }
     });
+
+    // consider whether this should be opt-in or configurable
+    RendererBinding.instance.pipelineOwner
+        .ensureSemantics(listener: _semanticsChanged);
   }
 
   static Stream<AppcuesAnalytic> get onAnalyticEvent {
@@ -202,5 +219,79 @@ class Appcues {
   static Future<bool> didHandleURL(Uri url) async {
     return await _methodChannel
         .invokeMethod('didHandleURL', {'url': url.toString()});
+  }
+
+  // runs every time the SemanticsNode tree updates, capturing the known
+  // layout information that can be used for Appcues element targeting
+  static void _semanticsChanged() {
+    // clear out any previously captured elements in the view
+    _methodChannel.invokeMethod('resetTargetElements');
+
+    var rootSemanticNode = RendererBinding
+        .instance.pipelineOwner.semanticsOwner?.rootSemanticsNode;
+
+    if (rootSemanticNode != null) {
+
+      // this function runs on each node in the tree, looking for
+      // identifiable elements.
+      bool visitor(SemanticsNode node) {
+
+        // by default, we use the generated label, if non-empty
+        var identifier = node.label;
+        var tags = node.tags;
+
+        // look through tags for a more specific AppcuesView identifier and
+        // use that if possible.
+        if (tags != null) {
+          for (var tag in tags) {
+            if (tag is AppcuesView) {
+              identifier = tag.identifier;
+            }
+          }
+        }
+
+        if (identifier.isNotEmpty) {
+
+          // the SemanticsNode rect is in local coordinates. This helper
+          // will recursively walk the ancestors and transform the rect
+          // into global coordinates for the screen.
+          Rect transformToRoot(Rect rect, SemanticsNode? node) {
+            var transform = node?.transform;
+            if (transform == null) {
+              return rect;
+            }
+
+            var transformed = rect;
+            var offset = MatrixUtils.getAsTranslation(transform);
+            if (offset != null) {
+              transformed = rect.shift(offset);
+            }
+
+            return transformToRoot(transformed, node?.parent);
+          }
+
+          // do the transform to global coordinates
+          var rect = transformToRoot(node.rect, node);
+
+          // pass this target element through to the native side to capture
+          // in the current known set of views for targeting
+          _methodChannel.invokeMethod('targetElement', {
+            'x': rect.left,
+            'y': rect.top,
+            'width': rect.width,
+            'height': rect.height,
+            'type': 'SemanticsNode',
+            'identifier': identifier,
+          });
+        }
+
+        // run the visitor on down through the tree
+        node.visitChildren(visitor);
+        return true;
+      }
+
+      // start the tree inspection
+      rootSemanticNode.visitChildren(visitor);
+    }
   }
 }

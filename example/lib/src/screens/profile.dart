@@ -58,23 +58,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // Foreground color
-                  onPrimary: Theme.of(context).colorScheme.onPrimary,
-                  // Background color
-                  primary: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size.fromHeight(44),
-                ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                onPressed: () async {
-                  if (!authState.isAnonymous) {
-                    Appcues.identify(authState.username, {
-                      "givenName": _givenNameController.value.text,
-                      "familyName": _familyNameController.value.text,
-                    });
-                  }
-                },
-                child: const Text('Save'),
+              child: Semantics(
+                tagForChildren: const AppcuesView("btnSaveProfile"),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // Foreground color
+                    onPrimary: Theme.of(context).colorScheme.onPrimary,
+                    // Background color
+                    primary: Theme.of(context).colorScheme.primary,
+                    minimumSize: const Size.fromHeight(44),
+                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                  onPressed: () async {
+                    if (!authState.isAnonymous) {
+                      Appcues.identify(authState.username, {
+                        "givenName": _givenNameController.value.text,
+                        "familyName": _familyNameController.value.text,
+                      });
+                    }
+                  },
+                  child: const Text('Save'),
+                ),
               ),
             ),
           ],
