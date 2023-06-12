@@ -27,7 +27,8 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
 
 ### Prerequisites
 
-**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 33+ and `minSdkVersion` of 21+
+#### Android
+Your application's `build.gradle` must have a `compileSdkVersion` of 33+ and `minSdkVersion` of 21+
 ```
 android {
     compileSdkVersion 33
@@ -37,8 +38,13 @@ android {
     }
 }
 ```
+Your application's main Activity must derive from [`FlutterFragmentActivity`](https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragmentActivity.html). Some Flutter application templates will default to `FlutterActivity`. Be sure to update this to `FlutterFragmentActivity` since this is necessary for Appcues experience content to render correctly in the application. Refer to our example application [`MainActivity.kt`](https://github.com/appcues/appcues-flutter-plugin/blob/main/example/android/app/src/main/kotlin/com/appcues/samples/flutter/MainActivity.kt#L5) for reference. Without this update, you may see errors like the one below, when an Appcues experience attempts to render.
+```
+java.lang.IllegalStateException: ViewTreeLifecycleOwner not found from DecorView@3edbb3[MainActivity]
+```
 
-**iOS** - your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed - typically in `iOS/Runner.xcodeproj`. In the application's `Podfile`, include at least this minimum version.
+#### iOS
+Your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed - typically in `iOS/Runner.xcodeproj`. In the application's `Podfile`, include at least this minimum version.
 ```rb
 # Podfile
 platform :ios, '11.0'
