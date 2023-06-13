@@ -1,3 +1,9 @@
+## 2.1.0
+* ⬆️ Update Android SDK to 2.1.1 (eed6ed3)
+* ⬆️ Update native SDK dependencies to 2.1 (8ef2ea4)
+* 📝 Document our FlutterFragmentActivity requirement (3e630c5)
+* 🔧 Include version update in release notes (af90b2c)
+
 ## 2.0.0
 * 📝 Fix CircleCI shield in README (aec81f3)
 * 🔧 Update release script to include version bump in release notes (275ce50)
