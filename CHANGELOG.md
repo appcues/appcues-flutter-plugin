@@ -1,3 +1,6 @@
+## 2.1.1
+* ⬆️  Update appcues sdk version to 2.1.2 (b53a949)
+
 ## 2.1.0
 * ⬆️ Update Android SDK to 2.1.1 (eed6ed3)
 * ⬆️ Update native SDK dependencies to 2.1 (8ef2ea4)
