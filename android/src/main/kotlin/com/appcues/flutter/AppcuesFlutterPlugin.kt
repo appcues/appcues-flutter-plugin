@@ -222,11 +222,11 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     result.badArgs("url")
                 }
             }
-            "targetElement" -> {
-                elementTargeting.targetElement(call)
-            }
-            "resetTargetElements" -> {
-                elementTargeting.resetTargetElements()
+            "setTargetElements" -> {
+                var viewElements = call.argument<List<HashMap<String, Any>>>("viewElements");
+                if (viewElements != null) {
+                    elementTargeting.setTargetElements(viewElements)
+                }
             }
             else -> result.notImplemented()
         }

@@ -133,19 +133,14 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             } else {
                 result(missingArgs(names: "url"))
             }
-        case "targetElement":
+
+        case "setTargetElements":
             guard #available(iOS 13.0, *),
                   let flutterElementTargeting = Appcues.elementTargeting as? FlutterElementTargeting,
-                  let properties = call.parameters else {
+                  let viewElements = call.parameters?["viewElements"] as? Array<Dictionary<String, Any>> else {
                 return
             }
-            flutterElementTargeting.targetElement(properties: properties)
-        case "resetTargetElements":
-            guard #available(iOS 13.0, *),
-                  let flutterElementTargeting = Appcues.elementTargeting as? FlutterElementTargeting else {
-                return
-            }
-            flutterElementTargeting.resetTargetElements();
+            flutterElementTargeting.setTargetElements(viewElements: viewElements)
         default:
             result(FlutterMethodNotImplemented)
         }
