@@ -23,7 +23,7 @@ internal class FlutterElementSelector(var identifier: String?): ElementSelector 
 
     override fun toMap(): Map<String, String> =
         mapOf(
-            "identifier" to identifier,
+            "appcuesID" to identifier,
         ).filterValues { it != null }.mapValues { it.value as String }
 
     override fun evaluateMatch(target: ElementSelector): Int {
@@ -96,7 +96,7 @@ internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin)
 
     override fun inflateSelectorFrom(properties: Map<String, String>): ElementSelector? {
         return FlutterElementSelector(
-            identifier = properties["identifier"],
+            identifier = properties["appcuesID"],
         ).let { if (it.isValid) it else null }
     }
 

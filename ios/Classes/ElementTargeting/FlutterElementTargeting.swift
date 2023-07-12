@@ -4,7 +4,7 @@ import AppcuesKit
 
 internal class FlutterElementSelector: AppcuesElementSelector {
     private enum CodingKeys: String, CodingKey {
-        case identifier
+        case appcuesID
     }
 
     let identifier: String
@@ -30,7 +30,7 @@ internal class FlutterElementSelector: AppcuesElementSelector {
     override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if !identifier.isEmpty {
-            try container.encode(identifier, forKey: .identifier)
+            try container.encode(identifier, forKey: .appcuesID)
         }
     }
 }
@@ -57,7 +57,7 @@ internal class FlutterElementTargeting: AppcuesElementTargeting {
     }
 
     func inflateSelector(from properties: [String: String]) -> AppcuesElementSelector? {
-        return FlutterElementSelector(identifier: properties["identifier"])
+        return FlutterElementSelector(identifier: properties["appcuesID"])
     }
 
     func targetElement(properties: Dictionary<String, Any>) {
