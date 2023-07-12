@@ -71,7 +71,7 @@ internal fun Activity.getParentView(): ViewGroup {
 
 internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin) : ElementTargetingStrategy {
 
-    private var widgets: MutableMap<String, ViewElement> = mutableMapOf()
+    private var targetElements: List<ViewElement> = listOf()
 
     override fun captureLayout(): ViewElement? {
         return plugin.activity?.getParentView()?.let {
@@ -89,7 +89,7 @@ internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin)
                 selector = null,
                 displayName = null,
                 type = this.javaClass.name,
-                children = widgets.values.toList(),
+                children = targetElements,
             )
         }
     }
@@ -127,30 +127,30 @@ internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin)
 
     }
 
-    fun targetElement(call: MethodCall) {
-        val identifier = call.argument<String>("identifier")
-        val x = call.argument<Double>("x")
-        val y = call.argument<Double>("y")
-        val width = call.argument<Double>("width")
-        val height = call.argument<Double>("height")
-        val type = call.argument<String>("type")
+    fun setTargetElements(viewElements: List<HashMap<String, Any>>) {
+        targetElements = viewElements.mapNotNull { element ->
+            val identifier = element["identifier"] as? String
+            val x = element["x"] as? Double
+            val y = element["y"] as? Double
+            val width = element["width"] as? Double
+            val height = element["height"] as? Double
+            val type = element["type"] as? String
 
-        if (identifier != null && x != null && y != null && width != null && height != null && type != null) {
-            widgets[identifier] = ViewElement(
-                x = x.toInt(),
-                y = y.toInt(),
-                width = width.toInt(),
-                height = height.toInt(),
-                type = type,
-                selector = FlutterElementSelector(identifier),
-                children = null,
-                displayName = identifier
-            )
+            if (identifier != null && x != null && y != null && width != null && height != null && type != null) {
+                ViewElement(
+                    x = x.toInt(),
+                    y = y.toInt(),
+                    width = width.toInt(),
+                    height = height.toInt(),
+                    type = type,
+                    selector = FlutterElementSelector(identifier),
+                    children = null,
+                    displayName = identifier
+                )
+            } else {
+                null
+            }
         }
-    }
-
-    fun resetTargetElements() {
-        widgets.clear()
     }
 }
 

@@ -224,18 +224,15 @@ class Appcues {
   // runs every time the SemanticsNode tree updates, capturing the known
   // layout information that can be used for Appcues element targeting
   static void _semanticsChanged() {
-    // clear out any previously captured elements in the view
-    _methodChannel.invokeMethod('resetTargetElements');
-
     var rootSemanticNode = RendererBinding
         .instance.pipelineOwner.semanticsOwner?.rootSemanticsNode;
 
-    if (rootSemanticNode != null) {
+    List<Map<String, dynamic>> viewElements = [];
 
+    if (rootSemanticNode != null) {
       // this function runs on each node in the tree, looking for
       // identifiable elements.
       bool visitor(SemanticsNode node) {
-
         // by default, we use the generated label, if non-empty
         var identifier = node.label;
         var tags = node.tags;
@@ -251,7 +248,6 @@ class Appcues {
         }
 
         if (identifier.isNotEmpty) {
-
           // the SemanticsNode rect is in local coordinates. This helper
           // will recursively walk the ancestors and transform the rect
           // into global coordinates for the screen.
@@ -273,9 +269,8 @@ class Appcues {
           // do the transform to global coordinates
           var rect = transformToRoot(node.rect, node);
 
-          // pass this target element through to the native side to capture
-          // in the current known set of views for targeting
-          _methodChannel.invokeMethod('targetElement', {
+          // add this item to the set of captured views
+          viewElements.add({
             'x': rect.left,
             'y': rect.top,
             'width': rect.width,
@@ -292,6 +287,10 @@ class Appcues {
 
       // start the tree inspection
       rootSemanticNode.visitChildren(visitor);
+
+      // pass the target elements found to the native side to capture
+      // the current known set of views for element targeting
+      _methodChannel.invokeMethod('setTargetElements', {'viewElements': viewElements});
     }
   }
 }

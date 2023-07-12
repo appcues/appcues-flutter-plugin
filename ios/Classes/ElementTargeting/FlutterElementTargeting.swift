@@ -38,7 +38,7 @@ internal class FlutterElementSelector: AppcuesElementSelector {
 @available(iOS 13.0, *)
 internal class FlutterElementTargeting: AppcuesElementTargeting {
 
-    private var widgets: [String: AppcuesViewElement] = [:]
+    private var targetElements: [AppcuesViewElement] = []
 
     func captureLayout() -> AppcuesViewElement? {
         guard let captureWindow = UIApplication.shared.windows.first(where: { !$0.isAppcuesWindow }) else {
@@ -52,7 +52,7 @@ internal class FlutterElementTargeting: AppcuesElementTargeting {
             height: captureWindow.bounds.height,
             type: "\(type(of: captureWindow))",
             selector: nil,
-            children: Array(widgets.values)
+            children: targetElements
         )
     }
 
@@ -60,30 +60,28 @@ internal class FlutterElementTargeting: AppcuesElementTargeting {
         return FlutterElementSelector(identifier: properties["appcuesID"])
     }
 
-    func targetElement(properties: Dictionary<String, Any>) {
+    func setTargetElements(viewElements: [Dictionary<String, Any>]) {
+        targetElements = viewElements.compactMap { element -> AppcuesViewElement? in
 
-        guard let identifier = properties["identifier"] as? String,
-            let x = properties["x"] as? Double,
-            let y = properties["y"] as? Double,
-            let width = properties["width"] as? Double,
-            let height = properties["height"] as? Double,
-            let type = properties["type"] as? String else {
-            return
+            guard let identifier = element["identifier"] as? String,
+                let x = element["x"] as? Double,
+                let y = element["y"] as? Double,
+                let width = element["width"] as? Double,
+                let height = element["height"] as? Double,
+                let type = element["type"] as? String else {
+                return nil
+            }
+
+            return AppcuesViewElement(
+                x: CGFloat(x),
+                y: CGFloat(y),
+                width: CGFloat(width),
+                height: CGFloat(height),
+                type: type,
+                selector: FlutterElementSelector(identifier: identifier),
+                children: nil,
+                displayName: identifier
+            )
         }
-
-        widgets[identifier] = AppcuesViewElement(
-            x: CGFloat(x),
-            y: CGFloat(y),
-            width: CGFloat(width),
-            height: CGFloat(height),
-            type: type,
-            selector: FlutterElementSelector(identifier: identifier),
-            children: nil,
-            displayName: identifier
-        )
-    }
-
-    func resetTargetElements() {
-        widgets.removeAll()
     }
 }
