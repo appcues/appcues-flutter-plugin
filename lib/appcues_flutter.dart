@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 
 /// A set of options that can be configured when initializing the Appcues
 /// plugin.
@@ -85,6 +84,9 @@ class AppcuesView extends SemanticsTag {
 
 /// The main entry point of the Appcues plugin.
 class Appcues {
+
+  static SemanticsHandle? _semanticsHandle;
+
   static const MethodChannel _methodChannel = MethodChannel('appcues_flutter');
   static const EventChannel _analyticsChannel =
       EventChannel('appcues_analytics');
@@ -114,10 +116,17 @@ class Appcues {
         '_dartVersion': Platform.version
       }
     });
+  }
 
-    // consider whether this should be opt-in or configurable
-    RendererBinding.instance.pipelineOwner
-        .ensureSemantics(listener: _semanticsChanged);
+  static void enableElementTargeting() {
+    _semanticsHandle ??= RendererBinding.instance.pipelineOwner
+          .ensureSemantics(listener: _semanticsChanged);
+  }
+
+  static void disableElementTargeting() {
+    _semanticsHandle?.dispose();
+    _semanticsHandle = null;
+    _methodChannel.invokeMethod('setTargetElements', {'viewElements': []});
   }
 
   static Stream<AppcuesAnalytic> get onAnalyticEvent {
