@@ -102,6 +102,7 @@ class _ExampleState extends State<Example> {
     options.logging = true;
     await Appcues.initialize(
         'APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+    Appcues.enableElementTargeting();
   }
 
   // Detect if app was launched from a deeplink
