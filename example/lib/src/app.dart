@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:appcues_flutter/appcues_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:flutter/services.dart';
 
 import 'auth.dart';
 import 'routing.dart';
@@ -23,10 +23,15 @@ class _ExampleState extends State<Example> {
   late final SimpleRouterDelegate _routerDelegate;
   late final TemplateRouteParser _routeParser;
 
-  bool _initialURILinkHandled = false;
+  // Event Channel creation
+  // used for listening for deep links from platform code
+  static const stream = EventChannel('com.appcues.samples.flutter/events');
 
-  // handle for listening for incoming deeplinks
-  StreamSubscription? _linkStreamSubscription;
+  // Method channel creation
+  // used to check for initial deep link when launching app, from platform
+  static const platform = MethodChannel('com.appcues.samples.flutter/channel');
+
+  bool _initialURILinkHandled = false;
 
   @override
   void initState() {
@@ -55,8 +60,10 @@ class _ExampleState extends State<Example> {
     // Initialize the Appcues Plugin
     _initializeAppcues();
 
-    _handleInitialDeeplink();
-    _listenForDeeplinks();
+    //Checking application start by deep link
+    _startUri().then(_onRedirected);
+    //Checking broadcast stream, if deep link was clicked in opened application
+    stream.receiveBroadcastStream().listen((d) => _onRedirected(d));
 
     // Listen for when the user logs out and display the signin screen.
     _auth.addListener(_handleAuthStateChanged);
@@ -98,29 +105,19 @@ class _ExampleState extends State<Example> {
   }
 
   // Detect if app was launched from a deeplink
-  Future<void> _handleInitialDeeplink() async {
+  Future<String?> _startUri() async {
     // guard against processing initial link more than once
     if (!_initialURILinkHandled) {
       _initialURILinkHandled = true;
-
-      final initialURI = await getInitialUri();
-      if (mounted && initialURI != null) {
-        // Pass along to Appcues to potentially handle
-        bool handled = await Appcues.didHandleURL(initialURI);
-        if (handled) return;
-
-        // Otherwise, process the link as a normal app route
-        var route = await _routeParser
-            .parseRouteInformation(RouteInformation(location: initialURI.path));
-        _routeState.route = route;
-      }
+      return platform.invokeMethod('initialLink');
     }
+    return null;
   }
 
-  // Detect if a new deeplink was sent to the app
-  void _listenForDeeplinks() {
-    _linkStreamSubscription = uriLinkStream.listen((Uri? uri) async {
-      if (!mounted || uri == null) return;
+  // Handle any deep link sent to the app
+  Future<void> _onRedirected(String? url) async {
+      if (!mounted || url == null) return;
+      var uri = Uri.parse(url);
       // Pass along to Appcues to potentially handle
       bool handled = await Appcues.didHandleURL(uri);
       if (handled) return;
@@ -129,7 +126,6 @@ class _ExampleState extends State<Example> {
       var route = await _routeParser
           .parseRouteInformation(RouteInformation(location: uri.path));
       _routeState.route = route;
-    });
   }
 
   void _handleAuthStateChanged() {
@@ -152,7 +148,6 @@ class _ExampleState extends State<Example> {
     _routerDelegate.removeListener(_handleRouteStateChanged);
     _routeState.dispose();
     _routerDelegate.dispose();
-    _linkStreamSubscription?.cancel();
     super.dispose();
   }
 }

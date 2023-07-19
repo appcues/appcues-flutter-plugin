@@ -31,7 +31,7 @@ executors:
     working_directory: ~/project
   android_compatible:
     machine: 
-      image: android:2022.04.1
+      image: android:2023.07.1
     resource_class: large
     working_directory: ~/project
 
