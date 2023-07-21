@@ -4,7 +4,7 @@ The Appcues Flutter Plugin includes support for a custom URL scheme that enables
 
 ## Prerequisites
 
-Your application must be set up to handle incoming custom URL scheme links. There are several options available to configure and receive links in Flutter. One option is to use the package [uni_links](https://pub.dev/packages/uni_links). Alternatively, your application may have its own bridge to the native code to handle links.
+Your application must be set up to handle incoming custom URL scheme links. The example application in this repository provides one possible approach using its own bridge to the native code to handle links. For the Appcues SDK to check for and handle deep links, the entire link URL must be passed through to the SDK, not just the path segment.
 
 Important: If your application is already using Flutter [Deep linking](https://docs.flutter.dev/development/ui/navigation/deep-linking) with the Router widget, you will need to disable the automatic link handling described in the documentation.
 
@@ -62,23 +62,23 @@ Android - in AndroidManifest.xml for the main Activity:
 
 ## Handle the Custom URL Scheme
 
-URLs need to be received and handled somewhere in your Flutter application. For example, if using [uni_links](https://pub.dev/packages/uni_links), you may have a listener  on `uriLinkStream`. When a new `Uri` is encountered, pass it along to the `Appcues.didHandleURL` function. If the Appcues SDK recognized and processed the link, the return value is `true`.
+URLs need to be received and handled somewhere in your Flutter application. In the example application in this repository, see the `EventChannel` listener that is set up in `app.dart`, which will pass links through to the `_onRedirected(url)` function as shown below. When a new `Uri` is encountered, pass it along to the `Appcues.didHandleURL` function. The entire URL should be passed into the Appcues SDK, including the scheme and host - not just the path. If the Appcues SDK recognized and processed the link, the return value is `true`.
 
 If the link is not an Appcues custom scheme link, pass the link on to any other normal link handling code in your application. In this example, a Router widget is being used. The new link `.path` value is then sent to our `RouteInformationParser` implementation. The parsed route can then be used to update the `RouteState` in the application.
 
 ```dart
-// Detect if a new deeplink was sent to the app
-void _listenForDeeplinks() {
-    _linkStreamSubscription = uriLinkStream.listen((Uri? uri) async {
-        if (!mounted || uri == null) return;
-        // Pass along to Appcues to potentially handle
-        bool handled = await Appcues.didHandleURL(uri);
-        if (handled) return;
+// Handle any deep link sent to the app
+Future<void> _onRedirected(String? url) async {
+    if (!mounted || url == null) return;
+    var uri = Uri.parse(url);
+    // Pass along to Appcues to potentially handle
+    bool handled = await Appcues.didHandleURL(uri);
+    if (handled) return;
 
-        // Otherwise, process the link as a normal app route
-        var route = await _routeParser.parseRouteInformation(RouteInformation(location: uri.path));
-        _routeState.route = route;
-    });
+    // Otherwise, process the link as a normal app route
+    var route = await _routeParser
+        .parseRouteInformation(RouteInformation(location: uri.path));
+    _routeState.route = route;
 }
 ```
 
