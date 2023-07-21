@@ -1,16 +1,13 @@
 PODS:
   - Appcues (2.1.1)
-  - appcues_flutter (2.1.0):
+  - appcues_flutter (2.1.1):
     - Appcues (~> 2.1.1)
     - Flutter
   - Flutter (1.0.0)
-  - uni_links (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - appcues_flutter (from `.symlinks/plugins/appcues_flutter/ios`)
   - Flutter (from `Flutter`)
-  - uni_links (from `.symlinks/plugins/uni_links/ios`)
 
 SPEC REPOS:
   trunk:
@@ -21,14 +18,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/appcues_flutter/ios"
   Flutter:
     :path: Flutter
-  uni_links:
-    :path: ".symlinks/plugins/uni_links/ios"
 
 SPEC CHECKSUMS:
   Appcues: 6293ef6ca66be2e37f9b02248d87de5cbd569a98
-  appcues_flutter: 569d1096aa949dc97caee5b41ae62470201654e3
+  appcues_flutter: 4103f7bbe7bd634a1e57faec04951c3df98e5282
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
 
 PODFILE CHECKSUM: 69a94f836326f2bab375ad9c9e93cae9179c7221
 
