@@ -30,7 +30,7 @@ There are four different possible values for `analytic` and two possible values 
 | `EVENT`        | `true`       | N/A                   |
 | `EVENT`        | `false`      | `Appcues.track()`     |
 | `SCREEN`       | `false`      | `Appcues.screen()`    |
-| `IDENTIFY`     | `false`      | `Appcues.identify()` |
+| `IDENTIFY`     | `false`      | `Appcues.identify()`  |
 | `GROUP`        | `false`      | `Appcues.group()`     |
 
 Events with `isInternal == true` correspond to internal SDK events - these capture anything that is generated automatically inside of the Appcues SDK, including flow events and session events.
