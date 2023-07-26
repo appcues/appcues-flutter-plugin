@@ -1,3 +1,15 @@
+## 2.1.2
+* 🚨 Remove unused import to fix dart pub score (e4d2937)
+* 👌 Fix table spacing in doc (ebddb9e)
+* 📝 Add anchored tooltip doc (689123e)
+* ⬆️ Update Android SDK dependency to 2.1.4 (d4aba1c)
+* 👌 Support turning Semantics tree observation on and off in the host application (fa0402c)
+* 👌 Batch all discovered view elements in one array through the MethodChannel (d684dcf)
+* 👌 Update selector property name to appcuesID (e717014)
+* ✨ Add support for element targeting (921ece5)
+* 📝 Update documentation to remove uni_links reference (140377f)
+* ♻️ Replace usage of uni_links package with our own deep link handling (752be99)
+
 ## 2.1.1
 * ⬆️  Update appcues sdk version to 2.1.2 (b53a949)
 
