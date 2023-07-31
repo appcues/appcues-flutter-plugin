@@ -19,12 +19,12 @@ import java.lang.reflect.Method
 
 internal class FlutterElementSelector(var identifier: String?): ElementSelector {
     val isValid: Boolean
-        get() = identifier != null
+        get() = identifier.isNullOrEmpty().not()
 
     override fun toMap(): Map<String, String> =
         mapOf(
             "appcuesID" to identifier,
-        ).filterValues { it != null }.mapValues { it.value as String }
+        ).filterValues { it.isNullOrEmpty().not() }.mapValues { it.value as String }
 
     override fun evaluateMatch(target: ElementSelector): Int {
         var weight = 0

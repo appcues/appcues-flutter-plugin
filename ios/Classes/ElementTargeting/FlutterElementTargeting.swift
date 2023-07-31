@@ -11,7 +11,7 @@ internal class FlutterElementSelector: AppcuesElementSelector {
 
     init?(identifier: String?) {
         // must have at least one identifiable property to be a valid selector
-        guard let identifier = identifier else {
+        guard let identifier = identifier, !identifier.isEmpty else {
             return nil
         }
 
