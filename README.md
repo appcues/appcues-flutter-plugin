@@ -14,7 +14,7 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
     - [Installation](#installation)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
-      - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
+      - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
     - [Identifying Users](#identifying-users)
     - [Tracking Screens and Events](#tracking-screens-and-events)
     - [Anchored Tooltips](#anchored-tooltips)
@@ -76,9 +76,9 @@ Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 
 Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information.
 
-#### Supporting Debugging and Experience Previewing
+#### Supporting Builder Preview and Screen Capture
 
-Supporting debugging and experience previewing is not required for the Appcues Flutter Plugin to function, but it is necessary for the optimal Appcues builder experience. Refer to the [URL Scheme Configuration Guide](https://github.com/appcues/appcues-flutter-plugin/blob/main/doc/URLSchemeConfiguring.md) for details on how to configure.
+During installation, follow the steps outlined in [Configuring the Appcues URL Scheme](https://github.com/appcues/appcues-flutter-plugin/blob/main/doc/URLSchemeConfiguring.md). This is necessary for the complete Appcues builder experience, supporting experience preview, screen capture and debugging.
 
 ### Identifying Users
 
