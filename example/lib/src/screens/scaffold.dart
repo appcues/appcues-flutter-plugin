@@ -23,6 +23,7 @@ class ExampleScaffold extends StatelessWidget {
           if (idx == 0) routeState.route = RouteDefinition.events;
           if (idx == 1) routeState.route = RouteDefinition.profile;
           if (idx == 2) routeState.route = RouteDefinition.group;
+          if (idx == 3) routeState.route = RouteDefinition.embeds;
         },
         destinations: const [
           AdaptiveScaffoldDestination(
@@ -37,6 +38,10 @@ class ExampleScaffold extends StatelessWidget {
             title: 'Group',
             icon: Icons.people_outline,
           ),
+          AdaptiveScaffoldDestination(
+            title: 'Embeds',
+            icon: Icons.ad_units_outlined,
+          ),
         ],
       ),
     );
@@ -46,6 +51,7 @@ class ExampleScaffold extends StatelessWidget {
     if (route == RouteDefinition.events) return 0;
     if (route == RouteDefinition.profile) return 1;
     if (route == RouteDefinition.group) return 2;
+    if (route == RouteDefinition.embeds) return 3;
     return 0;
   }
 }

@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
@@ -79,6 +82,66 @@ class AppcuesView extends SemanticsTag {
 
   /// Initialize the AppcuesView with the given [identifier].
   const AppcuesView(this.identifier) : super(identifier);
+}
+
+class AppcuesFrameView extends StatefulWidget {
+  final String frameId;
+
+  const AppcuesFrameView(this.frameId, {Key? key}) : super(key: key);
+
+  @override
+  _AppcuesFrameViewState createState() => _AppcuesFrameViewState();
+}
+
+class _AppcuesFrameViewState extends State<AppcuesFrameView> {
+  // A non-zero height is needed to ensure that the native view
+  // layoutSubviews is called at least once. Then, the intrinsic size of
+  // the native view will control the SizedBox _height here to auto
+  // size contents or set to zero if hidden.
+  double _height = 0.1;
+  EventChannel? _heightUpdates;
+
+  @override
+  Widget build(BuildContext context) {
+    // This is used in the platform side to register the view.
+    const String viewType = 'AppcuesFrameView';
+    // Pass parameters to the platform side.
+    final Map<String, dynamic> creationParams = <String, dynamic>{
+      "frameId": widget.frameId
+    };
+
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        // return widget on Android.
+        throw UnsupportedError('Unsupported platform view');
+      case TargetPlatform.iOS:
+        return SizedBox(
+            height: _height,
+            child: UiKitView(
+                viewType: viewType,
+                layoutDirection: TextDirection.ltr,
+                creationParams: creationParams,
+                creationParamsCodec: const StandardMessageCodec(),
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                  Factory<OneSequenceGestureRecognizer>(
+                        () =>  HorizontalDragGestureRecognizer(),
+                  )
+                },
+                onPlatformViewCreated: (id) {
+                  _heightUpdates =
+                      EventChannel("com.appcues.flutter/frame/$id");
+                  _heightUpdates
+                      ?.receiveBroadcastStream()
+                      .listen((height) => setState(() {
+                    _height = height;
+                  }));
+                }
+            )
+        );
+      default:
+        throw UnsupportedError('Unsupported platform view');
+    }
+  }
 }
 
 /// The main entry point of the Appcues plugin.

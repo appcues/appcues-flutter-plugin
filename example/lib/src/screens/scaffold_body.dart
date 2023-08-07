@@ -4,6 +4,7 @@ import '../auth.dart';
 import '../routing.dart';
 import '../routing/route_definition.dart';
 import '../widgets/fade_transition_page.dart';
+import 'embeds.dart';
 import 'events.dart';
 import 'profile.dart';
 import 'group.dart';
@@ -49,6 +50,11 @@ class ExampleScaffoldBody extends StatelessWidget {
             key: ValueKey('group'),
             child: GroupScreen(),
           )
+        else if (currentRoute.path == '/embeds')
+            const FadeTransitionPage<void>(
+              key: ValueKey('embeds'),
+              child: EmbedsScreen(),
+            )
 
         // Avoid building a Navigator with an empty `pages` list when the
         // RouteState is set to an unexpected path, such as /signin.
