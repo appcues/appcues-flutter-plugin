@@ -17,6 +17,9 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
         if #available(iOS 13.0, *) {
             Appcues.elementTargeting = FlutterElementTargeting()
         }
+
+        let factory = AppcuesFrameViewFactory(plugin: instance, messenger: registrar.messenger())
+        registrar.register(factory, withId: "AppcuesFrameView")
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -144,6 +147,11 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+
+
+    internal func register(frameID: String, for view: AppcuesFrameView, on parentViewController: UIViewController) {
+        implementation?.register(frameID: frameID, for: view, on: parentViewController)
     }
 
     private func missingArgs(names: String) -> FlutterError {
