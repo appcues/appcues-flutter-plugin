@@ -84,9 +84,13 @@ class AppcuesView extends SemanticsTag {
   const AppcuesView(this.identifier) : super(identifier);
 }
 
+/// This widget can be used to optionally host Appcues embedded experiences.
 class AppcuesFrameView extends StatefulWidget {
+  /// The frame identifier used to locate this view, if embedded content
+  /// is eligible for rendering in this view.
   final String frameId;
 
+  /// Initialize the AppcuesFrameView with the given [frameId]
   const AppcuesFrameView(this.frameId, {Key? key}) : super(key: key);
 
   @override
@@ -99,48 +103,65 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
   // the native view will control the SizedBox _height here to auto
   // size contents or set to zero if hidden.
   double _height = 0.1;
-  EventChannel? _heightUpdates;
+  StreamSubscription? _heightStream;
 
   @override
   Widget build(BuildContext context) {
-    // This is used in the platform side to register the view.
-    const String viewType = 'AppcuesFrameView';
-    // Pass parameters to the platform side.
-    final Map<String, dynamic> creationParams = <String, dynamic>{
-      "frameId": widget.frameId
-    };
+    // construct the correct native view based on platform ios / android
+    var nativeView = _nativeView(
+        viewType: 'AppcuesFrameView',
+        creationParams: { "frameId": widget.frameId },
+        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+          Factory<OneSequenceGestureRecognizer>(
+            () => HorizontalDragGestureRecognizer(),
+          )
+        },
+        onPlatformViewCreated: (id) {
+          _heightStream = EventChannel("com.appcues.flutter/frame/$id")
+              .receiveBroadcastStream()
+              .listen((height) => setState(() {
+                    _height = height;
+                  }));
+        });
+
+    // use the SizedBox with the height update listener (above) to auto
+    // size the content
+    return SizedBox(height: _height, child: nativeView);
+  }
+
+  Widget _nativeView({required String viewType,
+    required Map<String, dynamic> creationParams,
+    required Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    required PlatformViewCreatedCallback? onPlatformViewCreated}) {
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        // return widget on Android.
-        throw UnsupportedError('Unsupported platform view');
+        return AndroidView(
+            viewType: viewType,
+            layoutDirection: TextDirection.ltr,
+            creationParams: creationParams,
+            creationParamsCodec: const StandardMessageCodec(),
+            gestureRecognizers: gestureRecognizers,
+            onPlatformViewCreated: onPlatformViewCreated);
       case TargetPlatform.iOS:
-        return SizedBox(
-            height: _height,
-            child: UiKitView(
-                viewType: viewType,
-                layoutDirection: TextDirection.ltr,
-                creationParams: creationParams,
-                creationParamsCodec: const StandardMessageCodec(),
-                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                  Factory<OneSequenceGestureRecognizer>(
-                        () =>  HorizontalDragGestureRecognizer(),
-                  )
-                },
-                onPlatformViewCreated: (id) {
-                  _heightUpdates =
-                      EventChannel("com.appcues.flutter/frame/$id");
-                  _heightUpdates
-                      ?.receiveBroadcastStream()
-                      .listen((height) => setState(() {
-                    _height = height;
-                  }));
-                }
-            )
-        );
+        return UiKitView(
+            viewType: viewType,
+            layoutDirection: TextDirection.ltr,
+            creationParams: creationParams,
+            creationParamsCodec: const StandardMessageCodec(),
+            gestureRecognizers: gestureRecognizers,
+            onPlatformViewCreated: onPlatformViewCreated);
       default:
         throw UnsupportedError('Unsupported platform view');
     }
+  }
+
+  @override
+  void dispose() {
+    // It is important that we stop listening to height updates from a
+    // native view, if this widget is disposed - cancel the StreamSubscription.
+    _heightStream?.cancel();
+    super.dispose();
   }
 }
 
