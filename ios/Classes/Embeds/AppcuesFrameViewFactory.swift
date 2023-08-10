@@ -17,17 +17,17 @@ class AppcuesFrameViewFactory: NSObject, FlutterPlatformViewFactory {
         viewIdentifier viewId: Int64,
         arguments args: Any?
     ) -> FlutterPlatformView {
+        let args = args as? [String: Any]
+
         return AppcuesPlatformView(
             plugin: plugin,
-            frame: frame,
-            viewIdentifier: viewId,
-            arguments: args,
-            binaryMessenger: messenger)
+            frameID: args?["frameId"] as? String,
+            eventChannel: FlutterEventChannel(name: "com.appcues.flutter/frame/\(viewId)", binaryMessenger: messenger))
     }
 
     /// Implementing this method is only necessary when the `arguments` in `createWithFrame` is not `nil`.
     public func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
-          return FlutterStandardMessageCodec.sharedInstance()
+        return FlutterStandardMessageCodec.sharedInstance()
     }
 }
 
@@ -36,18 +36,13 @@ class AppcuesPlatformView: NSObject, FlutterPlatformView {
 
     init(
         plugin: SwiftAppcuesFlutterPlugin,
-        frame: CGRect,
-        viewIdentifier viewId: Int64,
-        arguments args: Any?,
-        binaryMessenger messenger: FlutterBinaryMessenger?
+        frameID: String?,
+        eventChannel: FlutterEventChannel
     ) {
-        let args = args as? [String: Any]
-
         _view = WrapperView(
             plugin: plugin,
-            binaryMessenger: messenger,
-            frameID: args?["frameId"] as? String,
-            viewIdentifier: viewId
+            frameID: frameID,
+            eventChannel: eventChannel
         )
         super.init()
     }
@@ -71,20 +66,16 @@ class WrapperView: UIView, FlutterStreamHandler {
 
     init(
         plugin: SwiftAppcuesFlutterPlugin,
-        binaryMessenger messenger: FlutterBinaryMessenger?,
         frameID: String?,
-        viewIdentifier viewId: Int64
+        eventChannel: FlutterEventChannel
     ) {
         self.plugin = plugin
         self.frameID = frameID
-
-        if let messenger = messenger {
-            eventChannel = FlutterEventChannel(name: "com.appcues.flutter/frame/\(viewId)", binaryMessenger: messenger)
-        }
+        self.eventChannel = eventChannel
 
         super.init(frame: .zero)
 
-        eventChannel?.setStreamHandler(self)
+        eventChannel.setStreamHandler(self)
     }
 
     @available(*, unavailable)
