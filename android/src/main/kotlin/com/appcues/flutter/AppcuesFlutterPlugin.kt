@@ -8,6 +8,7 @@ import androidx.annotation.NonNull
 import com.appcues.AnalyticType
 import com.appcues.AnalyticsListener
 import com.appcues.Appcues
+import com.appcues.AppcuesFrameView
 import com.appcues.LoggingLevel
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -51,6 +52,11 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         methodChannel.setMethodCallHandler(this)
         analyticsChannel = EventChannel(flutterPluginBinding.binaryMessenger, "appcues_analytics")
         _renderer = flutterPluginBinding.flutterEngine.renderer
+
+        flutterPluginBinding.platformViewRegistry.registerViewFactory(
+            "AppcuesFrameView",
+            AppcuesFrameViewFactory(this, flutterPluginBinding.binaryMessenger)
+        )
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -234,6 +240,10 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel.setMethodCallHandler(null)
+    }
+
+    internal fun registerEmbed(frameId: String, frame: AppcuesFrameView) {
+        implementation.registerEmbed(frameId, frame)
     }
 
     private fun Result.badArgs(names: String) {
