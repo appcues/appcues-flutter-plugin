@@ -110,7 +110,7 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
     // construct the correct native view based on platform ios / android
     var nativeView = _nativeView(
         viewType: 'AppcuesFrameView',
-        creationParams: { "frameId": widget.frameId },
+        creationParams: {"frameId": widget.frameId},
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
           Factory<OneSequenceGestureRecognizer>(
             () => HorizontalDragGestureRecognizer(),
@@ -129,11 +129,11 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
     return SizedBox(height: _height, child: nativeView);
   }
 
-  Widget _nativeView({required String viewType,
-    required Map<String, dynamic> creationParams,
-    required Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
-    required PlatformViewCreatedCallback? onPlatformViewCreated}) {
-
+  Widget _nativeView(
+      {required String viewType,
+      required Map<String, dynamic> creationParams,
+      required Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+      required PlatformViewCreatedCallback? onPlatformViewCreated}) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return AndroidView(
@@ -167,7 +167,6 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
 
 /// The main entry point of the Appcues plugin.
 class Appcues {
-
   static SemanticsHandle? _semanticsHandle;
 
   static const MethodChannel _methodChannel = MethodChannel('appcues_flutter');
@@ -203,7 +202,7 @@ class Appcues {
 
   static void enableElementTargeting() {
     _semanticsHandle ??= RendererBinding.instance.pipelineOwner
-          .ensureSemantics(listener: _semanticsChanged);
+        .ensureSemantics(listener: _semanticsChanged);
   }
 
   static void disableElementTargeting() {
@@ -382,7 +381,8 @@ class Appcues {
 
       // pass the target elements found to the native side to capture
       // the current known set of views for element targeting
-      _methodChannel.invokeMethod('setTargetElements', {'viewElements': viewElements});
+      _methodChannel
+          .invokeMethod('setTargetElements', {'viewElements': viewElements});
     }
   }
 }
