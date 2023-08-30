@@ -98,12 +98,13 @@ class AppcuesFrameView extends StatefulWidget {
 }
 
 class _AppcuesFrameViewState extends State<AppcuesFrameView> {
-  // A non-zero height is needed to ensure that the native view
+  // A non-zero size is needed to ensure that the native view
   // layoutSubviews is called at least once. Then, the intrinsic size of
-  // the native view will control the SizedBox _height here to auto
+  // the native view will control the SizedBox dimensions here to auto
   // size contents or set to zero if hidden.
   double _height = 0.1;
-  StreamSubscription? _heightStream;
+  double _width = 0.1;
+  StreamSubscription? _sizeStream;
 
   @override
   Widget build(BuildContext context) {
@@ -117,16 +118,17 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
           )
         },
         onPlatformViewCreated: (id) {
-          _heightStream = EventChannel("com.appcues.flutter/frame/$id")
+          _sizeStream = EventChannel("com.appcues.flutter/frame/$id")
               .receiveBroadcastStream()
-              .listen((height) => setState(() {
-                    _height = height;
+              .listen((size) => setState(() {
+                    _height = size['height'];
+                    _width = size['width'];
                   }));
         });
 
     // use the SizedBox with the height update listener (above) to auto
     // size the content
-    return SizedBox(height: _height, child: nativeView);
+    return SizedBox(height: _height, width: _width, child: nativeView);
   }
 
   Widget _nativeView(
@@ -160,7 +162,7 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
   void dispose() {
     // It is important that we stop listening to height updates from a
     // native view, if this widget is disposed - cancel the StreamSubscription.
-    _heightStream?.cancel();
+    _sizeStream?.cancel();
     super.dispose();
   }
 }

@@ -112,7 +112,10 @@ class WrapperView: UIView, FlutterStreamHandler {
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
         let size = isHidden ? .zero : preferredContentSize
 
-        eventSink?(size.height)
+        eventSink?([
+            "height": size.height,
+            "width": size.width
+        ])
     }
 
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
