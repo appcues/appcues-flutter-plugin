@@ -99,6 +99,12 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
         setMeasuredDimension(finalWidth, finalHeight)
 
         val density = resources.displayMetrics.density
-        eventSink?.success(finalHeight.toDouble() / density)
+        eventSink?.success(
+            mapOf(
+                "height" to finalHeight.toDouble() / density,
+                "width" to finalWidth.toDouble() / density,
+            )
+
+        )
     }
 }
