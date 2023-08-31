@@ -1,3 +1,20 @@
+## 3.0.0
+* ⬆️ Update to Android SDK 3.0.2 (4ad11b6)
+* ⬆️ Update to Android SDK 3.0.1 (ee8c1f9)
+* ♻️ Update embed frame sizing to include height and width (b72fb3e)
+* 🚨 Reformat dart file to pass lint checks (8bcc7b1)
+* 📝 Add developer integration doc for embeds (22d4503)
+* ♻️ Simplify iOS frame size calcuations (db638e5)
+* 👌 Some code cleanup and simplification for embedded view handling (4a205e5)
+* ✨ Add support for Android embed view hosting (a04f8bd)
+* ✨ Add support for embed views on iOS (2018b72)
+* ⬆️ Update to 3.0.0 native SDKs (8856f94)
+* Bump activesupport from 6.1.7.3 to 7.0.7.2 in /example/ios (45da273)
+* 📝 Update readme note to more strongly emphasize URL scheme configuration (8c45504)
+* 🐛 Ensure no empty strings are present in selector property values (9f76db9)
+* 🔧 Update Android example version substitution for test app distro (db07cd0)
+* 👌 Update suggested items from latest package publish (385df35)
+
 ## 2.1.2
 * 🚨 Remove unused import to fix dart pub score (e4d2937)
 * 👌 Fix table spacing in doc (ebddb9e)
