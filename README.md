@@ -114,7 +114,7 @@ Anchored tooltips use element targeting to point directly at specific views in y
 
 ### Embedded Experiences
 
-Add `AppcuesFrameView` instances in your application layouts to support embedded experience content, with a non-modal presentation. For more information about how to configure your application layouts to use frame views, refer to the guide on [Configuring an AppcuesFrameView](https://github.com/appcues/appcues-flutter-plugin/blob/main/docs/AppcuesFrameViewConfiguring.md).
+Add `AppcuesFrameView` instances in your application layouts to support embedded experience content, with a non-modal presentation. For more information about how to configure your application layouts to use frame views, refer to the guide on [Configuring an AppcuesFrameView](https://github.com/appcues/appcues-flutter-plugin/blob/main/doc/AppcuesFrameViewConfiguring.md).
 
 ## 📝 Documentation
 
