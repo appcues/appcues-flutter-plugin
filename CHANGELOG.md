@@ -1,3 +1,6 @@
+## 3.1.1
+* ⬆️  Update Android SDK to v3.1.2 (37a7ddf)
+
 ## 3.1.0
 * ⬆️ Update to 3.1.0 native SDKs (b121174)
 * 📝 Fix doc link for embeds in README (db4b2f9)
