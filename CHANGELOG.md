@@ -1,3 +1,6 @@
+## 3.1.2
+* ⬆️  Update appcues sdk versions (0b04f78)
+
 ## 3.1.1
 * ⬆️  Update Android SDK to v3.1.2 (37a7ddf)
 
