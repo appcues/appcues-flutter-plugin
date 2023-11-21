@@ -1,3 +1,7 @@
+## 3.1.3
+* 📝 removing FlutterFragmentActivity requirement from README (cee2d14)
+* ⬆️  Update appcues sdk versions (96f61a3)
+
 ## 3.1.2
 * ⬆️  Update appcues sdk versions (0b04f78)
 
