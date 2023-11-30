@@ -346,8 +346,13 @@ class Appcues {
           // into global coordinates for the screen.
           Rect transformToRoot(Rect rect, SemanticsNode? node) {
             var transform = node?.transform;
+            var parent = node?.parent;
             if (transform == null) {
-              return rect;
+              if (parent != null) {
+                return transformToRoot(rect, parent);
+              } else {
+                return rect;
+              }
             }
 
             var transformed = rect;
@@ -356,7 +361,7 @@ class Appcues {
               transformed = rect.shift(offset);
             }
 
-            return transformToRoot(transformed, node?.parent);
+            return transformToRoot(transformed, parent);
           }
 
           // do the transform to global coordinates
