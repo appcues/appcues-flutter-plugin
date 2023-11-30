@@ -373,7 +373,7 @@ class Appcues {
               transformed = rect.shift(offset);
             }
 
-            return transformToRoot(transformed, node?.parent);
+            return transformToRoot(transformed, parent);
           }
 
           // do the transform to global coordinates
