@@ -10,11 +10,16 @@ The Semantics information allows the Appcues Flutter plugin to create a mobile v
 
 Appcues anchored tooltip support in Flutter uses a listener for Semantics tree updates, using the PipelineOwner [ensureSemantics](https://api.flutter.dev/flutter/rendering/PipelineOwner/ensureSemantics.html) method. Usage of this feature is optional. To enable anchored tooltip support call:
 ```dart
+var handle = SemanticsBinding.instance.ensureSemantics(); // only required if using Flutter 3.16+
 Appcues.enableElementTargeting();
 ```
 
+> [!IMPORTANT]
+> If using Flutter 3.16 or above, the additional SemanticsBinding call shown above is required, due to changes in how the Flutter SDK generates the Semantics updates.
+
 If it is necessary to disable this feature in any section of an application, call:
 ```dart
+handle.dispose(); // if using Flutter 3.16+
 Appcues.disableElementTargeting();
 ```
 
