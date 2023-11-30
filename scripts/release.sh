@@ -110,5 +110,5 @@ gh release create $newVersion -F $releaseTempFile -t $newVersion
 rm $releaseTempFile
 rm $changelogTempFile
 
-# dart pub publish
-dart pub publish
+# publish to pub.dev
+flutter pub publish
