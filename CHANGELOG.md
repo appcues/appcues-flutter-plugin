@@ -1,3 +1,11 @@
+## 3.1.4
+* ⬆️ Update appcues sdk versions (0b9fd6f)
+* 📝 Update anchored tooltip doc with note about Flutter 3.16 update (4380f6d)
+* 🚨 Fix deprecation warnings (c894696)
+* 🔧 Update build configuration (87085a2)
+* 🐛 Fix screen capture selector preview (11ba1ce)
+* 🐛 Ensure FrameView margins are added to the content size to avoid unnecessary scrolling (fd79387)
+
 ## 3.1.3
 * 📝 removing FlutterFragmentActivity requirement from README (cee2d14)
 * ⬆️  Update appcues sdk versions (96f61a3)
