@@ -31,7 +31,7 @@ executors:
     working_directory: ~/project
   android_compatible:
     machine: 
-      image: android:2022.04.1
+      image: android:2023.07.1
     resource_class: large
     working_directory: ~/project
 
@@ -43,8 +43,8 @@ commands:
     description: 'Install flutter dependencies'    
     steps:            
       - flutter/install_sdk_and_pub:
-          version: 3.7.11
-          cache-version: v3
+          version: 3.16.1
+          cache-version: v4
   setup_gems:
     description: 'Install gem dependencies'
     parameters:
