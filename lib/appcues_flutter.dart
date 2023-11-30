@@ -169,7 +169,7 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
 
 /// The main entry point of the Appcues plugin.
 class Appcues {
-  static SemanticsHandle? _semanticsHandle;
+  static List<SemanticsHandle> _semanticsHandles = [];
 
   static const MethodChannel _methodChannel = MethodChannel('appcues_flutter');
   static const EventChannel _analyticsChannel =
@@ -203,13 +203,17 @@ class Appcues {
   }
 
   static void enableElementTargeting() {
-    _semanticsHandle ??= RendererBinding.instance.pipelineOwner
-        .ensureSemantics(listener: _semanticsChanged);
+    // start with the rootPipelineOwner, passing into our listener function
+    // will walk the nested tree of pipelineOwner objects and ensure we are
+    // getting change updates from all.
+    _listenToSemanticsUpdates(RendererBinding.instance.rootPipelineOwner);
   }
 
   static void disableElementTargeting() {
-    _semanticsHandle?.dispose();
-    _semanticsHandle = null;
+    for (var handle in _semanticsHandles) {
+      handle.dispose();
+    }
+    _semanticsHandles.clear();
     _methodChannel.invokeMethod('setTargetElements', {'viewElements': []});
   }
 
@@ -314,11 +318,19 @@ class Appcues {
         .invokeMethod('didHandleURL', {'url': url.toString()});
   }
 
+  static void _listenToSemanticsUpdates(PipelineOwner pipelineOwner) {
+    var handle = pipelineOwner.ensureSemantics(
+        listener: () => _semanticsChanged(pipelineOwner));
+    _semanticsHandles.add(handle);
+    // recurse over the children of this PipelineOwner to ensure we
+    // set up listeners for each potential rendering tree
+    pipelineOwner.visitChildren((child) => _listenToSemanticsUpdates(child));
+  }
+
   // runs every time the SemanticsNode tree updates, capturing the known
   // layout information that can be used for Appcues element targeting
-  static void _semanticsChanged() {
-    var rootSemanticNode = RendererBinding
-        .instance.pipelineOwner.semanticsOwner?.rootSemanticsNode;
+  static void _semanticsChanged(PipelineOwner pipelineOwner) {
+    var rootSemanticNode = pipelineOwner.semanticsOwner?.rootSemanticsNode;
 
     List<Map<String, dynamic>> viewElements = [];
 
@@ -346,8 +358,13 @@ class Appcues {
           // into global coordinates for the screen.
           Rect transformToRoot(Rect rect, SemanticsNode? node) {
             var transform = node?.transform;
+            var parent = node?.parent;
             if (transform == null) {
-              return rect;
+              if (parent != null) {
+                return transformToRoot(rect, parent);
+              } else {
+                return rect;
+              }
             }
 
             var transformed = rect;

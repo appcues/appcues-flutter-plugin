@@ -81,11 +81,19 @@ internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin)
             val displayMetrics = it.context.resources.displayMetrics
             val density = displayMetrics.density
 
+            // get the root level window insets, which will be used to apply a height correction below
+            val insets = ViewCompat.getRootWindowInsets(it)?.getInsets(WindowInsetsCompat.Type.systemBars())
+                ?: Insets.NONE
+
+            // the capture from the FlutterRenderer contains the top system bar but not the bottom
+            // so bottom is subtracted from the layout height
+            val height = (actualPosition.height() - insets.bottom).toDp(density)
+
             return ViewElement(
                 x = actualPosition.left.toDp(density),
                 y = actualPosition.top.toDp(density),
                 width = actualPosition.width().toDp(density),
-                height = actualPosition.height().toDp(density),
+                height = height,
                 selector = null,
                 displayName = null,
                 type = this.javaClass.name,
