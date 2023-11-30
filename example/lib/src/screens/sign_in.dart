@@ -51,10 +51,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    // Foreground color
-                    onPrimary: Theme.of(context).colorScheme.onPrimary,
-                    // Background color
-                    primary: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     minimumSize: const Size.fromHeight(44),
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   onPressed: () async {

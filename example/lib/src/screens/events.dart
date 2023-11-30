@@ -15,7 +15,7 @@ class EventsScreen extends StatelessWidget {
             onPressed: () {
               Appcues.debug();
             },
-            child: const Text('Debug', style: TextStyle(color: Colors.white)),
+            child: Text('Debug', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
           ),
         ],
       ),
@@ -31,10 +31,8 @@ class EventsScreen extends StatelessWidget {
                   tagForChildren: const AppcuesView("btnEvent1"),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      // Foreground color
-                      onPrimary: Theme.of(context).colorScheme.onPrimary,
-                      // Background color
-                      primary: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       minimumSize: const Size.fromHeight(44),
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                     onPressed: () async {
@@ -49,10 +47,8 @@ class EventsScreen extends StatelessWidget {
                   tagForChildren: const AppcuesView("btnEvent2"),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      // Foreground color
-                      onPrimary: Theme.of(context).colorScheme.onPrimary,
-                      // Background color
-                      primary: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       minimumSize: const Size.fromHeight(44),
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                     onPressed: () async {

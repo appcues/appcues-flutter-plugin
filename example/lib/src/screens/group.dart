@@ -39,10 +39,8 @@ class _GroupScreenState extends State<GroupScreen> {
                   tagForChildren: const AppcuesView("btnSaveGroup"),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      // Foreground color
-                      onPrimary: Theme.of(context).colorScheme.onPrimary,
-                      // Background color
-                      primary: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       minimumSize: const Size.fromHeight(44),
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                     onPressed: () async {
