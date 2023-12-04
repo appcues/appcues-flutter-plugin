@@ -11,6 +11,9 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
 
 - [Appcues Flutter Plugin](#appcues-flutter-plugin)
   - [🚀 Getting Started](#-getting-started)
+    - [Prerequisites](#prerequisites)
+      - [Android](#android)
+      - [iOS](#ios)
     - [Installation](#installation)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
@@ -19,7 +22,6 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
     - [Tracking Screens and Events](#tracking-screens-and-events)
     - [Anchored Tooltips](#anchored-tooltips)
     - [Embedded Experiences](#embedded-experiences)
-  - [🛠 Customization](#-customization)
   - [📝 Documentation](#-documentation)
   - [🎬 Examples](#-examples)
   - [👷 Contributing](#-contributing)
@@ -39,6 +41,7 @@ android {
         minSdkVersion 21
     }
 }
+```
 
 #### iOS
 Your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed - typically in `iOS/Runner.xcodeproj`. In the application's `Podfile`, include at least this minimum version.
@@ -86,6 +89,15 @@ Appcues.identify('my-user-id');
 // Identify a user with property
 Appcues.identify('my-user-id', {'Company': 'Appcues'});
 ```
+
+After identifying a user, you can optionally associate that user with group.
+
+```dart
+// Associate a user with a group, optionally including group properties
+Appcues.group('group-id', {'Plan Tier': 'standard'});
+```
+
+To ensure the most accurate content targeting based upon group information, it's recommended to supply the group information immediately after a new user is identified.
 
 ### Tracking Screens and Events
 
