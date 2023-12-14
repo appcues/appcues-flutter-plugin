@@ -1,3 +1,8 @@
+## 3.1.5
+* ⬆️  Update sdk versions (1fcf316)
+* 📝 Add note about group call in readme and user identification docs (de1c0c1)
+* 🔧 Update release script for publish (4779f93)
+
 ## 3.1.4
 * ⬆️ Update appcues sdk versions (0b9fd6f)
 * 📝 Update anchored tooltip doc with note about Flutter 3.16 update (4380f6d)
