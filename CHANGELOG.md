@@ -1,3 +1,6 @@
+## 3.1.6
+* ⬆️  Update sdk versions (60e0cbf)
+
 ## 3.1.5
 * ⬆️  Update sdk versions (1fcf316)
 * 📝 Add note about group call in readme and user identification docs (de1c0c1)
