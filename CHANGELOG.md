@@ -1,3 +1,7 @@
+## 3.1.8
+* ⬆️  Update sdk versions (4d267e3)
+* 🐛 Fix Embeds on RTL (5102669)
+
 ## 3.1.7
 * ⬆️ Update appcues sdk versions (dc4b6d8)
 
