@@ -56,7 +56,7 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
     var eventChannel: EventChannel? = null
         set(eventChannel) {
             field = eventChannel
-            eventChannel?.setStreamHandler(object: EventChannel.StreamHandler {
+            eventChannel?.setStreamHandler(object : EventChannel.StreamHandler {
                 override fun onListen(arguments: Any?, events: EventSink?) {
                     eventSink = events
                 }
@@ -82,6 +82,8 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
             MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
         )
         layout(left, top, right, bottom)
+        // ensure that when we measure/layout we schedule a invalidate for the next loop for a re-draw
+        postInvalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
