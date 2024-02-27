@@ -1,8 +1,10 @@
 package com.appcues.flutter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.util.Size
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +16,9 @@ import com.appcues.ElementSelector
 import com.appcues.ElementTargetingStrategy
 import com.appcues.Screenshot
 import com.appcues.ViewElement
-import io.flutter.plugin.common.MethodCall
 import java.lang.reflect.Method
 
-internal class FlutterElementSelector(var identifier: String?): ElementSelector {
+internal class FlutterElementSelector(var identifier: String?) : ElementSelector {
     val isValid: Boolean
         get() = identifier.isNullOrEmpty().not()
 
@@ -39,16 +40,19 @@ internal class FlutterElementSelector(var identifier: String?): ElementSelector 
     }
 }
 
+@Suppress("UNCHECKED_CAST")
+@SuppressLint("PrivateApi")
 internal fun Activity.getParentView(): ViewGroup {
-
-    // try to find the most applicable topmost decorView to capture layout. Typically there is just a single
+    // try to find the most applicable decorView to inject Appcues content into. Typically there is just a single
     // decorView on the Activity window. However, if something like a dialog modal has been shown, this can add another
     // window with another decorView on top of the Activity. If we want to support showing content above that layer, we need
-    // to find the topmost decorView like below.
-
+    // to find the top most decorView like below.
     val decorView = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         // this is the preferred method on API 29+ with the new WindowInspector function
-        WindowInspector.getGlobalWindowViews().last()
+        // in case of multiple views, get the one that is hosting android.R.id.content
+        // we get the last one because sometimes stacking activities might be listed in this method,
+        // and we always want the one that is on top
+        WindowInspector.getGlobalWindowViews().findTopMost() ?: window.decorView
     } else {
         @Suppress("SwallowedException", "TooGenericExceptionCaught")
         try {
@@ -59,8 +63,9 @@ internal fun Activity.getParentView(): ViewGroup {
             val getRootView: Method = windowManagerClass.getMethod("getRootView", String::class.java)
             val rootViewNames = getViewRootNames.invoke(windowManager) as Array<Any?>
             val rootViews = rootViewNames.map { getRootView(windowManager, it) as View }
-            rootViews.last()
-        } catch (_: Exception) {
+            rootViews.findTopMost() ?: window.decorView
+        } catch (ex: Exception) {
+            Log.e("Appcues", "error getting decorView, ${ex.message}")
             // if all else fails, use the decorView on the window, which is typically the only one
             window.decorView
         }
@@ -68,6 +73,8 @@ internal fun Activity.getParentView(): ViewGroup {
 
     return decorView.rootView as ViewGroup
 }
+
+private fun List<View>.findTopMost() = lastOrNull { it.findViewById<View?>(android.R.id.content) != null }
 
 internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin) : ElementTargetingStrategy {
 
