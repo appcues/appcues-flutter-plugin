@@ -100,7 +100,8 @@ class _ExampleState extends State<Example> {
   Future<void> _initializeAppcues() async {
     AppcuesOptions options = AppcuesOptions();
     options.logging = true;
-    await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+    await Appcues.initialize(
+        'APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
     Appcues.enableElementTargeting();
   }
 

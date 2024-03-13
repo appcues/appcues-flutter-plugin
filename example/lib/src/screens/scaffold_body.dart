@@ -51,10 +51,10 @@ class ExampleScaffoldBody extends StatelessWidget {
             child: GroupScreen(),
           )
         else if (currentRoute.path == '/embeds')
-            const FadeTransitionPage<void>(
-              key: ValueKey('embeds'),
-              child: EmbedsScreen(),
-            )
+          const FadeTransitionPage<void>(
+            key: ValueKey('embeds'),
+            child: EmbedsScreen(),
+          )
 
         // Avoid building a Navigator with an empty `pages` list when the
         // RouteState is set to an unexpected path, such as /signin.

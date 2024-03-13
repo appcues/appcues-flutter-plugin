@@ -8,13 +8,12 @@ class EmbedsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: ListView(
+        appBar: AppBar(title: Text(title)),
+        body: ListView(
           children: const [
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: AppcuesFrameView("frame1")
-            ),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: AppcuesFrameView("frame1")),
             Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: Text(
@@ -22,16 +21,14 @@ class EmbedsScreen extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: AppcuesFrameView("frame2")
-            ),
+                child: AppcuesFrameView("frame2")),
             Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                 child: Text(
                     "Embeds are a low-code pattern, requiring customer application development work to be done to create and expose injectable view where Appcues content can reside. This involves creating and registering a special AppcuesFrame view types with the iOS and including those views in the customer app layouts. This concept of view embedding is analogous to products like the Google Ads SDKs for mobile display ads. The details of how the embed registered with the native SDKs are outside of the scope of this document, which focuses on the data model updates. SDK documentation will cover those other integration topics.")),
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: AppcuesFrameView("frame3")
-            ),
+                child: AppcuesFrameView("frame3")),
             Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                 child: Text(

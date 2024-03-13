@@ -12,7 +12,6 @@ class TemplateRouteParser extends RouteInformationParser<RouteDefinition> {
 
   TemplateRouteParser(
     this.initialRoute, {
-
     /// The list of allowed routes
     required List<RouteDefinition> routeDefinitions,
   })  : _routeDefinitions = [
