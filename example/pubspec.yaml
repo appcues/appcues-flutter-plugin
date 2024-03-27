@@ -22,6 +22,15 @@ dev_dependencies:
   flutter_lints: ^2.0.1
 flutter:
   uses-material-design: true
+  fonts:
+  - family: Lato
+    fonts:
+      - asset: android/app/src/main/assets/fonts/Lato-Regular.ttf
+        weight: 400
+      - asset: android/app/src/main/assets/fonts/Lato-Bold.ttf
+        weight: 700
+      - asset: android/app/src/main/assets/fonts/Lato-Black.ttf
+        weight: 900
 # To add assets to your application, add an assets section, like this:
 # assets:
 #   - images/a_dot_burr.jpeg
