@@ -1,7 +1,7 @@
 name: appcues_flutter_example
 description: Demonstrates how to use the appcues_flutter plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 3.1.8
+version: 3.1.9
 environment:
   sdk: ">=2.17.0-0 <4.0.0"
 dependencies:
@@ -23,14 +23,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-  - family: Lato
-    fonts:
-      - asset: android/app/src/main/assets/fonts/Lato-Regular.ttf
-        weight: 400
-      - asset: android/app/src/main/assets/fonts/Lato-Bold.ttf
-        weight: 700
-      - asset: android/app/src/main/assets/fonts/Lato-Black.ttf
-        weight: 900
+    - family: Lato
+      fonts:
+        - asset: android/app/src/main/assets/fonts/Lato-Regular.ttf
+          weight: 400
+        - asset: android/app/src/main/assets/fonts/Lato-Bold.ttf
+          weight: 700
+        - asset: android/app/src/main/assets/fonts/Lato-Black.ttf
+          weight: 900
 # To add assets to your application, add an assets section, like this:
 # assets:
 #   - images/a_dot_burr.jpeg

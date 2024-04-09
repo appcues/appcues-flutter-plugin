@@ -1,3 +1,11 @@
+## 3.1.9
+* ⬆️ Update to iOS SDK 3.1.9 (52003a1)
+* 🚨 Fix lint warning (61080d0)
+* 🐛 Fix issue with translating view coordinates from local to global (803da1f)
+* 📝 Add doc for custom font configuring (6148c1d)
+* 🎬 Add custom fonts (c421a12)
+* 🐛 Fix Screen capture logic to account for custom views (68c35fb)
+
 ## 3.1.8
 * ⬆️  Update sdk versions (4d267e3)
 * 🐛 Fix Embeds on RTL (5102669)
