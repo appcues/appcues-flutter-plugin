@@ -359,6 +359,21 @@ class Appcues {
             var offset = MatrixUtils.getAsTranslation(transform);
             if (offset != null) {
               transformed = rect.shift(offset);
+            } else {
+              // If for some reason getAsTranslation fails to provide an offset
+              // but it is not a scale transform, then fall back to doing
+              // a transform on the top left point of the rect. This is a
+              // workaround to an observed issue with some layout structures.
+              if (MatrixUtils.getAsScale(transform) == null &&
+                  !MatrixUtils.isIdentity(transform)) {
+                var topLeft =
+                MatrixUtils.transformPoint(transform, rect.topLeft);
+                transformed = Rect.fromLTRB(
+                    topLeft.dx,
+                    topLeft.dy,
+                    topLeft.dx + rect.size.width,
+                    topLeft.dy + rect.size.height);
+              }
             }
 
             return transformToRoot(transformed, parent);
