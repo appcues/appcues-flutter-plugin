@@ -367,7 +367,7 @@ class Appcues {
               if (MatrixUtils.getAsScale(transform) == null &&
                   !MatrixUtils.isIdentity(transform)) {
                 var topLeft =
-                MatrixUtils.transformPoint(transform, rect.topLeft);
+                    MatrixUtils.transformPoint(transform, rect.topLeft);
                 transformed = Rect.fromLTRB(
                     topLeft.dx,
                     topLeft.dy,
