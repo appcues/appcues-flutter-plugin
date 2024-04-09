@@ -11,7 +11,7 @@ class RouteDefinition {
   static const RouteDefinition group =
       RouteDefinition._('/group', 'Update Group');
   static const RouteDefinition embeds =
-    RouteDefinition._('/embeds', 'Embed Container');
+      RouteDefinition._('/embeds', 'Embed Container');
 
   const RouteDefinition._(this.path, this.title);
 }
