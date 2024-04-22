@@ -1,3 +1,6 @@
+## 3.1.10
+* ⬆️ Update to iOS SDK 3.1.10 (1dc0609)
+
 ## 3.1.9
 * ⬆️ Update to iOS SDK 3.1.9 (52003a1)
 * 🚨 Fix lint warning (61080d0)
