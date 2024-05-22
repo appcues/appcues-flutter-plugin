@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551599770978",
+    "project_id": "appcues-flutter-sample",
+    "storage_bucket": "appcues-flutter-sample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551599770978:android:6bd1543d97f22e5c1d303b",
+        "android_client_info": {
+          "package_name": "com.appcues.samples.flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "GOOGLE_SERVICES_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
