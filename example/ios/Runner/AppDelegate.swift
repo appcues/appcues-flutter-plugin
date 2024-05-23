@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import AppcuesKit
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -12,6 +13,7 @@ import Flutter
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        Appcues.enableAutomaticPushConfig()
 
         let initialLink = launchOptions?[.url] as? String
 
