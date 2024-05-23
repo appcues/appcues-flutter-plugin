@@ -33,7 +33,8 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
-target 'AppcuesNotificationServiceExtension' do
+NSE = 'AppcuesNotificationServiceExtension'
+target NSE do
   use_frameworks!
   pod 'AppcuesNotificationService', '4.0.0-alpha.1'
 end
@@ -46,6 +47,16 @@ post_install do |installer|
           config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
       end
     end
+  end
+
+  # Update the .xcconfig file for the pods to include Flutter's generated values.
+  # This essentially does the same thing (just including in the opposite direction)
+  # as Flutter/[Debug|Release].xcconfig without needing an extra file.
+  Dir.glob("Pods/Target Support Files/Pods-#{NSE}/*.xcconfig") do |xc_config_filename|
+      full_path_name = "#{Dir.pwd}/#{xc_config_filename}"
+      xc_config = File.read(full_path_name)
+      xc_config << "#include \"../../../Flutter/Generated.xcconfig\""
+      File.open(full_path_name, 'w') { |file| file << xc_config }
   end
 
 end
