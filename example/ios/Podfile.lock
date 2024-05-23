@@ -1,17 +1,20 @@
 PODS:
-  - Appcues (3.3.1)
-  - appcues_flutter (3.3.0):
-    - Appcues (~> 3.3.0)
+  - Appcues (4.0.0-alpha.1)
+  - appcues_flutter (3.1.10):
+    - Appcues (~> 4.0.0-alpha.1)
     - Flutter
+  - AppcuesNotificationService (4.0.0-alpha.1)
   - Flutter (1.0.0)
 
 DEPENDENCIES:
   - appcues_flutter (from `.symlinks/plugins/appcues_flutter/ios`)
+  - AppcuesNotificationService (= 4.0.0-alpha.1)
   - Flutter (from `Flutter`)
 
 SPEC REPOS:
   trunk:
     - Appcues
+    - AppcuesNotificationService
 
 EXTERNAL SOURCES:
   appcues_flutter:
@@ -20,10 +23,11 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  Appcues: bcf505a57b3d2d7a3b98322b0662c20be4b9bf82
-  appcues_flutter: 012f254fbacf8ac7e3ed60713b98a429a349f1c5
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Appcues: 68b452763a3d7b551789f01633e1ccd10fb23e0f
+  appcues_flutter: fcb4960ac1110a90ec256e5579a97e4144f3b5a9
+  AppcuesNotificationService: c08b21984ffa0fda8657cc7d3ead3aea9bb675e6
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
 
-PODFILE CHECKSUM: 69a94f836326f2bab375ad9c9e93cae9179c7221
+PODFILE CHECKSUM: db136ed46a0bd7f2c1cd70139d9e030448caabd2
 
 COCOAPODS: 1.15.2
