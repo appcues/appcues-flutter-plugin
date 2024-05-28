@@ -14,7 +14,7 @@ parameters:
 orbs:
   slack: circleci/slack@4.4.4
   flutter: circleci/flutter@2.0.4
-  android: circleci/android@2.0.3
+  android: circleci/android@2.5.0
   aws-s3: circleci/aws-s3@3.0
 
 # -------------------------
@@ -23,7 +23,7 @@ orbs:
 executors:
   ios_compatible:
     macos:
-          xcode: 15.1.0
+      xcode: 15.1.0
     resource_class: macos.m1.medium.gen1
     shell: /bin/bash --login -o pipefail
     environment:
@@ -31,7 +31,7 @@ executors:
     working_directory: ~/project
   android_compatible:
     machine: 
-      image: android:2023.07.1
+      image: android:2024.01.1
     resource_class: large
     working_directory: ~/project
 
@@ -85,7 +85,12 @@ commands:
           event: fail
           template: basic_fail_1
           channel: team-mobile-bots
-
+  install_rosetta:
+    description: Install Rosetta 2 on Apple Silicon executors
+    steps:
+      - run:
+          name: Installing Rosetta 2
+          command: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
 
 # -------------------------
 #          JOBS
@@ -95,6 +100,7 @@ jobs:
     executor: ios_compatible
     steps:
       - checkout
+      - install_rosetta
       - execute_fastlane_build:
           working_directory: ~/project/example/ios
           lane: compile_example
@@ -111,6 +117,7 @@ jobs:
     executor: ios_compatible
     steps:
       - checkout
+      - install_rosetta
       - execute_fastlane_build:
           working_directory: ~/project/example/ios
           lane: deploy_example
