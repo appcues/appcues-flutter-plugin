@@ -9,7 +9,7 @@ platform :android do
 
   desc "Deploy a new version to Google Play internal test"
   lane :deploy_example do
-    sh("sh", "./replace-placeholders.sh", ENV["EX_APPCUES_ACCOUNT_ID"], ENV["EX_APPCUES_APPLICATION_ID"])
+    sh("sh", "./replace-placeholders.sh", ENV["EX_APPCUES_ACCOUNT_ID"], ENV["EX_APPCUES_APPLICATION_ID"], ENV["EX_GOOGLE_SERVICES_KEY"])
 
     keystorePath = File.join(Dir.pwd, "..", "appcues.keystore")
 
