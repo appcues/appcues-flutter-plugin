@@ -1,7 +1,7 @@
 PODS:
-  - Appcues (3.1.10)
-  - appcues_flutter (3.1.9):
-    - Appcues (~> 3.1.10)
+  - Appcues (3.2.0)
+  - appcues_flutter (3.1.10):
+    - Appcues (~> 3.2.0)
     - Flutter
   - Flutter (1.0.0)
 
@@ -20,9 +20,9 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  Appcues: 7ed5a38039544fb942f87fed714b00af9585127b
-  appcues_flutter: 865c01ee1edafe7fa420ab357fd84403adb9b1c4
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Appcues: ce68465ba460fa48a3719fd1f04a6d97f70765e3
+  appcues_flutter: 0ea1ccb8442c7900cf81b70aa6e33f9c64f6aa36
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
 PODFILE CHECKSUM: 69a94f836326f2bab375ad9c9e93cae9179c7221
 

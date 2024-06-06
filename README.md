@@ -43,6 +43,16 @@ android {
 }
 ```
 
+Due to the SDK usage of Jetpack Compose, it is required to either:
+
+apply kotlin-android plugin in app’s build.gradle file.
+plugins {  
+  id 'com.android.application' 
+  id 'kotlin-android' 
+}
+OR Update Android Gradle Plugin 8.4.0+
+Related Google issue regarding usage of the Jetpack Compose dependency versions 1.6+
+
 #### iOS
 Your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed - typically in `iOS/Runner.xcodeproj`. In the application's `Podfile`, include at least this minimum version.
 ```rb
