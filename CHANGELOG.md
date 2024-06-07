@@ -1,3 +1,7 @@
+## 3.2.0
+* 🔧 Sync up gradle compile/target to 34 (f491711)
+* ⬆️ Update to SDK 3.2.0 (2f45e41)
+
 ## 3.1.10
 * ⬆️ Update to iOS SDK 3.1.10 (1dc0609)
 
