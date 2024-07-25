@@ -27,9 +27,9 @@ fi
 
 # check that we're on the `main` branch
 branch=$(git rev-parse --abbrev-ref HEAD)
-if [ $branch != 'main' ]
+if [ $branch != 'main' ] && [[ $branch != release/* ]]
 then
-	echo "The 'main' must be the current branch to make a release."
+	echo "You must be on either 'main' or 'release/*' branch to make a release."
 	echo "You are currently on: $branch"
 	exit 1
 fi
