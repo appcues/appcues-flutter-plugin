@@ -1,3 +1,6 @@
+## 3.3.1
+* ⬆️ Update to Native SDKs (84d9c74)
+
 ## 3.3.0
 * ⬆️ Update to SDK 3.3.0 (b9d2355)
 * 📝 Update readme (a721165)
