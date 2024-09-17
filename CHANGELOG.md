@@ -1,3 +1,15 @@
+## 4.0.0
+* ♻️  SDK4 branch merge cleanup (b62f2d3)
+* 🔧 Update release script to support 'release/*' branches (50bd0b0)
+* ⬆️ Update to SDK 4.0.0-beta.1 (38e57f9)
+* 🔧 Add google services key replacement in CI (09884d4)
+* 🔧 Update build machines in CI config (27613af)
+* 🎬 Update notification service extension versions (2eadeff)
+* 🔧 Configure example notification extension build (a7c86a9)
+* 🎬 Update example app (d987a83)
+* ⬆️ Update native iOS SDK dependency (90dfa05)
+* ✨ sdk update 4.0.0-alpha1 on Android (50bd39a)
+
 ## 4.0.0-beta.1
 * 🔧 Update release script to support 'release/*' branches (f0e7a6c)
 * ⬆️ Update to SDK 4.0.0-beta.1 (1dc9a07)

@@ -1,5 +1,5 @@
 group 'com.appcues.flutter.sdk'
-version '4.0.0-beta.1'
+version '4.0.0'
 
 buildscript {
     ext.kotlin_version = '1.6.20'
