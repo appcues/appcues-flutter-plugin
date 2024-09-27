@@ -1,6 +1,6 @@
 PODS:
   - Appcues (4.0.0)
-  - appcues_flutter (4.0.0-beta.1):
+  - appcues_flutter (4.0.0):
     - Appcues (~> 4.0.0)
     - Flutter
   - AppcuesNotificationService (4.0.0)
@@ -24,7 +24,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Appcues: caa6e170fbc97c2bd138d30337fa57b13354af6f
-  appcues_flutter: 24528bdc60ab9c4e31be862eff0e9e2c45e30d00
+  appcues_flutter: 958035083b54a31c3dc94119c35915d35aef89be
   AppcuesNotificationService: 472be2ad9c0578c4ad986c949bc611c021f7f90c
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
