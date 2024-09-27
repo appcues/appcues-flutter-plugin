@@ -102,8 +102,8 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
   // layoutSubviews is called at least once. Then, the intrinsic size of
   // the native view will control the SizedBox dimensions here to auto
   // size contents or set to zero if hidden.
-  double _height = 0.1;
-  double _width = 0.1;
+  double _height = 1;
+  double _width = 1;
   StreamSubscription? _sizeStream;
 
   @override
