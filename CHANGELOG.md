@@ -1,3 +1,8 @@
+## 4.0.1
+* 🔧 Update Flutter version to 3.16 for CI (6a8b49f)
+* ⬆️ Update to Android SDK 4.0.3 also update to latest project template structure and AGP 8 (0b2ef84)
+* 🐛 Fix embed sizing issue on Android (cd7c6d1)
+
 ## 4.0.0
 * ♻️  SDK4 branch merge cleanup (b62f2d3)
 * 🔧 Update release script to support 'release/*' branches (50bd0b0)
