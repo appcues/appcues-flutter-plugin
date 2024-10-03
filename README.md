@@ -18,6 +18,7 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
       - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
+      - [Enabling Push Notifications](#enabling-push-notifications)
     - [Identifying Users](#identifying-users)
     - [Tracking Screens and Events](#tracking-screens-and-events)
     - [Anchored Tooltips](#anchored-tooltips)
@@ -91,6 +92,10 @@ Initializing the SDK requires you to provide two values, an Appcues account ID, 
 #### Supporting Builder Preview and Screen Capture
 
 During installation, follow the steps outlined in [Configuring the Appcues URL Scheme](https://github.com/appcues/appcues-flutter-plugin/blob/main/doc/URLSchemeConfiguring.md). This is necessary for the complete Appcues builder experience, supporting experience preview, screen capture and debugging.
+
+#### Enabling Push Notifications
+
+In a Flutter app, push notifications are configured in the native projects for iOS and Android. Please refer to native documentation on [iOS](https://appcues.github.io/appcues-ios-sdk/documentation/appcueskit/pushnotifications/) and [Android](https://github.com/appcues/appcues-android-sdk/blob/main/docs/PushNotification.md) for more details. The `example` directory in this repository contains a reference implementation that includes push notification support.
 
 ### Identifying Users
 
