@@ -1,3 +1,7 @@
+## 4.1.0
+* ⬆️ Update iOS and Android SDK dependencies to 4.1.0 version (c2cffa6)
+* 📝 Add section for push notifications in README (020b52b)
+
 ## 4.0.1
 * 🔧 Update Flutter version to 3.16 for CI (6a8b49f)
 * ⬆️ Update to Android SDK 4.0.3 also update to latest project template structure and AGP 8 (0b2ef84)
