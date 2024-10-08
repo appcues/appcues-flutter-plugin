@@ -1,3 +1,6 @@
+## 4.1.1
+* ⬆️ Update Android SDK to 4.1.1 (8f793c9)
+
 ## 4.1.0
 * ⬆️ Update iOS and Android SDK dependencies to 4.1.0 version (c2cffa6)
 * 📝 Add section for push notifications in README (020b52b)
