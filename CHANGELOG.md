@@ -1,3 +1,6 @@
+## 4.2.0
+* ⬆️ Update iOS and Android SDK dependencies to 4.2.0 version (820067b)
+
 ## 4.1.1
 * ⬆️ Update Android SDK to 4.1.1 (8f793c9)
 
