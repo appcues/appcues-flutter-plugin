@@ -1,3 +1,6 @@
+## 4.3.1
+* ⬆️ Update SDK to 4.3.2 (b53c42b)
+
 ## 4.3.0
 * ⬆️ Update SDK to 4.3.0 (d2cf5c2)
 
