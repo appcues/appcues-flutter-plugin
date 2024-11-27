@@ -11,7 +11,7 @@ A plugin package for sending user properties and events to the Appcues API and r
   s.source = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'Appcues', '~> 4.3.0'
+  s.dependency 'Appcues', '~> 4.3.2'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
