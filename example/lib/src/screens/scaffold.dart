@@ -1,4 +1,5 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
+import 'package:appcues_flutter/appcues_flutter.dart';
 import 'package:flutter/material.dart';
 
 import '../routing.dart';
@@ -44,6 +45,21 @@ class ExampleScaffold extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60.0),
+        child: Semantics(
+          tagForChildren: const AppcuesView("fab"),
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              Appcues.track("event3");
+            },
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            label: const Text("FAB"),
+            icon: const Icon(Icons.star),
+          )
+        )
+      )
     );
   }
 
