@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               widget.onSignOut();
             },
             child:
-                const Text('Sign Out', style: TextStyle(color: Colors.white)),
+                const Text('Sign Out'),
           ),
         ],
       ),

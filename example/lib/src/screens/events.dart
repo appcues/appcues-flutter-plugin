@@ -15,7 +15,7 @@ class EventsScreen extends StatelessWidget {
             onPressed: () {
               Appcues.debug();
             },
-            child: const Text('Debug', style: TextStyle(color: Colors.white)),
+            child: const Text('Debug'),
           ),
         ],
       ),

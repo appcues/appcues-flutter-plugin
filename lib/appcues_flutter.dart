@@ -320,6 +320,14 @@ class Appcues {
     var rootSemanticNode = RendererBinding
         .instance.pipelineOwner.semanticsOwner?.rootSemanticsNode;
 
+    var dpr = WidgetsBinding.instance.window.devicePixelRatio;
+    var dprScaleMatrix = Matrix4(
+      1/dpr, 0, 0, 0,
+      0, 1/dpr, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+    );
+
     List<Map<String, dynamic>> viewElements = [];
 
     if (rootSemanticNode != null) {
@@ -341,46 +349,9 @@ class Appcues {
         }
 
         if (identifier.isNotEmpty) {
-          // the SemanticsNode rect is in local coordinates. This helper
-          // will recursively walk the ancestors and transform the rect
-          // into global coordinates for the screen.
-          Rect transformToRoot(Rect rect, SemanticsNode? node) {
-            var transform = node?.transform;
-            var parent = node?.parent;
-            if (transform == null) {
-              if (parent != null) {
-                return transformToRoot(rect, parent);
-              } else {
-                return rect;
-              }
-            }
-
-            var transformed = rect;
-            var offset = MatrixUtils.getAsTranslation(transform);
-            if (offset != null) {
-              transformed = rect.shift(offset);
-            } else {
-              // If for some reason getAsTranslation fails to provide an offset
-              // but it is not a scale transform, then fall back to doing
-              // a transform on the top left point of the rect. This is a
-              // workaround to an observed issue with some layout structures.
-              if (MatrixUtils.getAsScale(transform) == null &&
-                  !MatrixUtils.isIdentity(transform)) {
-                var topLeft =
-                    MatrixUtils.transformPoint(transform, rect.topLeft);
-                transformed = Rect.fromLTRB(
-                    topLeft.dx,
-                    topLeft.dy,
-                    topLeft.dx + rect.size.width,
-                    topLeft.dy + rect.size.height);
-              }
-            }
-
-            return transformToRoot(transformed, parent);
-          }
-
-          // do the transform to global coordinates
-          var rect = transformToRoot(node.rect, node);
+          // do the transform to global logical pixel coordinates
+          var rect = MatrixUtils
+              .transformRect(dprScaleMatrix, _transformToRoot(node.rect, node));
 
           // add this item to the set of captured views
           viewElements.add({
@@ -406,5 +377,27 @@ class Appcues {
       _methodChannel
           .invokeMethod('setTargetElements', {'viewElements': viewElements});
     }
+  }
+
+  // the SemanticsNode rect is in local coordinates. This helper
+  // will recursively walk the ancestors and transform the rect
+  // into global coordinates for the screen.
+  static Rect _transformToRoot(Rect rect, SemanticsNode? node) {
+    var transform = node?.transform;
+    var parent = node?.parent;
+    if (transform == null) {
+      if (parent != null) {
+        return _transformToRoot(rect, parent);
+      } else {
+        return rect;
+      }
+    }
+
+    var transformed = rect;
+    if (!MatrixUtils.isIdentity(transform)) {
+      transformed = MatrixUtils.transformRect(transform, rect);
+    }
+
+    return _transformToRoot(transformed, parent);
   }
 }
