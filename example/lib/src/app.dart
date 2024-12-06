@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:appcues_flutter/appcues_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import 'auth.dart';
@@ -103,6 +104,7 @@ class _ExampleState extends State<Example> {
     options.logging = true;
     await Appcues.initialize(
         'APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+    SemanticsBinding.instance.ensureSemantics();
     Appcues.enableElementTargeting();
   }
 
