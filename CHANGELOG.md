@@ -1,3 +1,10 @@
+## 4.3.2
+* 🎬 Update example button colors and add FAB (5438fe1)
+* 🔧 Update Flutter version to 3.24 for CI (ab0dc62)
+* 🎬 Add ensureSemantics() (6a5a3bd)
+* 🎬 Update Android example to Gradle 8.5 (27be3fb)
+* 🐛 Fix handling of scale transforms when determing view coordinates (0a6ac36)
+
 ## 4.3.1
 * ⬆️ Update SDK to 4.3.2 (b53c42b)
 
