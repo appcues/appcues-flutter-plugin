@@ -1,3 +1,6 @@
+## 4.3.3
+* ⬆️ Update SDK to 4.3.3 (5b76e03)
+
 ## 4.3.2
 * 🎬 Update example button colors and add FAB (5438fe1)
 * 🔧 Update Flutter version to 3.24 for CI (ab0dc62)
