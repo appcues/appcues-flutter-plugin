@@ -47,5 +47,5 @@ android {
 }
 
 dependencies {
-    api 'com.appcues:appcues:4.3.2'
+    api 'com.appcues:appcues:4.3.3'
 }
