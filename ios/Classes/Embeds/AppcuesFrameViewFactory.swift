@@ -110,7 +110,8 @@ class WrapperView: UIView, FlutterStreamHandler {
     }
 
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
-        let size = isHidden ? .zero : preferredContentSize
+        // The height cannot be 0 otherwise the view might be removed
+        let size = isHidden ? CGSize(width: 0, height: 0.01) : preferredContentSize
 
         eventSink?([
             "height": size.height,
