@@ -1,3 +1,7 @@
+## 4.3.4
+* ⬆️ Update native SDK dependencies (a48286e)
+* 🐛 Fix special case rendering of embeds on iOS (0552612)
+
 ## 4.3.3
 * ⬆️ Update SDK to 4.3.3 (5b76e03)
 

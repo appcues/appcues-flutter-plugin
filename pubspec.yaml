@@ -1,6 +1,6 @@
 name: appcues_flutter
 description: Plugin package to bridge the native Appcues SDKs in a Flutter application.
-version: 4.3.3
+version: 4.3.4
 homepage: https://www.appcues.com
 repository: https://github.com/appcues/appcues-flutter-plugin
 environment:

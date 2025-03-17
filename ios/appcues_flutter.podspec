@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'appcues_flutter'
-  s.version = '4.3.3'
+  s.version = '4.3.4'
   s.summary = 'Plugin package to bridge the native Appcues iOS SDK in a Flutter application.'
   s.description = <<-DESC
 A plugin package for sending user properties and events to the Appcues API and retrieving and rendering Appcues content based on those properties and events.
