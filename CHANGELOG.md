@@ -1,3 +1,8 @@
+## 4.3.5
+* ⬆️ Update native SDK dependencies (04c2392)
+* 🎬 Add manual iOS push configuration example (c4f2f14)
+* ✨ Add support for iOS manual push notification configuration (181aa99)
+
 ## 4.3.4
 * ⬆️ Update native SDK dependencies (a48286e)
 * 🐛 Fix special case rendering of embeds on iOS (0552612)
