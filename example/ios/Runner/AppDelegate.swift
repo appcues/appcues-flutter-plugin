@@ -1,8 +1,9 @@
 import UIKit
 import Flutter
 import AppcuesKit
+//import appcues_flutter
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
 
     private var methodChannel: FlutterMethodChannel?
@@ -13,7 +14,11 @@ import AppcuesKit
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        // Automatically configure for push notifications
         Appcues.enableAutomaticPushConfig()
+
+        // Or, manually configure for push notifications
+//        setupPush(application: application)
 
         let initialLink = launchOptions?[.url] as? String
 
