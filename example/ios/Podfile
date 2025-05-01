@@ -36,7 +36,7 @@ end
 NSE = 'AppcuesNotificationServiceExtension'
 target NSE do
   use_frameworks!
-  pod 'AppcuesNotificationService', '4.3.6'
+  pod 'AppcuesNotificationService', '4.3.8'
 end
 
 post_install do |installer|
