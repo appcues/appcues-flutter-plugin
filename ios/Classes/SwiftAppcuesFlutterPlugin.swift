@@ -4,7 +4,7 @@ import AppcuesKit
 
 public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
-    private var implementation: Appcues?
+    private static var implementation: Appcues?
     private var analyticsChannel: FlutterEventChannel?
     private var eventSink: FlutterEventSink?
 
@@ -63,7 +63,8 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
                 config.enableUniversalLinks(enableUniversalLinks)
 
-                implementation = Appcues(config: config)
+                Self.implementation = Appcues(config: config)
+                handleStoredNativePush()
                 analyticsChannel?.setStreamHandler(self)
                 result(nil)
             } else {
@@ -72,7 +73,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
 
-        guard let implementation = implementation else {
+        guard let implementation = Self.implementation else {
             result(FlutterError(code: "notInitialized",
                                 message: "the initialize function must be called before any other Appcues SDK calls",
                                 details: nil))
@@ -151,11 +152,46 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
 
     internal func register(frameID: String, for view: AppcuesFrameView, on parentViewController: UIViewController) {
-        implementation?.register(frameID: frameID, for: view, on: parentViewController)
+        Self.implementation?.register(frameID: frameID, for: view, on: parentViewController)
     }
 
     private func missingArgs(names: String) -> FlutterError {
         return FlutterError(code: "bad-args", message: "missing one or more required args", details: names)
+    }
+}
+
+extension SwiftAppcuesFlutterPlugin {
+    private static var pushToken: Data?
+    private static var notificationResponse: UNNotificationResponse?
+
+    @objc
+    public static func setPushToken(_ deviceToken: Data?) {
+        guard let impl = Self.implementation else {
+            Self.pushToken = deviceToken
+            return
+        }
+
+        impl.setPushToken(deviceToken)
+    }
+
+    @objc
+    public static func didReceiveNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) -> Bool {
+        guard let impl = Self.implementation else {
+            Self.notificationResponse = response
+            return false
+        }
+
+        return impl.didReceiveNotification(response: response, completionHandler: completionHandler)
+    }
+
+    // To be called at setup
+    private func handleStoredNativePush() {
+        if let pushToken = Self.pushToken {
+            Self.implementation?.setPushToken(pushToken)
+        }
+        if let notification = Self.notificationResponse {
+            _ = Self.implementation?.didReceiveNotification(response: notification, completionHandler: {})
+        }
     }
 }
 
@@ -185,12 +221,12 @@ extension SwiftAppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
 extension SwiftAppcuesFlutterPlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         eventSink = events
-        implementation?.analyticsDelegate = self
+        Self.implementation?.analyticsDelegate = self
         return nil
     }
 
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        implementation?.analyticsDelegate = nil
+        Self.implementation?.analyticsDelegate = nil
         return nil
     }
 }
