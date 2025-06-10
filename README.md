@@ -33,13 +33,13 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
 ### Prerequisites
 
 #### Android
-Your application's `build.gradle` must have a `compileSdkVersion` of 34+ and `minSdkVersion` of 21+, and use Android Gradle Plugin (AGP) 8+.
+Your application's `build.gradle` must have a `compileSdk` of 35+ and `minSdk` of 21+, and use Android Gradle Plugin (AGP) 8.1+.
 ```
 android {
-    compileSdkVersion 34
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 21
+        minSdk 21
     }
 }
 ```
