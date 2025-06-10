@@ -1,3 +1,6 @@
+## 4.3.6
+* ⬆️ Update native SDK dependencies (97909f2)
+
 ## 4.3.5
 * ⬆️ Update native SDK dependencies (04c2392)
 * 🎬 Add manual iOS push configuration example (c4f2f14)
