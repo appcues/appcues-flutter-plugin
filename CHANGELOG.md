@@ -1,3 +1,6 @@
+## 4.3.7
+* ⬆️ Update Android SDK to 4.3.10 (a2ae78c)
+
 ## 4.3.6
 * ⬆️ Update native SDK dependencies (97909f2)
 
