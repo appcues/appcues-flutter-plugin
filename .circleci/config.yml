@@ -23,7 +23,7 @@ orbs:
 executors:
   ios_compatible:
     macos:
-      xcode: 15.1.0
+      xcode: 16.4.0
     resource_class: macos.m1.medium.gen1
     shell: /bin/bash --login -o pipefail
     environment:
@@ -31,7 +31,7 @@ executors:
     working_directory: ~/project
   android_compatible:
     machine: 
-      image: android:2024.01.1
+      image: android:default
     resource_class: large
     working_directory: ~/project
 
@@ -101,6 +101,13 @@ jobs:
     steps:
       - checkout
       - install_rosetta
+      - run:
+           name: Select ruby version
+           command: |
+             rbenv versions
+             rbenv global 3.1.7
+             rbenv rehash
+             ruby -v
       - execute_fastlane_build:
           working_directory: ~/project/example/ios
           lane: compile_example
@@ -118,6 +125,13 @@ jobs:
     steps:
       - checkout
       - install_rosetta
+      - run:
+           name: Select ruby version
+           command: |
+             rbenv versions
+             rbenv global 3.1.7
+             rbenv rehash
+             ruby -v
       - execute_fastlane_build:
           working_directory: ~/project/example/ios
           lane: deploy_example
