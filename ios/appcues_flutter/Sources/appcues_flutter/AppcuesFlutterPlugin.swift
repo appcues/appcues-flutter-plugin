@@ -2,7 +2,10 @@ import Flutter
 import UIKit
 import AppcuesKit
 
-public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
+@available(*, unavailable, renamed: "AppcuesFlutterPlugin")
+public typealias SwiftAppcuesFlutterPlugin = AppcuesFlutterPlugin
+
+public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
     private static var implementation: Appcues?
     private var analyticsChannel: FlutterEventChannel?
@@ -10,7 +13,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "appcues_flutter", binaryMessenger: registrar.messenger())
-        let instance = SwiftAppcuesFlutterPlugin()
+        let instance = AppcuesFlutterPlugin()
         instance.analyticsChannel = FlutterEventChannel(name: "appcues_analytics", binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
 
@@ -160,7 +163,7 @@ public class SwiftAppcuesFlutterPlugin: NSObject, FlutterPlugin {
     }
 }
 
-extension SwiftAppcuesFlutterPlugin {
+extension AppcuesFlutterPlugin {
     private static var pushToken: Data?
     private static var notificationResponse: UNNotificationResponse?
 
@@ -195,7 +198,7 @@ extension SwiftAppcuesFlutterPlugin {
     }
 }
 
-extension SwiftAppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
+extension AppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
     public func didTrack(analytic: AppcuesKit.AppcuesAnalytic, value: String?, properties: [String : Any]?, isInternal: Bool) {
         let analyticName: String
         switch analytic {
@@ -218,7 +221,7 @@ extension SwiftAppcuesFlutterPlugin: AppcuesAnalyticsDelegate {
     }
 }
 
-extension SwiftAppcuesFlutterPlugin: FlutterStreamHandler {
+extension AppcuesFlutterPlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         eventSink = events
         Self.implementation?.analyticsDelegate = self

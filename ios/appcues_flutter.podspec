@@ -9,7 +9,7 @@ A plugin package for sending user properties and events to the Appcues API and r
   s.license = { :type => 'MIT', :file => '../LICENSE' }
   s.author = { 'Appcues' => 'mobile@appcues.com' }
   s.source = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'appcues_flutter/Sources/appcues_flutter/**/*.swift'
   s.dependency 'Flutter'
   s.dependency 'Appcues', '~> 4.3.9'
   s.platform = :ios, '11.0'

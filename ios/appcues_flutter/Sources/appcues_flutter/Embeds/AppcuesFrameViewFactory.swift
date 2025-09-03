@@ -4,9 +4,9 @@ import AppcuesKit
 
 class AppcuesFrameViewFactory: NSObject, FlutterPlatformViewFactory {
     private let messenger: FlutterBinaryMessenger
-    private let plugin: SwiftAppcuesFlutterPlugin
+    private let plugin: AppcuesFlutterPlugin
 
-    init(plugin: SwiftAppcuesFlutterPlugin, messenger: FlutterBinaryMessenger) {
+    init(plugin: AppcuesFlutterPlugin, messenger: FlutterBinaryMessenger) {
         self.plugin = plugin
         self.messenger = messenger
         super.init()
@@ -35,7 +35,7 @@ class AppcuesPlatformView: NSObject, FlutterPlatformView {
     private var _view: UIView
 
     init(
-        plugin: SwiftAppcuesFlutterPlugin,
+        plugin: AppcuesFlutterPlugin,
         frameID: String?,
         eventChannel: FlutterEventChannel
     ) {
@@ -56,7 +56,7 @@ class AppcuesPlatformView: NSObject, FlutterPlatformView {
 class WrapperView: UIView, FlutterStreamHandler {
 
 
-    private let plugin: SwiftAppcuesFlutterPlugin
+    private let plugin: AppcuesFlutterPlugin
     private var eventChannel: FlutterEventChannel?
     private var eventSink: FlutterEventSink?
 
@@ -65,7 +65,7 @@ class WrapperView: UIView, FlutterStreamHandler {
     private weak var frameViewController: AppcuesFrameVC?
 
     init(
-        plugin: SwiftAppcuesFlutterPlugin,
+        plugin: AppcuesFlutterPlugin,
         frameID: String?,
         eventChannel: FlutterEventChannel
     ) {
