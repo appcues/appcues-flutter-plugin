@@ -87,7 +87,7 @@ flutter run
 ```
 If multiple available devices are open, the command line tool will prompt to select which device to build and deploy the example.
 
-To edit the Swift plugin, open `example/ios/Runner.xcworkspace` in XCode and find the source files at `Pods > Development Pods > appcues-flutter`.
+To edit the Swift plugin, open `ios/appcues_flutter/Package.swift` in Xcode.
 
 To edit the Kotlin plugin, use the Android Studio project and navigate to `android/src/main/kotlin/com/appcues/flutter`.
 
