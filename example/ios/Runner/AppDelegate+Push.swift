@@ -23,7 +23,7 @@ extension AppDelegate {
 
     // 2: Pass device token to Appcues
     override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-      SwiftAppcuesFlutterPlugin.setPushToken(deviceToken)
+      AppcuesFlutterPlugin.setPushToken(deviceToken)
     }
 
     // 3: Pass the user's response to a delivered notification to Appcues
@@ -32,7 +32,7 @@ extension AppDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        if SwiftAppcuesFlutterPlugin.didReceiveNotification(response: response, completionHandler: completionHandler) {
+        if AppcuesFlutterPlugin.didReceiveNotification(response: response, completionHandler: completionHandler) {
             return
         }
 
