@@ -40,7 +40,7 @@ internal class FlutterElementTargeting: AppcuesElementTargeting {
 
     private var targetElements: [AppcuesViewElement] = []
 
-    func captureLayout() -> AppcuesViewElement? {
+    func captureLayout() async -> AppcuesViewElement? {
         guard let captureWindow = UIApplication.shared.windows.first(where: { !$0.isAppcuesWindow }) else {
             return nil
         }
