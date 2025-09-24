@@ -80,7 +80,7 @@ internal class FlutterElementTargetingStrategy(val plugin: AppcuesFlutterPlugin)
 
     private var targetElements: List<ViewElement> = listOf()
 
-    override fun captureLayout(): ViewElement? {
+    override suspend fun captureLayout(): ViewElement? {
         return plugin.activity?.getParentView()?.let {
             val actualPosition = Rect()
             it.getGlobalVisibleRect(actualPosition)

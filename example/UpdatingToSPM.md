@@ -52,7 +52,7 @@ There's a number of things to do in Xcode:
    2. Add `appcues-ios-sdk` as a package dependency and add `AppcuesNotificationServiceExtension` to the notification service extension target. (No need to add AppcuesKit to the main app, since that's already managed)
    3. At this point a build should succeed, but you'll see a warning in the console:
       ```
-      The CFBundleVersion of an app extension (null) must match that of its containing parent app ('4.3.7').
+      The CFBundleVersion of an app extension (null) must match that of its containing parent app ({version}).
       ```
    4. Edit the notification service extension's `Info.plist` and set the `CFBundleVersion`:
         ```xml

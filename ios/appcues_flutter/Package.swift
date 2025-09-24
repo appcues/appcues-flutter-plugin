@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "appcues-flutter", targets: ["appcues_flutter"])
     ],
     dependencies: [
-        .package(url: "https://github.com/appcues/appcues-ios-sdk", from: "4.3.9"),
+        .package(url: "https://github.com/appcues/appcues-ios-sdk", from: "5.0.0"),
     ],
     targets: [
         .target(
