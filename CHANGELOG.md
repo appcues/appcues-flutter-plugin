@@ -1,3 +1,15 @@
+## 5.0.0
+* ⬆️ Update to SDK version 5.0.0 (90738c9)
+* 📝 Add doc for SPM migration (365c37a)
+* 📝 Update contributing guide (d03c5ad)
+* 🎬 Update plugin reference (41af52e)
+* ♻️  Update plugin to support SPM (440e839)
+* 🔧 Update Flutter version to 3.32 for CI (40b2a9b)
+* 🔧 Update Xcode version in CI (2c5d907)
+* ⬆️ Update ruby dependencies (dbbc2a3)
+* 🎬 Update example android build (b7cc7c6)
+* 🎬 Update example pub versions (9ca93f2)
+
 ## 4.3.7
 * ⬆️ Update Android SDK to 4.3.10 (a2ae78c)
 
