@@ -15,6 +15,9 @@ class AppcuesOptions {
   /// The API host path to be used for Appcues requests.
   String? apiHost;
 
+  /// The settings host path to be used for Appcues settings requests.
+  String? settingsHost;
+
   /// The timeout value, in seconds, used to determine if a new session is
   /// started upon the application returning to the foreground.
   ///
@@ -186,6 +189,7 @@ class Appcues {
     Map<String, Object?> nativeOptions = <String, Object?>{
       "logging": options?.logging,
       "apiHost": options?.apiHost,
+      "settingsHost": options?.settingsHost,
       "sessionTimeout": options?.sessionTimeout,
       "activityStorageMaxSize": options?.activityStorageMaxSize,
       "activityStorageMaxAge": options?.activityStorageMaxAge,

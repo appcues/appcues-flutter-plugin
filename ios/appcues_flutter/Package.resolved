@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/appcues/appcues-ios-sdk",
       "state" : {
-        "revision" : "5c304f780f926f9afa69ac9cbd55439711bf683a",
-        "version" : "4.3.10"
+        "revision" : "248d76a8acddbb1eacc09d7024dfdc565347390d",
+        "version" : "5.0.0"
       }
     }
   ],
