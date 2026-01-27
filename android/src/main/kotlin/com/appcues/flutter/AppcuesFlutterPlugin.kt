@@ -93,6 +93,11 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                                 this.apiBasePath = apiHost
                             }
 
+                            val settingsHost = it["settingsHost"] as? String
+                            if (settingsHost != null) {
+                                this.apiSettingsPath = settingsHost
+                            }
+
                             val sessionTimeout = it["sessionTimeout"] as? Double
                             if (sessionTimeout != null) {
                                 this.sessionTimeout = sessionTimeout.toInt()

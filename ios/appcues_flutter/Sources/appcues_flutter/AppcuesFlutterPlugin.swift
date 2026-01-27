@@ -44,6 +44,10 @@ public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
                             config.apiHost(url)
                         }
 
+                        if let settingsHost = options["settingsHost"] as? String, let url = URL(string: settingsHost) {
+                            config.settingsHost(url)
+                        }
+
                         if let sessionTimeout = options["sessionTimeout"] as? UInt {
                             config.sessionTimeout(sessionTimeout)
                         }
