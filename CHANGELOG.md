@@ -1,3 +1,7 @@
+## 5.0.1
+* 🔧 Use specific android image (078d3f5)
+* ✨ Add support for settings path configuration (4402871)
+
 ## 5.0.0
 * ⬆️ Update to SDK version 5.0.0 (90738c9)
 * 📝 Add doc for SPM migration (365c37a)
