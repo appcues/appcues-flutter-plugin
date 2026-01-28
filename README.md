@@ -17,6 +17,8 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
     - [Installation](#installation)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
+      - [Configuring Hosting Environment](#configuring-hosting-environment)
+        - [EU Hosting Environment Configuration](#eu-hosting-environment-configuration)
       - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
       - [Enabling Push Notifications](#enabling-push-notifications)
     - [Identifying Users](#identifying-users)
@@ -79,10 +81,24 @@ An instance of the Appcues SDK should be initialized when your app launches.
 ```dart
 import 'package:appcues_flutter/appcues_flutter.dart';
 
-Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
+await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 ```
 
 Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information.
+
+#### Configuring Hosting Environment
+
+By default, the Appcues SDK will send data to the United States (US) hosting environment, and no additional configuration is required. To specify a different hosting environment, use `AppcuesOptions` to set the `apiHost` and `settingsHost` options during initialization.
+
+##### EU Hosting Environment Configuration
+
+```dart
+AppcuesOptions options = AppcuesOptions();
+options.apiHost = "https://api.eu.appcues.net";
+options.settingsHost = "https://fast.eu.appcues.com";
+
+await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+```
 
 #### Supporting Builder Preview and Screen Capture
 
