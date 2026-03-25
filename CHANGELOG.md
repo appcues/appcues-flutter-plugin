@@ -1,3 +1,11 @@
+## 5.0.2
+* 🔧 Update Flutter version to 3.41 for CI (d6195f7)
+* 🎬 Update example (569fa2e)
+* ⬆️ Update native SDK dependencies (c31a5bf)
+* ⬆️ Update ruby dependencies (cd827da)
+* 🔧 Update macos ci executor (7404566)
+* 📝 Add docs for configuring hosting environment (52b6f06)
+
 ## 5.0.1
 * 🔧 Use specific android image (078d3f5)
 * ✨ Add support for settings path configuration (4402871)
