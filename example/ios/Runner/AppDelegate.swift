@@ -4,11 +4,13 @@ import AppcuesKit
 //import appcues_flutter
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
 
     private var methodChannel: FlutterMethodChannel?
     private var eventChannel: FlutterEventChannel?
     private let linkStreamHandler = LinkStreamHandler()
+    /// Populated from `UIScene.ConnectionOptions` on cold start; launch options are not available under the scene lifecycle.
+    private(set) var pendingInitialLink: String?
 
     override func application(
         _ application: UIApplication,
@@ -20,33 +22,46 @@ import AppcuesKit
         // Or, manually configure for push notifications
 //        setupPush(application: application)
 
-        let initialLink = launchOptions?[.url] as? String
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
 
-        let controller = window.rootViewController as! FlutterViewController
-        methodChannel = FlutterMethodChannel(name: "com.appcues.samples.flutter/channel", binaryMessenger: controller as! FlutterBinaryMessenger)
-        eventChannel = FlutterEventChannel(name: "com.appcues.samples.flutter/events", binaryMessenger: controller as! FlutterBinaryMessenger)
+    func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+        GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
 
-        methodChannel?.setMethodCallHandler({ (call: FlutterMethodCall, result: FlutterResult) in
+        let messenger = engineBridge.applicationRegistrar.messenger()
+        methodChannel = FlutterMethodChannel(
+            name: "com.appcues.samples.flutter/channel",
+            binaryMessenger: messenger
+        )
+        eventChannel = FlutterEventChannel(
+            name: "com.appcues.samples.flutter/events",
+            binaryMessenger: messenger
+        )
+
+        methodChannel?.setMethodCallHandler({ [weak self] (call: FlutterMethodCall, result: FlutterResult) in
             guard call.method == "initialLink" else {
                 result(FlutterMethodNotImplemented)
                 return
             }
 
-            result(initialLink)
+            result(self?.pendingInitialLink)
         })
 
-        GeneratedPluginRegistrant.register(with: self)
         eventChannel?.setStreamHandler(linkStreamHandler)
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func captureInitialLinkIfNeeded(from connectionOptions: UIScene.ConnectionOptions) {
+        guard pendingInitialLink == nil, let url = connectionOptions.urlContexts.first?.url else { return }
+        pendingInitialLink = url.absoluteString
+    }
+
+    func handleOpen(url: URL) -> Bool {
         eventChannel?.setStreamHandler(linkStreamHandler)
         return linkStreamHandler.handleLink(url.absoluteString)
     }
 }
 
-class LinkStreamHandler:NSObject, FlutterStreamHandler {
+class LinkStreamHandler: NSObject, FlutterStreamHandler {
 
     var eventSink: FlutterEventSink?
 
