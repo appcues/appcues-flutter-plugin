@@ -1,3 +1,6 @@
+## 5.0.3
+* ⬆️ Update native SDK dependencies (b54cd0a)
+
 ## 5.0.2
 * 🔧 Update Flutter version to 3.41 for CI (d6195f7)
 * 🎬 Update example (569fa2e)
