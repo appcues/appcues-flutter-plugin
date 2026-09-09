@@ -40,6 +40,17 @@ android {
     }
 }
 
+// AGP 8 / explicit KGP: pin jvmTarget. Flutter's Android Studio JDK is 21;
+// without this, KGP 1.8 tries target 21 and fails.
+// AGP 9 built-in Kotlin: android.kotlinOptions does not exist; jvmTarget
+// follows compileOptions (1.8).
+try {
+    android.kotlinOptions {
+        jvmTarget = '1.8'
+    }
+} catch (MissingMethodException ignored) {
+}
+
 dependencies {
     api 'com.appcues:appcues:5.0.3'
 }
