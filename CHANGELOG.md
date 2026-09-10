@@ -1,3 +1,9 @@
+## 5.0.4
+* 🔧 Address review nits: README AGP 8/9 snippets, AGP 8.6.0, info log (95c68be)
+* 🔧 Pin Kotlin jvmTarget 1.8 when AGP still exposes kotlinOptions (1b59fc3)
+* 🔧 Keep AGP 8 and 9 working without kotlin.compilerOptions (7a20a99)
+* 🐛 Skip kotlin-android when AGP already registered Kotlin (7c2c278)
+
 ## 5.0.3
 * ⬆️ Update native SDK dependencies (b54cd0a)
 
