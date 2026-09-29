@@ -43,7 +43,9 @@ internal class AppcuesPlatformView(context: Context) : PlatformView {
         return wrapperView
     }
 
-    override fun dispose() {}
+    override fun dispose() {
+        wrapperView.cancelMeasureAndLayout()
+    }
 }
 
 internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
@@ -77,6 +79,10 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
     }
 
     private val measureAndLayout = Runnable {
+        // ComposeView throws if measured while detached. requestLayout posts this
+        // runnable, and the platform view can leave the window before it runs.
+        if (!isAttachedToWindow) return@Runnable
+
         measure(
             MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
@@ -84,6 +90,15 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
         layout(left, top, right, bottom)
         // ensure that when we measure/layout we schedule a invalidate for the next loop for a re-draw
         postInvalidate()
+    }
+
+    internal fun cancelMeasureAndLayout() {
+        removeCallbacks(measureAndLayout)
+    }
+
+    override fun onDetachedFromWindow() {
+        cancelMeasureAndLayout()
+        super.onDetachedFromWindow()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
