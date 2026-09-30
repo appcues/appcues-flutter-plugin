@@ -1,3 +1,6 @@
+## 5.0.5
+* 🐛 Skip measuring detached Android embed views (da448bb)
+
 ## 5.0.4
 * 🔧 Address review nits: README AGP 8/9 snippets, AGP 8.6.0, info log (95c68be)
 * 🔧 Pin Kotlin jvmTarget 1.8 when AGP still exposes kotlinOptions (1b59fc3)
