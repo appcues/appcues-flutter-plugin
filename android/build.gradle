@@ -53,5 +53,5 @@ try {
 }
 
 dependencies {
-    api 'com.appcues:appcues:5.0.3'
+    api 'com.appcues:appcues:5.0.6'
 }
