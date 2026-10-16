@@ -1,3 +1,6 @@
+## 5.0.6
+* ⬆️ Update native SDK dependencies (589f08d)
+
 ## 5.0.5
 * 🐛 Skip measuring detached Android embed views (da448bb)
 
