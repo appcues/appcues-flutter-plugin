@@ -6,6 +6,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+/// The color theme mode used when rendering Appcues experiences.
+enum AppcuesTheme {
+  /// Follow the device system theme.
+  system,
+
+  /// Always render using the light theme.
+  light,
+
+  /// Always render using the dark theme.
+  dark,
+}
+
 /// A set of options that can be configured when initializing the Appcues
 /// plugin.
 class AppcuesOptions {
@@ -50,6 +62,11 @@ class AppcuesOptions {
   /// `application(_:continue:restorationHandler:)`and blocks subsequent link
   /// handling.
   bool? enableUniversalLinks;
+
+  /// The color theme mode used when rendering Appcues experiences.
+  ///
+  /// Defaults to [AppcuesTheme.system] if not specified.
+  AppcuesTheme? theme;
 }
 
 /// Captures the details about analytics events that have been reported.
@@ -194,6 +211,7 @@ class Appcues {
       "activityStorageMaxSize": options?.activityStorageMaxSize,
       "activityStorageMaxAge": options?.activityStorageMaxAge,
       "enableUniversalLinks": options?.enableUniversalLinks,
+      "theme": options?.theme?.name,
     };
     await _methodChannel.invokeMethod('initialize', {
       'accountId': accountId,
@@ -316,6 +334,15 @@ class Appcues {
   static Future<bool> didHandleURL(Uri url) async {
     return await _methodChannel
         .invokeMethod('didHandleURL', {'url': url.toString()});
+  }
+
+  /// Sets the color [theme] used for rendering Appcues experiences (flows,
+  /// embeds, etc.), overriding the system theme when set to
+  /// [AppcuesTheme.light] or [AppcuesTheme.dark], or reverting to the system
+  /// theme when set to [AppcuesTheme.system].
+  static Future<void> setTheme(AppcuesTheme theme) async {
+    return await _methodChannel
+        .invokeMethod('setTheme', {'theme': theme.name});
   }
 
   // runs every time the SemanticsNode tree updates, capturing the known

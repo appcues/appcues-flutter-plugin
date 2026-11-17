@@ -1,9 +1,16 @@
 package com.appcues.flutter
 
 import android.app.Activity
+import android.app.UiModeManager
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.Uri
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.NonNull
 import com.appcues.AnalyticType
 import com.appcues.AnalyticsListener
@@ -11,6 +18,7 @@ import com.appcues.Appcues
 import com.appcues.AppcuesFrameView
 import com.appcues.LoggingLevel
 
+import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -20,6 +28,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.util.Collections
+import java.util.WeakHashMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,8 +56,27 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
+    private var currentTheme: String = "system"
+    private val wrapperViews = Collections.newSetFromMap(WeakHashMap<AppcuesWrapperView, Boolean>())
+    private val styledOverlayViews = Collections.newSetFromMap(WeakHashMap<View, Boolean>())
+    private var decorLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private var observedDecorView: View? = null
+
+    private val componentCallbacks = object : ComponentCallbacks {
+        override fun onConfigurationChanged(newConfig: Configuration) {
+            if (currentTheme != "system") {
+                mainScope.launch {
+                    applyTheme()
+                }
+            }
+        }
+
+        override fun onLowMemory() {}
+    }
+
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
+        context.registerComponentCallbacks(componentCallbacks)
         methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "appcues_flutter")
         methodChannel.setMethodCallHandler(this)
         analyticsChannel = EventChannel(flutterPluginBinding.binaryMessenger, "appcues_analytics")
@@ -61,17 +90,23 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         this._activity = binding.activity
+        attachDecorViewObserver(binding.activity)
+        applyTheme()
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
+        detachDecorViewObserver()
         this._activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         this._activity = binding.activity
+        attachDecorViewObserver(binding.activity)
+        applyTheme()
     }
 
     override fun onDetachedFromActivity() {
+        detachDecorViewObserver()
         this._activity = null
     }
 
@@ -112,11 +147,17 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             if (activityStorageMaxAge != null) {
                                 this.activityStorageMaxAge = activityStorageMaxAge.toInt()
                             }
+
+                            val theme = it["theme"] as? String
+                            if (theme != null) {
+                                currentTheme = theme
+                            }
                         }
                         call.argument<HashMap<String, Any>>("additionalAutoProperties")?.let {
                             this.additionalAutoProperties = it
                         }
                     }
+                    applyTheme()
                     analyticsChannel.setStreamHandler(object: EventChannel.StreamHandler {
                         override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
                             implementation.analyticsListener = object: AnalyticsListener {
@@ -239,16 +280,143 @@ class AppcuesFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     elementTargeting.setTargetElements(viewElements)
                 }
             }
+            "setTheme" -> {
+                val theme = call.argument<String>("theme")
+                if (theme != null) {
+                    currentTheme = theme
+                    applyTheme()
+                    result.success(null)
+                } else {
+                    result.badArgs("theme")
+                }
+            }
             else -> result.notImplemented()
         }
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        context.unregisterComponentCallbacks(componentCallbacks)
+        detachDecorViewObserver()
         methodChannel.setMethodCallHandler(null)
     }
 
     internal fun registerEmbed(frameId: String, frame: AppcuesFrameView) {
         implementation.registerEmbed(frameId, frame)
+    }
+
+    internal fun registerWrapperView(view: AppcuesWrapperView) {
+        wrapperViews.add(view)
+        applyThemeToWrapperView(view)
+    }
+
+    internal fun unregisterWrapperView(view: AppcuesWrapperView) {
+        wrapperViews.remove(view)
+    }
+
+    internal fun applyThemeToWrapperView(view: AppcuesWrapperView) {
+        val config = applyThemeToResources(view.context.resources)
+        applyThemeToResources(view.contentView.context.resources)
+        view.dispatchConfigurationChanged(config)
+    }
+
+    internal fun adjustConfiguration(baseConfig: Configuration): Configuration {
+        val nightMode = resolveNightMode()
+        val config = Configuration(baseConfig)
+        config.uiMode = (config.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or nightMode
+        return config
+    }
+
+    @Suppress("DEPRECATION")
+    internal fun applyThemeToResources(resources: Resources): Configuration {
+        val config = adjustConfiguration(resources.configuration)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        return config
+    }
+
+    private fun resolveNightMode(): Int {
+        return when (currentTheme) {
+            "light" -> Configuration.UI_MODE_NIGHT_NO
+            "dark" -> Configuration.UI_MODE_NIGHT_YES
+            else -> {
+                val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as? UiModeManager
+                when (uiModeManager?.nightMode) {
+                    UiModeManager.MODE_NIGHT_YES -> Configuration.UI_MODE_NIGHT_YES
+                    UiModeManager.MODE_NIGHT_NO -> Configuration.UI_MODE_NIGHT_NO
+                    else -> context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                }
+            }
+        }
+    }
+
+    internal fun applyTheme() {
+        styledOverlayViews.clear()
+        activity?.let { act ->
+            val config = applyThemeToResources(act.resources)
+            dispatchConfigToNonFlutterViews(act.getParentView(), config)
+        }
+        wrapperViews.forEach { wrapperView ->
+            applyThemeToWrapperView(wrapperView)
+        }
+    }
+
+    private fun attachDecorViewObserver(act: Activity) {
+        detachDecorViewObserver()
+        val decorView = act.window?.decorView ?: return
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            val currentActivity = _activity ?: return@OnGlobalLayoutListener
+            val parentView = currentActivity.getParentView()
+            for (i in 0 until parentView.childCount) {
+                val child = parentView.getChildAt(i)
+                if (!containsFlutterView(child) && !styledOverlayViews.contains(child)) {
+                    styledOverlayViews.add(child)
+                    val config = applyThemeToResources(currentActivity.resources)
+                    applyThemeToResources(child.context.resources)
+                    child.dispatchConfigurationChanged(config)
+                }
+            }
+        }
+        decorView.viewTreeObserver.addOnGlobalLayoutListener(listener)
+        decorLayoutListener = listener
+        observedDecorView = decorView
+    }
+
+    private fun detachDecorViewObserver() {
+        val view = observedDecorView
+        val listener = decorLayoutListener
+        if (view != null && listener != null && view.viewTreeObserver.isAlive) {
+            view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+        decorLayoutListener = null
+        observedDecorView = null
+        styledOverlayViews.clear()
+    }
+
+    private fun containsFlutterView(view: View): Boolean {
+        if (view is FlutterView) return true
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                if (containsFlutterView(view.getChildAt(i))) return true
+            }
+        }
+        return false
+    }
+
+    private fun dispatchConfigToNonFlutterViews(view: View, config: Configuration) {
+        if (view is FlutterView) return
+        if (view is ViewGroup) {
+            if (containsFlutterView(view)) {
+                for (i in 0 until view.childCount) {
+                    dispatchConfigToNonFlutterViews(view.getChildAt(i), config)
+                }
+            } else {
+                styledOverlayViews.add(view)
+                applyThemeToResources(view.context.resources)
+                view.dispatchConfigurationChanged(config)
+            }
+        } else {
+            applyThemeToResources(view.context.resources)
+            view.dispatchConfigurationChanged(config)
+        }
     }
 
     private fun Result.badArgs(names: String) {

@@ -1,6 +1,7 @@
 package com.appcues.flutter
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.children
@@ -18,7 +19,8 @@ class AppcuesFrameViewFactory(
 ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        val platformView = AppcuesPlatformView(context)
+        plugin.applyThemeToResources(context.resources)
+        val platformView = AppcuesPlatformView(context, plugin)
 
         platformView.wrapperView.eventChannel =
             EventChannel(messenger, "com.appcues.flutter/frame/$viewId")
@@ -36,23 +38,45 @@ class AppcuesFrameViewFactory(
     }
 }
 
-internal class AppcuesPlatformView(context: Context) : PlatformView {
-    val wrapperView = AppcuesWrapperView(context)
+internal class AppcuesPlatformView(
+    context: Context,
+    private val plugin: AppcuesFlutterPlugin,
+) : PlatformView {
+    val wrapperView = AppcuesWrapperView(context, plugin)
 
     override fun getView(): View {
         return wrapperView
     }
 
     override fun dispose() {
+        plugin.unregisterWrapperView(wrapperView)
         wrapperView.cancelMeasureAndLayout()
     }
 }
 
-internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
+internal class AppcuesWrapperView(
+    context: Context,
+    private val plugin: AppcuesFlutterPlugin,
+) : FrameLayout(context) {
     val contentView = AppcuesFrameView(context)
 
     init {
         addView(contentView)
+        plugin.registerWrapperView(this)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        plugin.applyThemeToWrapperView(this)
+        post {
+            if (isAttachedToWindow) {
+                plugin.applyThemeToWrapperView(this)
+            }
+        }
+    }
+
+    override fun dispatchConfigurationChanged(newConfig: Configuration) {
+        super.dispatchConfigurationChanged(plugin.adjustConfiguration(newConfig))
     }
 
     var eventChannel: EventChannel? = null

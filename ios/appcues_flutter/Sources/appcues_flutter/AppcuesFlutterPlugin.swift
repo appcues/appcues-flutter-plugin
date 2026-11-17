@@ -8,6 +8,9 @@ public typealias SwiftAppcuesFlutterPlugin = AppcuesFlutterPlugin
 public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
     private static var implementation: Appcues?
+    private static var currentTheme: String = "system"
+    private static let wrapperViews = NSHashTable<WrapperView>.weakObjects()
+    private static var windowObserver: NSObjectProtocol?
     private var analyticsChannel: FlutterEventChannel?
     private var eventSink: FlutterEventSink?
 
@@ -19,6 +22,18 @@ public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
         if #available(iOS 13.0, *) {
             Appcues.elementTargeting = FlutterElementTargeting()
+        }
+
+        if windowObserver == nil {
+            windowObserver = NotificationCenter.default.addObserver(
+                forName: UIWindow.didBecomeVisibleNotification,
+                object: nil,
+                queue: .main
+            ) { notification in
+                if #available(iOS 13.0, *), let window = notification.object as? UIWindow {
+                    window.overrideUserInterfaceStyle = Self.userInterfaceStyle
+                }
+            }
         }
 
         let factory = AppcuesFrameViewFactory(plugin: instance, messenger: registrar.messenger())
@@ -60,6 +75,10 @@ public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
                             config.activityStorageMaxAge(activityStorageMaxAge)
                         }
 
+                        if let theme = options["theme"] as? String {
+                            Self.currentTheme = theme
+                        }
+
                         enableUniversalLinks = options["enableUniversalLinks"] as? Bool ?? false
                     }
 
@@ -71,11 +90,22 @@ public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
                 config.enableUniversalLinks(enableUniversalLinks)
 
                 Self.implementation = Appcues(config: config)
+                Self.applyTheme()
                 handleStoredNativePush()
                 analyticsChannel?.setStreamHandler(self)
                 result(nil)
             } else {
                 result(missingArgs(names: "accountId, applicationId"))
+            }
+            return
+        }
+
+        if call.method == "setTheme" {
+            if let theme = call["theme"] {
+                Self.setTheme(theme)
+                result(nil)
+            } else {
+                result(missingArgs(names: "theme"))
             }
             return
         }
@@ -160,6 +190,53 @@ public class AppcuesFlutterPlugin: NSObject, FlutterPlugin {
 
     internal func register(frameID: String, for view: AppcuesFrameView, on parentViewController: UIViewController) {
         Self.implementation?.register(frameID: frameID, for: view, on: parentViewController)
+    }
+
+    @available(iOS 13.0, *)
+    internal static var userInterfaceStyle: UIUserInterfaceStyle {
+        switch currentTheme {
+        case "light":
+            return .light
+        case "dark":
+            return .dark
+        default:
+            return .unspecified
+        }
+    }
+
+    internal static func registerWrapperView(_ view: WrapperView) {
+        wrapperViews.add(view)
+        if #available(iOS 13.0, *) {
+            view.applyTheme(userInterfaceStyle)
+        }
+    }
+
+    private static func setTheme(_ theme: String) {
+        currentTheme = theme
+        applyTheme()
+    }
+
+    private static func applyTheme() {
+        guard #available(iOS 13.0, *) else { return }
+        let style = userInterfaceStyle
+        let updateBlock = {
+            let sceneWindows = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+            let windows = sceneWindows.isEmpty ? UIApplication.shared.windows : sceneWindows
+            for window in windows {
+                window.overrideUserInterfaceStyle = style
+                window.rootViewController?.presentedViewController?.overrideUserInterfaceStyle = style
+            }
+            for wrapperView in wrapperViews.allObjects {
+                wrapperView.applyTheme(style)
+            }
+        }
+        if Thread.isMainThread {
+            updateBlock()
+        } else {
+            DispatchQueue.main.async(execute: updateBlock)
+        }
     }
 
     private func missingArgs(names: String) -> FlutterError {

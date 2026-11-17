@@ -76,6 +76,7 @@ class WrapperView: UIView, FlutterStreamHandler {
         super.init(frame: .zero)
 
         eventChannel.setStreamHandler(self)
+        AppcuesFlutterPlugin.registerWrapperView(self)
     }
 
     @available(*, unavailable)
@@ -106,7 +107,18 @@ class WrapperView: UIView, FlutterStreamHandler {
         frameVC.didMove(toParent: parentVC)
         self.frameViewController = frameVC
 
+        if #available(iOS 13.0, *) {
+            applyTheme(AppcuesFlutterPlugin.userInterfaceStyle)
+        }
+
         plugin.register(frameID: frameID, for: frameVC.frameView, on: frameVC)
+    }
+
+    @available(iOS 13.0, *)
+    func applyTheme(_ style: UIUserInterfaceStyle) {
+        overrideUserInterfaceStyle = style
+        frameViewController?.overrideUserInterfaceStyle = style
+        frameViewController?.frameView.overrideUserInterfaceStyle = style
     }
 
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
