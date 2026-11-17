@@ -25,6 +25,7 @@ This Plugin package is a bridge between the native Appcues SDKs in a Flutter app
     - [Tracking Screens and Events](#tracking-screens-and-events)
     - [Anchored Tooltips](#anchored-tooltips)
     - [Embedded Experiences](#embedded-experiences)
+    - [Configuring Theme](#configuring-theme)
   - [📝 Documentation](#-documentation)
   - [🎬 Examples](#-examples)
   - [👷 Contributing](#-contributing)
@@ -160,6 +161,22 @@ Anchored tooltips use element targeting to point directly at specific views in y
 ### Embedded Experiences
 
 Add `AppcuesFrameView` instances in your application layouts to support embedded experience content, with a non-modal presentation. For more information about how to configure your application layouts to use frame views, refer to the guide on [Configuring an AppcuesFrameView](https://github.com/appcues/appcues-flutter-plugin/blob/main/doc/AppcuesFrameViewConfiguring.md).
+
+### Configuring Theme
+
+By default, Appcues experiences follow the device's system theme (`AppcuesTheme.system`). If your application allows users to select a theme (light, dark, or system) independently of the OS setting, you can configure the initial theme in `AppcuesOptions` and update it dynamically with `Appcues.setTheme`:
+
+```dart
+// Set initial theme during initialization
+AppcuesOptions options = AppcuesOptions();
+options.theme = AppcuesTheme.dark;
+await Appcues.initialize('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', options);
+
+// Update theme dynamically at runtime
+await Appcues.setTheme(AppcuesTheme.light);
+await Appcues.setTheme(AppcuesTheme.dark);
+await Appcues.setTheme(AppcuesTheme.system);
+```
 
 ## 📝 Documentation
 
