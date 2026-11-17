@@ -59,6 +59,9 @@ class WrapperView: UIView, FlutterStreamHandler {
     private let plugin: AppcuesFlutterPlugin
     private var eventChannel: FlutterEventChannel?
     private var eventSink: FlutterEventSink?
+    private var lastPreferredContentSize: CGSize = .zero
+    private var lastIsHidden: Bool = true
+    private var hasReportedSize: Bool = false
 
     var frameID: String? = nil
 
@@ -117,13 +120,34 @@ class WrapperView: UIView, FlutterStreamHandler {
     @available(iOS 13.0, *)
     func applyTheme(_ style: UIUserInterfaceStyle) {
         overrideUserInterfaceStyle = style
-        frameViewController?.overrideUserInterfaceStyle = style
         frameViewController?.frameView.overrideUserInterfaceStyle = style
+        if let frameVC = frameViewController {
+            Self.applyStyle(style, to: frameVC)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private static func applyStyle(_ style: UIUserInterfaceStyle, to viewController: UIViewController) {
+        viewController.overrideUserInterfaceStyle = style
+        viewController.viewIfLoaded?.overrideUserInterfaceStyle = style
+        for child in viewController.children {
+            applyStyle(style, to: child)
+        }
     }
 
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
+        lastPreferredContentSize = preferredContentSize
+        lastIsHidden = isHidden
+        hasReportedSize = true
+
+        // When the frame is not hidden but preferredContentSize has not been calculated yet,
+        // wait for preferredContentSizeDidChange rather than collapsing the view to zero.
+        if !isHidden && preferredContentSize.height <= 0 {
+            return
+        }
+
         // The height cannot be 0 otherwise the view might be removed
-        let size = isHidden ? CGSize(width: 0, height: 0.01) : preferredContentSize
+        let size = isHidden ? CGSize(width: bounds.width, height: 0.01) : preferredContentSize
 
         eventSink?([
             "height": size.height,
@@ -133,6 +157,9 @@ class WrapperView: UIView, FlutterStreamHandler {
 
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = events
+        if hasReportedSize {
+            setIntrinsicSize(preferredContentSize: lastPreferredContentSize, isHidden: lastIsHidden)
+        }
         return nil
     }
 

@@ -123,7 +123,7 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
   // the native view will control the SizedBox dimensions here to auto
   // size contents or set to zero if hidden.
   double _height = 1;
-  double _width = 1;
+  double? _width;
   StreamSubscription? _sizeStream;
 
   @override
@@ -138,12 +138,18 @@ class _AppcuesFrameViewState extends State<AppcuesFrameView> {
           )
         },
         onPlatformViewCreated: (id) {
+          _sizeStream?.cancel();
           _sizeStream = EventChannel("com.appcues.flutter/frame/$id")
               .receiveBroadcastStream()
-              .listen((size) => setState(() {
-                    _height = size['height'];
-                    _width = size['width'];
-                  }));
+              .listen((size) {
+            if (!mounted) return;
+            final double rawHeight = (size['height'] as num).toDouble();
+            final double rawWidth = (size['width'] as num).toDouble();
+            setState(() {
+              _height = rawHeight > 0 ? rawHeight : 0.01;
+              _width = rawWidth > 0 ? rawWidth : null;
+            });
+          });
         });
 
     // use the SizedBox with the height update listener (above) to auto
